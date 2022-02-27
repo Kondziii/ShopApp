@@ -1,6 +1,4 @@
-import { NextPage } from 'next';
-
-const UsersFolder: NextPage = () => {
+const UsersFolder = () => {
   return (
     <div>
       <p>Users [folder]</p>
