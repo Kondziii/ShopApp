@@ -1,9 +1,29 @@
 import { InferGetStaticPropsType } from 'next';
+import { Product } from '../components/Product';
 
 const ProductsPage = ({
-  data,
+  products,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  return <div>{data[0].title}</div>;
+  return (
+    <div>
+      <ul className='grid gap-4 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
+        {products.map((product) => (
+          <li key={product.id}>
+            <Product
+              data={{
+                id: product.id,
+                title: product.title,
+                description: product.description,
+                thumbnailSrc: product.image,
+                thumbnailAlt: product.title,
+                rating: product.rating.rate,
+              }}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default ProductsPage;
@@ -14,7 +34,7 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      data,
+      products: data,
     },
   };
 };
