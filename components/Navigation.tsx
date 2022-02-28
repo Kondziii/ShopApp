@@ -3,7 +3,7 @@ import { ActiveLink } from './ActiveLink';
 
 const navOptions = [
   { title: 'Home', path: '/' },
-  { title: 'Users', path: '/users' },
+  { title: 'Products', path: '/products' },
   { title: 'About', path: '/about' },
 ];
 
