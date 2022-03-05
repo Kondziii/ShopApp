@@ -5,6 +5,7 @@ const navOptions = [
   { title: 'Home', path: '/' },
   { title: 'Products', path: '/products', exact: false },
   { title: 'About', path: '/about' },
+  { title: 'Pagination1', path: '/pagination1' },
 ];
 
 export const Navigation = React.forwardRef<HTMLUListElement>((props, ref) => {
