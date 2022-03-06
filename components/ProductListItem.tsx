@@ -9,9 +9,13 @@ type ProductListItem = Pick<
 
 interface ProductListItemProps {
   data: ProductListItem;
+  isLink?: boolean;
 }
 
-export const ProductListItem = ({ data }: ProductListItemProps) => {
+export const ProductListItem = ({
+  data,
+  isLink = true,
+}: ProductListItemProps) => {
   return (
     <div className='relative flex flex-col justify-center w-full h-full p-4 transition-all duration-300 bg-white rounded-lg shadow-lg align-center hover:shadow-2xl hover:scale-105'>
       <Image
@@ -21,13 +25,21 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
         src={data.thumbnailSrc}
         alt={data.thumbnailAlt}
       />
-      <Link href={`/products/${data.id}`}>
+      {isLink ? (
+        <Link href={`/products/${data.id}`}>
+          <a>
+            <h2 className='mt-4 mb-2 text-lg font-medium text-center '>
+              {data.title}
+            </h2>
+          </a>
+        </Link>
+      ) : (
         <a>
           <h2 className='mt-4 mb-2 text-lg font-medium text-center '>
             {data.title}
           </h2>
         </a>
-      </Link>
+      )}
     </div>
   );
 };

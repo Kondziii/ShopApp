@@ -1,4 +1,7 @@
-import { usePagination, usePaginationProps } from '../hooks/usePagination';
+import {
+  usePaginationRange,
+  usePaginationProps,
+} from '../hooks/usePaginationRange';
 
 interface Pagination1Props
   extends usePaginationProps,
@@ -9,7 +12,7 @@ interface Pagination1Props
 }
 
 export const Pagination1 = (props: Pagination1Props) => {
-  const pagination = usePagination({
+  const pagination = usePaginationRange({
     firstPage: props.firstPage,
     lastPage: props.lastPage,
     currentPage: props.currentPage,
@@ -29,8 +32,7 @@ export const Pagination1 = (props: Pagination1Props) => {
             {typeof pill === 'string' ? (
               <span>&hellip;</span>
             ) : (
-              <a
-                href='#'
+              <button
                 className={`px-2 text-lg hover:border-t-yellow-400 transition-colors duration-300 ${
                   props.currentPage === pill
                     ? `text-yellow-500 border-t-2 border-t-yellow-500 ${props.activeClassName}`
@@ -39,7 +41,7 @@ export const Pagination1 = (props: Pagination1Props) => {
                 onClick={() => props.onSelected(pill)}
               >
                 {pill}
-              </a>
+              </button>
             )}
           </li>
         );

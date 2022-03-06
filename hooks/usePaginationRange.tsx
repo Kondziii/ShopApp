@@ -13,7 +13,7 @@ export interface usePaginationProps {
   siblingsNumber?: number;
 }
 
-export const usePagination = ({
+export const usePaginationRange = ({
   firstPage,
   lastPage,
   currentPage,
