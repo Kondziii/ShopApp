@@ -1,26 +1,18 @@
-import type { ApiProducts } from '../types';
 import { useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-
-const fetchProducts = async (offset: number = 0) => {
-  const response = await fetch(
-    `https://naszsklep-api.vercel.app/api/products/?take=25&offset=${offset}`
-  );
-  const data: ApiProducts[] = await response.json();
-  return data;
-};
+import { fetchProducts } from '../service/products';
 
 export const usePaginatedProducts = () => {
   const router = useRouter();
   const [page, setPage] = useState(() => {
     if (router && typeof router.query.page === 'string')
       return parseInt(router?.query.page);
-    else return undefined;
+    else return 1;
   });
 
   const result = useQuery(['products', { page: page }], () => {
-    if (page) return fetchProducts(page * 25);
+    return fetchProducts(page);
   });
 
   const fetchPage = useCallback(

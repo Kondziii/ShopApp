@@ -42,7 +42,7 @@ const Pagination1Page = () => {
           className='mt-6'
           firstPage={1}
           lastPage={20}
-          currentPage={page}
+          currentPage={page || 1}
           take={20}
           onSelected={fetchPage}
         />
