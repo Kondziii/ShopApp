@@ -19,8 +19,11 @@ export const ProductListItem = ({
   return (
     <div className='relative flex flex-col justify-center w-full h-full p-4 transition-all duration-300 bg-white rounded-lg shadow-lg align-center hover:shadow-2xl hover:scale-105'>
       <Image
-        width={250}
-        height={250}
+        // width={250}
+        // height={250}
+        layout='responsive'
+        width={4}
+        height={3}
         className='object-contain text-center aspect-video'
         src={data.thumbnailSrc}
         alt={data.thumbnailAlt}
