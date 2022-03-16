@@ -7,6 +7,7 @@ export interface ProductDetails {
   thumbnailSrc: string;
   thumbnailAlt: string;
   rating: number;
+  longDescription: string;
 }
 
 interface ProductDetailsProps {
@@ -26,6 +27,7 @@ const Raiting = ({ rating }: RatingProps) => {
 };
 
 export const ProductDetails = ({ data }: ProductDetailsProps) => {
+  console.log(data);
   return (
     <div className='container content-center h-full max-w-5xl gap-8 p-6 mx-auto sm:grid sm:grid-cols-2'>
       <div className='p-4 bg-white rounded-md shadow-md'>
@@ -44,6 +46,9 @@ export const ProductDetails = ({ data }: ProductDetailsProps) => {
         <p className='font-light text-justify text-gray-600'>
           {data.description}
         </p>
+      </div>
+      <div>
+        <p>{data.longDescription}</p>
       </div>
     </div>
   );

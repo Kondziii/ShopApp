@@ -7,9 +7,9 @@ interface MenuButtonProps {
 
 export const MenuButton = ({ onClick }: MenuButtonProps) => {
   return (
-    <button onClick={onClick}>
+    <button className='sm:hidden' onClick={onClick}>
       <FontAwesomeIcon
-        className='text-2xl transition duration-300 hover:text-gray-800 sm:hidden'
+        className='text-2xl transition duration-300 hover:text-gray-800'
         icon={faBars}
       />
     </button>

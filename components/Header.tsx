@@ -18,11 +18,13 @@ export const Header = () => {
 
   return (
     <header className='sticky top-0 z-50 px-8 py-5 text-sm font-semibold text-gray-500 uppercase bg-white shadow-md sm:flex sm:items-center'>
-      <div className='flex'>
-        <MenuButton onClick={handleToggleMenu} />
-        <Logo className='mx-auto text-center sm:mx-0 sm:mr-10 md:mr-20'></Logo>
+      <div className='sm:flex mx-auto container sm:justify-between max-w-7xl'>
+        <div className='w-full flex justify-between'>
+          <MenuButton onClick={handleToggleMenu} />
+          <Logo className=' mx-auto text-center sm:mx-0 sm:mr-10 md:mr-20'></Logo>
+        </div>
+        <Navigation ref={nav}></Navigation>
       </div>
-      <Navigation ref={nav}></Navigation>
     </header>
   );
 };
