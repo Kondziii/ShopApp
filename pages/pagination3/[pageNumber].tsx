@@ -14,13 +14,22 @@ const Pagination3Page = ({
 
   const handleSelectedPage = useCallback(
     (page) => {
-      router.push(`/pagination2/${page}`);
+      router.push(`/pagination3/${page}`);
     },
     [router]
   );
 
   return (
     <div className='flex flex-col place-items-center'>
+      <Pagination1
+        className='mt-6 mb-6'
+        firstPage={1}
+        lastPage={20}
+        currentPage={+pageNumber}
+        take={20}
+        onSelected={handleSelectedPage}
+      />
+
       <ul className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-4'>
         {data?.map((product) => {
           return (
