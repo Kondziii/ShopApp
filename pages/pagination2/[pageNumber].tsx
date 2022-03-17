@@ -4,7 +4,7 @@ import { InferGetStaticPaths } from '../products/[productId]';
 import { ProductListItem } from '../../components/ProductListItem';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { Pagination1 } from '../../components/Pagination1';
+import { Pagination } from '../../components/Pagination';
 
 const Pagination2Page = ({
   data,
@@ -38,7 +38,7 @@ const Pagination2Page = ({
         })}
       </ul>
       {data && (
-        <Pagination1
+        <Pagination
           className='mt-6'
           firstPage={1}
           lastPage={20}

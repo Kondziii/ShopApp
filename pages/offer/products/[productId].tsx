@@ -1,6 +1,7 @@
 import { InferGetStaticPropsType } from 'next';
-import ProductDetails from '../../components/ProductDetails';
-import type { ApiProducts } from '../../types';
+import ProductDetails from '../../../components/ProductDetails';
+import type { ApiProducts } from '../../../types';
+import { NextSeo } from 'next-seo';
 
 const ProductDetailsPage = ({
   data,
@@ -15,10 +16,12 @@ const ProductDetailsPage = ({
 
   return (
     <>
+      <NextSeo title={data.title} description={data.description}></NextSeo>
       <ProductDetails
         data={{
           id: data.id,
           title: data.title,
+          price: data.price,
           description: data.description,
           thumbnailSrc: data.image,
           thumbnailAlt: data.title,

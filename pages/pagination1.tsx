@@ -1,4 +1,4 @@
-import { Pagination1 } from '../components/Pagination1';
+import { Pagination } from '../components/Pagination';
 import { ProductListItem } from '../components/ProductListItem';
 
 import { usePaginatedProducts } from '../hooks/usePaginatedProducts';
@@ -38,7 +38,7 @@ const Pagination1Page = () => {
       </ul>
 
       {data && (
-        <Pagination1
+        <Pagination
           className='mt-6'
           firstPage={1}
           lastPage={20}

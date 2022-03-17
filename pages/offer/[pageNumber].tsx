@@ -1,10 +1,10 @@
 import { fetchProducts } from '../../service/products';
 import { InferGetStaticPropsType } from 'next';
-import { InferGetStaticPaths } from '../products/[productId]';
+import { InferGetStaticPaths } from './products/[productId]';
 import { ProductListItem } from '../../components/ProductListItem';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { Pagination1 } from '../../components/Pagination1';
+import { Pagination } from '../../components/Pagination';
 
 const Pagination3Page = ({
   data,
@@ -14,31 +14,22 @@ const Pagination3Page = ({
 
   const handleSelectedPage = useCallback(
     (page) => {
-      router.push(`/pagination3/${page}`);
+      router.push(`/offer/${page}`);
     },
     [router]
   );
 
   return (
-    <div className='flex flex-col place-items-center'>
-      <Pagination1
-        className='mt-6 mb-6'
-        firstPage={1}
-        lastPage={20}
-        currentPage={+pageNumber}
-        take={20}
-        onSelected={handleSelectedPage}
-      />
-
+    <div className='flex flex-col'>
       <ul className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-4'>
         {data?.map((product) => {
           return (
             <ProductListItem
               key={product.id}
-              isLink={false}
               data={{
                 id: product.id,
                 title: product.title,
+                price: product.price,
                 thumbnailSrc: product.image,
                 thumbnailAlt: product.title,
               }}
@@ -46,16 +37,14 @@ const Pagination3Page = ({
           );
         })}
       </ul>
-      {data && (
-        <Pagination1
-          className='mt-6'
-          firstPage={1}
-          lastPage={20}
-          currentPage={+pageNumber}
-          take={20}
-          onSelected={handleSelectedPage}
-        />
-      )}
+      <Pagination
+        className='mt-12'
+        firstPage={1}
+        lastPage={150}
+        currentPage={+pageNumber}
+        take={20}
+        onSelected={handleSelectedPage}
+      />
     </div>
   );
 };
