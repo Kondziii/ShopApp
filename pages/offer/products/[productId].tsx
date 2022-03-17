@@ -16,7 +16,24 @@ const ProductDetailsPage = ({
 
   return (
     <>
-      <NextSeo title={data.title} description={data.description}></NextSeo>
+      <NextSeo
+        title={data.title}
+        description={data.description}
+        canonical={`http://https://shop-app-blue.vercel.app/offer/products/${data.id}`}
+        openGraph={{
+          url: `http://https://shop-app-blue.vercel.app/offer/products/${data.id}`,
+          title: data.title,
+          description: data.description,
+          images: [
+            {
+              url: data.image,
+              alt: data.title,
+              type: 'image/jpeg',
+            },
+          ],
+          site_name: 'ShopApp',
+        }}
+      ></NextSeo>
       <ProductDetails
         data={{
           id: data.id,
