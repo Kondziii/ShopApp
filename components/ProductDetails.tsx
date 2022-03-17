@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import ReactMarkdown from 'react-markdown';
+import CustomMarkdown from './CustomMarkdown';
 
 export interface ProductDetails {
   id: number;
@@ -54,7 +54,7 @@ export const ProductDetails = ({ data }: ProductDetailsProps) => {
       </section>
       <hr className='my-6 border-slate-300' />
       <article className='row-start-2 prose lg:prose-xl'>
-        <ReactMarkdown>{data.longDescription}</ReactMarkdown>
+        <CustomMarkdown>{data.longDescription}</CustomMarkdown>
       </article>
     </div>
   );
