@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { MarkdownResult } from '../types';
 import CustomMarkdown from './CustomMarkdown';
 
 export interface ProductDetails {
@@ -9,7 +10,7 @@ export interface ProductDetails {
   thumbnailSrc: string;
   thumbnailAlt: string;
   rating: number;
-  longDescription: string;
+  longDescription: MarkdownResult;
 }
 
 interface ProductDetailsProps {

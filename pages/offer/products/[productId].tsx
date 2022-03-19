@@ -2,6 +2,7 @@ import { InferGetStaticPropsType } from 'next';
 import ProductDetails from '../../../components/ProductDetails';
 import type { ApiProducts } from '../../../types';
 import { NextSeo } from 'next-seo';
+import { serialize } from 'next-mdx-remote/serialize';
 
 const ProductDetailsPage = ({
   data,
@@ -91,7 +92,10 @@ export const getStaticProps = async ({
 
   return {
     props: {
-      data,
+      data: {
+        ...data,
+        longDescription: await serialize(data.longDescription),
+      },
     },
   };
 };
