@@ -1,12 +1,12 @@
 import { fetchProducts } from '../../service/products';
 import { InferGetStaticPropsType } from 'next';
-import { InferGetStaticPaths } from '../products/[productId]';
+import { InferGetStaticPaths } from './products/[productId]';
 import { ProductListItem } from '../../components/ProductListItem';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { Pagination1 } from '../../components/Pagination1';
+import { Pagination } from '../../components/Pagination';
 
-const Pagination2Page = ({
+const Pagination3Page = ({
   data,
   pageNumber,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -14,22 +14,22 @@ const Pagination2Page = ({
 
   const handleSelectedPage = useCallback(
     (page) => {
-      router.push(`/pagination2/${page}`);
+      router.push(`/offer/${page}`);
     },
     [router]
   );
 
   return (
-    <div className='flex flex-col place-items-center'>
+    <div className='flex flex-col'>
       <ul className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-4'>
         {data?.map((product) => {
           return (
             <ProductListItem
               key={product.id}
-              isLink={false}
               data={{
                 id: product.id,
                 title: product.title,
+                price: product.price,
                 thumbnailSrc: product.image,
                 thumbnailAlt: product.title,
               }}
@@ -37,21 +37,19 @@ const Pagination2Page = ({
           );
         })}
       </ul>
-      {data && (
-        <Pagination1
-          className='mt-6'
-          firstPage={1}
-          lastPage={20}
-          currentPage={+pageNumber}
-          take={20}
-          onSelected={handleSelectedPage}
-        />
-      )}
+      <Pagination
+        className='mt-12'
+        firstPage={1}
+        lastPage={150}
+        currentPage={+pageNumber}
+        take={20}
+        onSelected={handleSelectedPage}
+      />
     </div>
   );
 };
 
-export default Pagination2Page;
+export default Pagination3Page;
 
 export const getStaticPaths = async () => {
   const pagesNumber = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -62,7 +60,7 @@ export const getStaticPaths = async () => {
         pageNumber: pageNumber.toString(),
       },
     })),
-    fallback: false,
+    fallback: 'blocking',
   };
 };
 

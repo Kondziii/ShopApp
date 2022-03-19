@@ -1,6 +1,8 @@
 import { InferGetStaticPropsType } from 'next';
-import ProductDetails from '../../components/ProductDetails';
-import { ProductsApiResponse } from '../products';
+import ProductDetails from '../../../components/ProductDetails';
+import type { ApiProducts } from '../../../types';
+import { NextSeo } from 'next-seo';
+import { serialize } from 'next-mdx-remote/serialize';
 
 const ProductDetailsPage = ({
   data,
@@ -15,14 +17,34 @@ const ProductDetailsPage = ({
 
   return (
     <>
+      <NextSeo
+        title={data.title}
+        description={data.description}
+        canonical={`http://https://shop-app-blue.vercel.app/offer/products/${data.id}`}
+        openGraph={{
+          url: `http://https://shop-app-blue.vercel.app/offer/products/${data.id}`,
+          title: data.title,
+          description: data.description,
+          images: [
+            {
+              url: data.image,
+              alt: data.title,
+              type: 'image/jpeg',
+            },
+          ],
+          site_name: 'ShopApp',
+        }}
+      ></NextSeo>
       <ProductDetails
         data={{
           id: data.id,
           title: data.title,
+          price: data.price,
           description: data.description,
           thumbnailSrc: data.image,
           thumbnailAlt: data.title,
           rating: data.rating.rate,
+          longDescription: data.longDescription,
         }}
       ></ProductDetails>
     </>
@@ -38,8 +60,8 @@ export type InferGetStaticPaths<T> = T extends () => Promise<{
   : never;
 
 export const getStaticPaths = async () => {
-  const response = await fetch('https://fakestoreapi.com/products');
-  const data: ProductsApiResponse[] = await response.json();
+  const response = await fetch(`https://naszsklep-api.vercel.app/api/products`);
+  const data: ApiProducts[] = await response.json();
 
   return {
     paths: data.map((product) => {
@@ -64,13 +86,16 @@ export const getStaticProps = async ({
   }
 
   const response = await fetch(
-    `https://fakestoreapi.com/products/${params.productId}`
+    `https://naszsklep-api.vercel.app/api/products/${params.productId}`
   );
-  const data: ProductsApiResponse = await response.json();
+  const data: ApiProducts = await response.json();
 
   return {
     props: {
-      data,
+      data: {
+        ...data,
+        longDescription: await serialize(data.longDescription),
+      },
     },
   };
 };

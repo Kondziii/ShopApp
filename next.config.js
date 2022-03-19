@@ -14,8 +14,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/pagination3',
-        destination: '/pagination3/1',
+        source: '/offer',
+        destination: '/offer/1',
         permanent: true,
       },
     ];
