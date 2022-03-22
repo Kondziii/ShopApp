@@ -11,8 +11,8 @@ const CustomMarkdown = ({ children }: { children: MarkdownResult }) => {
           if (!href) return <a {...props}></a>;
 
           if (
-            process.env.NEXT_PUBLIC_DOMAIN?.split('/').at(2) !==
-            href.split('/').at(2)
+            process.env.NEXT_PUBLIC_DOMAIN?.split('/')[2] !==
+            href.toString().split('/')[2]
           )
             return <a {...props} rel='noopener noreferrer'></a>;
 
