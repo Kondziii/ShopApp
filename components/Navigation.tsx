@@ -16,7 +16,7 @@ export const Navigation = React.forwardRef<HTMLUListElement>((props, ref) => {
       ref={ref}
       {...props}
       style={{ height: 0 }}
-      className='mt-0 overflow-hidden sm:overflow-visible  transition-all duration-500 ease-linear divide-y-2 sm:!h-fit sm:flex sm:divide-y-0 sm:mt-0 sm:space-x-8'
+      className=' min-w-full sm:min-w-fit mt-2 sm:mt-0 overflow-hidden sm:overflow-visible  transition-all duration-500 ease-linear divide-y-2 sm:!h-fit sm:flex sm:divide-y-0 sm:mt-0 sm:space-x-8'
     >
       {navOptions.map((option) => (
         <li key={option.path} className='relative '>
