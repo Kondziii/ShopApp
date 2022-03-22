@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useCartState } from './cart/CartContext';
 import ProductDetails from './ProductDetails';
 
 type ProductListItem = Pick<
@@ -12,6 +13,8 @@ interface ProductListItemProps {
 }
 
 export const ProductListItem = ({ data }: ProductListItemProps) => {
+  const cartState = useCartState();
+
   return (
     <li className='flex flex-col items-center p-6 transition-all duration-300 bg-white rounded shadow-md group hover:scale-105 hover:shadow-xl '>
       <div className='w-full'>
@@ -34,14 +37,19 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
       <p className='text-2xl font-semibold text-yellow-500 text-bold sm:text-xl'>
         {data.price}$
       </p>
-      {/* <section className='flex justify-between invisible w-4/5 mx-auto transition duration-300 group-hover:visible'>
-        <button className='flex items-center justify-center w-12 h-12 px-4 py-2 mt-6 text-xl text-gray-200 rounded-full bg-slate-700 hover:bg-slate-600 focus:bg-slate-800 focus:ring ring-yellow-400/50 focus:outline-none'>
-          <FontAwesomeIcon className='' icon={faCartArrowDown} />
-        </button>
-        <button className='flex items-center justify-center w-12 h-12 px-4 py-2 mt-6 text-xl text-gray-200 rounded-full bg-slate-700 hover:bg-slate-600 focus:bg-slate-800 focus:ring ring-yellow-400/50 focus:outline-none'>
-          <FontAwesomeIcon icon={faHeart} />
-        </button>
-      </section> */}
+      <button
+        onClick={() =>
+          cartState.addToCart({
+            id: data.id,
+            title: data.title,
+            price: data.price,
+            count: 1,
+          })
+        }
+        className='px-4 py-2 mt-4 text-sm transition duration-300 border rounded-md text-slate-700 border-slate-700 hover:bg-slate-700 hover:text-white focus:ring-1 ring-slate-500'
+      >
+        Dodaj do koszyka
+      </button>
     </li>
   );
 };
