@@ -1,17 +1,14 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-
 interface MenuButtonProps {
   onClick: () => void;
 }
 
 export const MenuButton = ({ onClick }: MenuButtonProps) => {
   return (
-    <button className='sm:hidden' onClick={onClick}>
-      <FontAwesomeIcon
-        className='h-5 text-2xl transition duration-300 hover:text-gray-800'
-        icon={faBars}
-      />
+    <button
+      className='h-5 text-2xl transition duration-300 hover:text-gray-800 sm:hidden'
+      onClick={onClick}
+    >
+      menu
     </button>
   );
 };
