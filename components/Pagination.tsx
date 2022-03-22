@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import {
   usePaginationRange,
   usePaginationProps,
@@ -31,7 +29,7 @@ export const Pagination = (props: PaginationProps) => {
         onClick={() => props.onSelected(props.currentPage - 1)}
         className='flex items-center justify-center w-8 h-8 p-2 text-sm transition-colors duration-200 rounded-full hover:disabled:bg-transparent hover:disabled:text-gray-400 hover:bg-yellow-400 hover:text-white disabled:text-gray-400'
       >
-        <FontAwesomeIcon icon={faAngleLeft} />
+        {/* <FontAwesomeIcon icon={faAngleLeft} /> */}Prev
       </button>
       <ul className={`flex space-x-3`}>
         {pagination!.map((pill, index) => {
@@ -60,7 +58,8 @@ export const Pagination = (props: PaginationProps) => {
         onClick={() => props.onSelected(props.currentPage + 1)}
         className='flex items-center justify-center w-8 h-8 p-2 text-sm transition-colors duration-200 rounded-full hover:disabled:bg-transparent hover:disabled:text-gray-400 hover:bg-yellow-400 hover:text-white disabled:text-gray-400'
       >
-        <FontAwesomeIcon icon={faAngleRight} />
+        {/* <FontAwesomeIcon icon={faAngleRight} /> */}
+        Next
       </button>
     </div>
   );
