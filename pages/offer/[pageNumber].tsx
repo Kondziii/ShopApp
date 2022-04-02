@@ -5,6 +5,11 @@ import { ProductListItem } from '../../components/ProductListItem';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { Pagination } from '../../components/Pagination';
+import { apolloClient } from '../../graphql/graphqlClient';
+import {
+  GetAllProductsListDocument,
+  GetAllProductsListQuery,
+} from '../../generated/graphql';
 
 const Pagination3Page = ({
   data,
@@ -28,23 +33,26 @@ const Pagination3Page = ({
               key={product.id}
               data={{
                 id: product.id,
-                title: product.title,
+                slug: product.slug,
+                title: product.name,
                 price: product.price,
-                thumbnailSrc: product.image,
-                thumbnailAlt: product.title,
+                thumbnailSrc: product.images[0].url,
+                thumbnailAlt: product.name,
               }}
             />
           );
         })}
       </ul>
-      <Pagination
-        className='mt-12'
-        firstPage={1}
-        lastPage={150}
-        currentPage={+pageNumber}
-        take={20}
-        onSelected={handleSelectedPage}
-      />
+      {data && data.length > 20 && (
+        <Pagination
+          className='mt-12'
+          firstPage={1}
+          lastPage={150}
+          currentPage={+pageNumber}
+          take={20}
+          onSelected={handleSelectedPage}
+        />
+      )}
     </div>
   );
 };
@@ -67,10 +75,14 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({
   params,
 }: InferGetStaticPaths<typeof getStaticPaths>) => {
-  const data = await fetchProducts(parseInt(params?.pageNumber || '1'));
+  // const data = await fetchProducts(parseInt(params?.pageNumber || '1'));
+  const data = await apolloClient.query<GetAllProductsListQuery>({
+    query: GetAllProductsListDocument,
+  });
+
   return {
     props: {
-      data,
+      data: data.data.products,
       pageNumber: params!.pageNumber,
     },
   };
