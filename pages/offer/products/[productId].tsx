@@ -106,7 +106,7 @@ export const getStaticProps = async ({
     query: GetProductDetailsBySlugDocument,
   });
 
-  if (!data) {
+  if (!data || !data.data || !data.data.product) {
     return {
       props: {},
       notFound: true,
