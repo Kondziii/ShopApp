@@ -16,7 +16,7 @@ interface CartItem {
 interface CartState {
   readonly items: readonly CartItem[];
   addToCart: (item: CartItem) => void;
-  removeFromCart: (id: number) => void;
+  removeFromCart: (id: string) => void;
 }
 
 const CartContext = createContext<CartState | null>(null);
