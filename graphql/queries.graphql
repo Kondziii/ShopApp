@@ -21,6 +21,7 @@ query getProductDetailsBySlug($slug: String) {
     id
     slug
     name
+    price
     description
     images {
       url

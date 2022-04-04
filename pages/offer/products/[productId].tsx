@@ -1,6 +1,6 @@
 import { InferGetStaticPropsType } from 'next';
 import ProductDetails from '../../../components/ProductDetails';
-import type { ApiProducts } from '../../../types';
+// import type { ApiProducts } from '../../../types';
 import { NextSeo } from 'next-seo';
 import { serialize } from 'next-mdx-remote/serialize';
 import { apolloClient } from '../../../graphql/graphqlClient';
@@ -45,6 +45,7 @@ const ProductDetailsPage = ({
       <ProductDetails
         data={{
           id: data.id,
+          slug: data.slug,
           title: data.name,
           price: data.price,
           description: data.description,
