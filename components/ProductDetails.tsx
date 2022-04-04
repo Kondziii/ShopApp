@@ -3,9 +3,10 @@ import { MarkdownResult } from '../types';
 import CustomMarkdown from './CustomMarkdown';
 
 export interface ProductDetails {
-  id: number;
+  id: string;
   title: string;
   price: number;
+  slug: string;
   description: string;
   thumbnailSrc: string;
   thumbnailAlt: string;

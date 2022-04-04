@@ -7,7 +7,7 @@ import {
 } from 'react';
 
 interface CartItem {
-  readonly id: number;
+  readonly id: string;
   readonly title: string;
   readonly price: number;
   readonly count: number;
@@ -16,7 +16,7 @@ interface CartItem {
 interface CartState {
   readonly items: readonly CartItem[];
   addToCart: (item: CartItem) => void;
-  removeFromCart: (id: number) => void;
+  removeFromCart: (id: string) => void;
 }
 
 const CartContext = createContext<CartState | null>(null);
@@ -41,7 +41,7 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id: string) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === id);
 

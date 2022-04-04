@@ -5,7 +5,7 @@ import ProductDetails from './ProductDetails';
 
 type ProductListItem = Pick<
   ProductDetails,
-  'id' | 'title' | 'thumbnailSrc' | 'thumbnailAlt' | 'price'
+  'id' | 'title' | 'thumbnailSrc' | 'thumbnailAlt' | 'price' | 'slug'
 >;
 
 interface ProductListItemProps {
@@ -27,7 +27,7 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
           alt={data.thumbnailAlt}
         />
       </div>
-      <Link href={`/offer/products/${data.id}`}>
+      <Link href={`/offer/products/${data.slug}`}>
         <a>
           <h2 className='mt-4 mb-2 text-lg font-medium text-center '>
             {data.title}
