@@ -41,7 +41,7 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id: string) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === id);
 
