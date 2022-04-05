@@ -9,11 +9,11 @@ const CartPage = () => {
   return (
     <>
       {cartState.items.length !== 0 ? (
-        <div className='h-full grid-cols-3 overflow-auto sm:grid'>
-          <section className='col-span-2'>
+        <div className='flex-grow grid-cols-3 sm:grid'>
+          <section className='h-full col-span-2'>
             <CartContent />
           </section>
-          <section>
+          <section className='h-full'>
             <CartSummary />
           </section>
         </div>
