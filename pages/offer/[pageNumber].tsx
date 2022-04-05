@@ -11,7 +11,7 @@ import {
   GetAllProductsListQuery,
 } from '../../generated/graphql';
 
-const Pagination3Page = ({
+const PaginationPage = ({
   data,
   pageNumber,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -57,7 +57,7 @@ const Pagination3Page = ({
   );
 };
 
-export default Pagination3Page;
+export default PaginationPage;
 
 export const getStaticPaths = async () => {
   const pagesNumber = Array.from({ length: 10 }, (_, i) => i + 1);

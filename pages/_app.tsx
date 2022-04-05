@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Layout } from '../components/Layout';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+// import { ReactQueryDevtools } from 'react-query/devtools';
 import { CartContextProvider } from '../components/cart/CartContext';
 import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../graphql/graphqlClient';
@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Layout>
           <QueryClientProvider client={client}>
             <Component {...pageProps} />
-            <ReactQueryDevtools />
+            {/* <ReactQueryDevtools /> */}
           </QueryClientProvider>
         </Layout>
       </CartContextProvider>

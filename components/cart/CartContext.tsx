@@ -10,6 +10,8 @@ interface CartItem {
   readonly id: string;
   readonly title: string;
   readonly price: number;
+  readonly thumbnailSrc: string;
+  readonly thumbnailAlt: string;
   readonly count: number;
 }
 
