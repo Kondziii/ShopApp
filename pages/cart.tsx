@@ -7,9 +7,9 @@ const CartPage = () => {
   const cartState = useCartState();
 
   return (
-    <div className='h-full'>
+    <>
       {cartState.items.length !== 0 ? (
-        <div className='grid-cols-3 overflow-auto sm:grid'>
+        <div className='h-full grid-cols-3 overflow-auto sm:grid'>
           <section className='col-span-2'>
             <CartContent />
           </section>
@@ -22,7 +22,7 @@ const CartPage = () => {
           <EmptyCart></EmptyCart>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -16,9 +16,9 @@ const Home = () => {
 
   if (error) return <div>{JSON.stringify(error)}</div>;
   return (
-    <div>
+    <>
       <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
+    </>
   );
 };
 

@@ -10,6 +10,7 @@ import {
   GetProductSlugsDocument,
   GetProductSlugsQuery,
 } from '../../../generated/graphql';
+import { Layout } from '../../../components/Layout';
 
 const ProductDetailsPage = ({
   data,
@@ -23,7 +24,7 @@ const ProductDetailsPage = ({
   }
 
   return (
-    <>
+    <div>
       <NextSeo
         title={data.name}
         description={data.description}
@@ -55,7 +56,7 @@ const ProductDetailsPage = ({
           longDescription: data.longDescription,
         }}
       ></ProductDetails>
-    </>
+    </div>
   );
 };
 

@@ -10,6 +10,7 @@ import {
   GetAllProductsListDocument,
   GetAllProductsListQuery,
 } from '../../generated/graphql';
+import { Layout } from '../../components/Layout';
 
 const PaginationPage = ({
   data,
@@ -25,7 +26,7 @@ const PaginationPage = ({
   );
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col w-full p-8'>
       <ul className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-4'>
         {data?.map((product) => {
           return (

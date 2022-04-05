@@ -13,12 +13,19 @@ export const CartContent = () => {
     <table className='w-full p-6 overflow-x-auto bg-white rounded shadow-sm table-auto'>
       <thead className='table-header-group border-b border-b-slate-300'>
         <tr>
-          <th className='py-6 text-sm text-gray-500 uppercase w-50'>Product</th>
-          <th className='py-6 text-sm text-gray-500 uppercase w-50'>Price</th>
-          <th className='py-6 text-sm text-gray-500 uppercase w-50'>
+          <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
+            Product
+          </th>
+          <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
+            Price
+          </th>
+          <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
             Quantity
           </th>
-          <th className='py-6 text-sm text-gray-500 uppercase w-50' scope='col'>
+          <th
+            className='py-6 text-xs uppercase text-stone-500 w-50'
+            scope='col'
+          >
             <span className='sr-only'>Delete</span>
           </th>
         </tr>
