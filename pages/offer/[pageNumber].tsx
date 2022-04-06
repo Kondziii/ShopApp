@@ -10,7 +10,7 @@ import {
   GetAllProductsListDocument,
   GetAllProductsListQuery,
 } from '../../generated/graphql';
-import { Layout } from '../../components/Layout';
+
 
 const PaginationPage = ({
   data,
