@@ -10,20 +10,6 @@ const nextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
   },
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: '/pagination2',
-  //       destination: '/pagination2/1',
-  //       permanent: true,
-  //     },
-  //     {
-  //       source: '/offer',
-  //       destination: '/offer/1',
-  //       permanent: true,
-  //     },
-  //   ];
-  // },
   async rewrites() {
     return [
       {

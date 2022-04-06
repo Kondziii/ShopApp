@@ -23,7 +23,7 @@ const ProductDetailsPage = ({
   }
 
   return (
-    <>
+    <div>
       <NextSeo
         title={data.name}
         description={data.description}
@@ -55,7 +55,7 @@ const ProductDetailsPage = ({
           longDescription: data.longDescription,
         }}
       ></ProductDetails>
-    </>
+    </div>
   );
 };
 

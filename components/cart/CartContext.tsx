@@ -10,6 +10,8 @@ interface CartItem {
   readonly id: string;
   readonly title: string;
   readonly price: number;
+  readonly thumbnailSrc: string;
+  readonly thumbnailAlt: string;
   readonly count: number;
 }
 
@@ -17,12 +19,20 @@ interface CartState {
   readonly items: readonly CartItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: string) => void;
+  getTotalPrice: () => number;
 }
 
 const CartContext = createContext<CartState | null>(null);
 
 export const CartContextProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  const getTotalPrice = () => {
+    return cartItems.reduce((prev, curr) => {
+      prev += curr.count * curr.price;
+      return prev;
+    }, 0);
+  };
 
   const addToCart = (item: CartItem) => {
     setCartItems((prevItems) => {
@@ -76,14 +86,13 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
   };
+  useEffect(() => {
+    getStoredCartItems();
+  }, []);
 
   useEffect(() => {
     storeCartItems(cartItems);
   }, [cartItems]);
-
-  useEffect(() => {
-    getStoredCartItems();
-  }, []);
 
   return (
     <CartContext.Provider
@@ -91,6 +100,7 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
         items: cartItems,
         addToCart,
         removeFromCart,
+        getTotalPrice,
       }}
     >
       {children}
