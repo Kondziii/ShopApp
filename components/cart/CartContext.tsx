@@ -19,6 +19,7 @@ interface CartState {
   readonly items: readonly CartItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: string) => void;
+  changeAmount: (id: string, count: number) => void;
   getTotalPrice: () => number;
 }
 
@@ -53,16 +54,29 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
 
   const removeFromCart = (id: string) => {
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === id);
+      // const existingItem = prevItems.find((item) => item.id === id);
 
-      if (existingItem && existingItem.count <= 1)
-        return prevItems.filter((item) => item.id !== id);
+      // if (existingItem && existingItem.count <= 1)
+      return prevItems.filter((item) => item.id !== id);
 
+      // return prevItems.map((item) => {
+      //   if (item.id === id)
+      //     return {
+      //       ...item,
+      //       count: item.count - 1,
+      //     };
+      //   return item;
+      // });
+    });
+  };
+
+  const changeAmount = (id: string, count: number) => {
+    setCartItems((prevItems) => {
       return prevItems.map((item) => {
         if (item.id === id)
           return {
             ...item,
-            count: item.count - 1,
+            count,
           };
         return item;
       });
@@ -101,6 +115,7 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
         addToCart,
         removeFromCart,
         getTotalPrice,
+        changeAmount,
       }}
     >
       {children}

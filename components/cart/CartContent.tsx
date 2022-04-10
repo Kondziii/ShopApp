@@ -16,7 +16,7 @@ export const CartContent = () => {
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
             Product
           </th>
-          <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
+          <th className='py-6 text-xs tracking-widest uppercase text-stone-500 '>
             Price
           </th>
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
@@ -49,7 +49,19 @@ export const CartContent = () => {
               </div>
             </td>
             <td>{totalAmount(item.price, item.count)}$</td>
-            <td>{item.count}</td>
+            <td>
+              <input
+                className='w-16 mx-auto bg-transparent border-0'
+                type='number'
+                step={1}
+                value={item.count}
+                onChange={(event) => {
+                  cartState.changeAmount(item.id, +event.target.value);
+                }}
+                min={1}
+                max={99}
+              />
+            </td>
             <td>
               <button
                 onClick={() => cartState.removeFromCart(item.id)}
