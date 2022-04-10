@@ -10,7 +10,6 @@ import {
   GetProductSlugsDocument,
   GetProductSlugsQuery,
 } from '../../../generated/graphql';
-import { Layout } from '../../../components/Layout';
 
 const ProductDetailsPage = ({
   data,
