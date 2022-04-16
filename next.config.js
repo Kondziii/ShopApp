@@ -3,20 +3,18 @@ const nextConfig = {
   reactStrictMode: true,
   // trailingSlash: true,
   images: {
-    domains: ['fakestoreapi.com', 'naszsklep-api.vercel.app'],
+    domains: [
+      'fakestoreapi.com',
+      'naszsklep-api.vercel.app',
+      'media.graphassets.com',
+    ],
     formats: ['image/avif', 'image/webp'],
   },
-  async redirects() {
+  async rewrites() {
     return [
-      {
-        source: '/pagination2',
-        destination: '/pagination2/1',
-        permanent: true,
-      },
       {
         source: '/offer',
         destination: '/offer/1',
-        permanent: true,
       },
     ];
   },

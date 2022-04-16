@@ -5,8 +5,14 @@ import { ProductListItem } from '../../components/ProductListItem';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { Pagination } from '../../components/Pagination';
+import { apolloClient } from '../../graphql/graphqlClient';
+import {
+  GetAllProductsListDocument,
+  GetAllProductsListQuery,
+} from '../../generated/graphql';
 
-const Pagination3Page = ({
+
+const PaginationPage = ({
   data,
   pageNumber,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -20,7 +26,7 @@ const Pagination3Page = ({
   );
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col w-full p-8'>
       <ul className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-4'>
         {data?.map((product) => {
           return (
@@ -28,28 +34,31 @@ const Pagination3Page = ({
               key={product.id}
               data={{
                 id: product.id,
-                title: product.title,
+                slug: product.slug,
+                title: product.name,
                 price: product.price,
-                thumbnailSrc: product.image,
-                thumbnailAlt: product.title,
+                thumbnailSrc: product.images[0].url,
+                thumbnailAlt: product.name,
               }}
             />
           );
         })}
       </ul>
-      <Pagination
-        className='mt-12'
-        firstPage={1}
-        lastPage={150}
-        currentPage={+pageNumber}
-        take={20}
-        onSelected={handleSelectedPage}
-      />
+      {data && data.length > 20 && (
+        <Pagination
+          className='mt-12'
+          firstPage={1}
+          lastPage={150}
+          currentPage={+pageNumber}
+          take={20}
+          onSelected={handleSelectedPage}
+        />
+      )}
     </div>
   );
 };
 
-export default Pagination3Page;
+export default PaginationPage;
 
 export const getStaticPaths = async () => {
   const pagesNumber = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -67,10 +76,14 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({
   params,
 }: InferGetStaticPaths<typeof getStaticPaths>) => {
-  const data = await fetchProducts(parseInt(params?.pageNumber || '1'));
+  // const data = await fetchProducts(parseInt(params?.pageNumber || '1'));
+  const data = await apolloClient.query<GetAllProductsListQuery>({
+    query: GetAllProductsListDocument,
+  });
+
   return {
     props: {
-      data,
+      data: data.data.products,
       pageNumber: params!.pageNumber,
     },
   };
