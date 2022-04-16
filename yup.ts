@@ -2,10 +2,10 @@ import * as yup from 'yup';
 
 yup.setLocale({
   mixed: {
-    required: 'To pole jest wymagane',
+    required: 'This field is required',
   },
   string: {
-    email: 'To pole musi zawierać prawidłowy adres email',
+    email: 'This field has to be a valid email',
   },
 });
 
