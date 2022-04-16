@@ -34,7 +34,7 @@ export const CartContent = () => {
         {cartState.items.map((item) => (
           <tr
             key={item.id}
-            className='text-center transition-all duration-200 hover:bg-gray-50'
+            className='text-center transition-all duration-200 '
           >
             <td>
               <div className='w-7/12 mx-auto'>
@@ -48,7 +48,14 @@ export const CartContent = () => {
                 />
               </div>
             </td>
-            <td>{totalAmount(item.price, item.count)}$</td>
+            <td>
+              <span className='block'>{item.price}$</span>
+              {item.count > 1 && (
+                <span className='block text-gray-500'>
+                  {totalAmount(item.price, item.count)}$
+                </span>
+              )}
+            </td>
             <td>
               <input
                 className='w-16 mx-auto bg-transparent border-0'
