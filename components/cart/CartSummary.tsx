@@ -7,6 +7,9 @@ export const CartSummary = () => {
 
   return (
     <div className='w-full h-full p-12 text-center bg-yellow-200 '>
+      <h1 className='w-9/12 mx-auto text-2xl font-bold tracking-wide text-left'>
+        Your cart
+      </h1>
       <hr className='w-9/12 h-1 mx-auto mt-4 bg-black border-0' />
       <div className='flex items-center justify-center h-28'>
         <p>
