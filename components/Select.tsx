@@ -2,7 +2,7 @@ import React, { forwardRef, SelectHTMLAttributes } from 'react';
 import { FieldError } from 'react-hook-form';
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  items: Array<string>;
+  items: Array<{ title: string; value: number | string }>;
   label?: string;
   error?: FieldError;
   error_caption?: string;
@@ -18,15 +18,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           {...props}
           className='mt-2 rounded focus:border-yellow-500 focus:ring-yellow-500 ring-offset-yellow-500 '
-          defaultValue=''
         >
-          <option disabled value='' className='hidden'>
+          <option value={''} className='hidden'>
             {props.placeholder}
           </option>
           {items.map((item) => {
             return (
-              <option value={item} key={item}>
-                {item}
+              <option value={item.value.toString()} key={item.title}>
+                {item.title}
               </option>
             );
           })}
