@@ -55,7 +55,6 @@ const CheckoutPage = () => {
   });
 
   const onSubmit = handleSubmit((values) => {
-    console.log('siema');
     console.log(values);
   });
 

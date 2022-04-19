@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import { MarkdownResult } from '../types';
 import CustomMarkdown from './CustomMarkdown';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { ProductReviews } from './ProductReviews';
 
 export interface ProductDetails {
   id: string;
@@ -31,6 +34,9 @@ const Raiting = ({ rating }: RatingProps) => {
 };
 
 export const ProductDetails = ({ data }: ProductDetailsProps) => {
+  const router = useRouter();
+  const v = router.query.v || 'Description';
+
   return (
     <div className='container content-center h-full max-w-5xl p-6 mx-auto '>
       <section className='row-start-1 gap-8 sm:grid sm:grid-cols-2 '>
@@ -55,9 +61,44 @@ export const ProductDetails = ({ data }: ProductDetailsProps) => {
         </div>
       </section>
       <hr className='my-6 border-slate-300' />
-      <article className='row-start-2 prose lg:prose-xl'>
-        <CustomMarkdown>{data.longDescription}</CustomMarkdown>
-      </article>
+      <nav className='mb-3'>
+        <ul className='flex gap-3'>
+          <li>
+            <Link
+              href={{
+                pathname: `/offer/products/${data.slug}`,
+                query: { v: 'Description' },
+              }}
+              shallow
+              scroll={false}
+            >
+              <a className='py-1 transition-all duration-300 border-b-4 border-b-transparent hover:border-b-yellow-500'>
+                Description
+              </a>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href={{
+                pathname: `/offer/products/${data.slug}`,
+                query: { v: 'Reviews' },
+              }}
+              shallow
+              scroll={false}
+            >
+              <a className='py-1 transition-all duration-300 border-b-4 border-b-transparent hover:border-b-yellow-500'>
+                Reviews
+              </a>
+            </Link>
+          </li>
+        </ul>
+      </nav>
+      {v === 'Description' && (
+        <article className='row-start-2 prose lg:prose-xl'>
+          <CustomMarkdown>{data.longDescription}</CustomMarkdown>
+        </article>
+      )}
+      {v === 'Reviews' && <ProductReviews productId={data.id}></ProductReviews>}
     </div>
   );
 };
