@@ -33,7 +33,9 @@ export const InputGroup = <T extends FieldValues>({
       className={`grid grid-cols-2 gap-x-6 ${props.className}`}
       {...props}
     >
-      <legend className='col-span-2 mb-2 text-xl font-bold'>{title}</legend>
+      <legend className='col-span-2 mb-2 text-xl font-bold tracking-wide'>
+        {title}
+      </legend>
 
       {fields.map((field) => {
         if (field.type !== 'select') {

@@ -9,6 +9,7 @@ import {
   CardDetailsFields,
   PersonalDetailsFields,
 } from '../components/checkout/CheckoutFormFields';
+import { CheckoutSummary } from '../components/checkout/CheckoutSummary';
 
 const checkoutSchema = yup
   .object({
@@ -59,8 +60,11 @@ const CheckoutPage = () => {
   });
 
   return (
-    <div className='grid grid-cols-2 p-8 bg-white'>
-      <form onSubmit={onSubmit} className='space-y-4'>
+    <div className='grid grid-cols-12 bg-white'>
+      <form
+        onSubmit={onSubmit}
+        className='p-8 space-y-4 col-span-full md:col-span-8'
+      >
         <InputGroup<CheckoutForm>
           className='grid grid-cols-2 gap-x-4 gap-y-1'
           title='Personal Details'
@@ -89,10 +93,11 @@ const CheckoutPage = () => {
             className='px-4 py-2 mx-auto transition-all duration-300 border rounded-full border-slate-700 text-slate-700 w-fit hover:bg-slate-700 hover:text-white'
             type='submit'
           >
-            Submit
+            Continue
           </button>
         </div>
       </form>
+      <CheckoutSummary />
     </div>
   );
 };

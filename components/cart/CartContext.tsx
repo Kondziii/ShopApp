@@ -21,6 +21,7 @@ interface CartState {
   removeFromCart: (id: string) => void;
   changeAmount: (id: string, count: number) => void;
   getTotalPrice: () => number;
+  getTotalAmount: () => number;
 }
 
 const CartContext = createContext<CartState | null>(null);
@@ -31,6 +32,13 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
   const getTotalPrice = () => {
     return cartItems.reduce((prev, curr) => {
       prev += curr.count * curr.price;
+      return prev;
+    }, 0);
+  };
+
+  const getTotalAmount = () => {
+    return cartItems.reduce((prev, curr) => {
+      prev += curr.count;
       return prev;
     }, 0);
   };
@@ -116,6 +124,7 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
         removeFromCart,
         getTotalPrice,
         changeAmount,
+        getTotalAmount,
       }}
     >
       {children}
