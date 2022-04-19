@@ -18,8 +18,8 @@ const checkoutSchema = yup
     email: yup.string().email().required(),
     city: yup.string().required(),
     street: yup.string().required(),
-    homeNumber: yup.number().required(),
-    province: yup.number().required(),
+    homeNumber: yup.string().required(),
+    province: yup.string().required(),
     postalCode: yup
       .string()
       .required()
