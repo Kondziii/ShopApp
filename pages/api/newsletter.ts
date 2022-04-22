@@ -34,7 +34,6 @@ const handler: NextApiHandler = async (req, res) => {
       }),
     }
   );
-  console.log(mailerResponse);
 
   if (!mailerResponse.ok) {
     res
