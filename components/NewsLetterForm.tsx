@@ -47,10 +47,10 @@ export const NewsLetterForm = () => {
   }, [isSuccess]);
 
   return (
-    <section className='p-12 sm:p-16 md:p-20 bg-yellow-200'>
-      <div className='w-full sm:w-3/4 md:w-1/2 mx-auto bg-white p-10 sm:p-14 rounded-md shadow-sm shadow-yellow-500'>
+    <section className='p-12 bg-yellow-200 sm:p-16 md:p-20'>
+      <div className='relative w-full p-10 mx-auto bg-white rounded-md shadow-sm sm:w-3/4 md:w-1/2 sm:p-14 shadow-yellow-500'>
         <header>
-          <h1 className='text-2xl font-bold text-center block mb-6 tracking-wide'>
+          <h1 className='block mb-6 text-2xl font-bold tracking-wide text-center'>
             Subscribe to stay up to date with our offer!
           </h1>
         </header>
@@ -65,18 +65,18 @@ export const NewsLetterForm = () => {
             error={errors.email}
           ></Input>
           <button
-            className='px-8 block mx-auto mt-6 py-2 border border-slate-700 text-slate-700 rounded-full transition-all duration-300 hover:text-white hover:bg-slate-700'
+            className='block px-8 py-2 mx-auto mt-6 transition-all duration-300 border rounded-full border-slate-700 text-slate-700 hover:text-white hover:bg-slate-700'
             type='submit'
           >
             Confirm your subscription
           </button>
-          <p className='mt-2 text-gray-500 text-xs text-center'>
+          <p className='mt-2 text-xs text-center text-gray-500'>
             By signing up to the newsletter, you agree on receiving from us the
             news, promotions and information about our products.
           </p>
 
           {feedback && (
-            <p className='px-6 py-2 bg-green-500 text-white w-full text-center mt-4 animate-slide-show'>
+            <p className='absolute bottom-0 left-0 w-full px-6 py-2 mt-4 text-center text-white bg-green-500 '>
               Sing up successfully!
             </p>
           )}
