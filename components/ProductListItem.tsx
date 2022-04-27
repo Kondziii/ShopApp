@@ -41,6 +41,7 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
         onClick={() =>
           cartState.addToCart({
             id: data.id,
+            slug: data.slug,
             title: data.title,
             thumbnailSrc: data.thumbnailSrc,
             thumbnailAlt: data.thumbnailAlt,
