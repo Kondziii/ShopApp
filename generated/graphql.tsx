@@ -10372,7 +10372,7 @@ export type CreateReviewMutationVariables = Exact<{
 }>;
 
 
-export type CreateReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, stage: Stage } | null };
+export type CreateReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, content: string, name: string, email: string, rating?: number | null } | null };
 
 export type GetAllProductsListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10413,11 +10413,10 @@ export const ReviewContentFragmentDoc = gql`
 export const CreateReviewDocument = gql`
     mutation CreateReview($review: ReviewCreateInput!) {
   review: createReview(data: $review) {
-    id
-    stage
+    ...reviewContent
   }
 }
-    `;
+    ${ReviewContentFragmentDoc}`;
 export type CreateReviewMutationFn = Apollo.MutationFunction<CreateReviewMutation, CreateReviewMutationVariables>;
 
 /**

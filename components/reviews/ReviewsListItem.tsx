@@ -5,8 +5,10 @@ interface ReviewsListItemProps {
 }
 
 export const ReviewsListItem = ({ review }: ReviewsListItemProps) => {
+  const isOptimistic = review.id.startsWith('-');
+
   return (
-    <li className='relative block p-4 pb-8'>
+    <li className={`relative block p-4 pb-8 ${isOptimistic && 'opacity-50'}`}>
       <div className='flex items-center justify-between'>
         <h3 className='text-2xl font-bolder'>{review.headline}</h3>
         {review.rating && (

@@ -7,6 +7,7 @@ import { TextArea } from '../TextArea';
 import { apolloClient } from '../../graphql/graphqlClient';
 import {
   GetProductReviewsDocument,
+  GetProductReviewsQuery,
   useCreateReviewMutation,
 } from '../../generated/graphql';
 
@@ -38,14 +39,43 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
   });
 
   const [createReview, { data, loading, error }] = useCreateReviewMutation({
-    refetchQueries: [
-      {
+    // refetchQueries: [
+    //   {
+    //     query: GetProductReviewsDocument,
+    //     variables: {
+    //       slug,
+    //     },
+    //   },
+    // ],
+    update(cache, result) {
+      const originalData = cache.readQuery<GetProductReviewsQuery>({
         query: GetProductReviewsDocument,
         variables: {
           slug,
         },
-      },
-    ],
+      });
+
+      if (!originalData || !originalData.product || !result.data?.review) {
+        return;
+      }
+
+      const updatedData = {
+        ...originalData,
+        product: {
+          ...originalData.product,
+          reviews: [...originalData.product.reviews, result.data.review],
+        },
+      };
+      console.log(updatedData);
+
+      cache.writeQuery({
+        query: GetProductReviewsDocument,
+        variables: {
+          slug,
+        },
+        data: updatedData,
+      });
+    },
   });
 
   const onSubmit = handleSubmit(async (values) => {
@@ -62,6 +92,18 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
               id: productId,
             },
           },
+        },
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        review: {
+          __typename: 'Review',
+          id: (-Math.random()).toString(),
+          headline: values.headline,
+          name: values.name,
+          email: values.email,
+          content: values.content,
+          rating: +values.rating,
         },
       },
     });
