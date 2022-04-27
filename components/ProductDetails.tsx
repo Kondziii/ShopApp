@@ -3,7 +3,7 @@ import { MarkdownResult } from '../types';
 import CustomMarkdown from './CustomMarkdown';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ProductReviews } from './ProductReviews';
+import { ReviewsContainer } from './reviews/ReviewsContainer';
 
 export interface ProductDetails {
   id: string;
@@ -98,7 +98,7 @@ export const ProductDetails = ({ data }: ProductDetailsProps) => {
           <CustomMarkdown>{data.longDescription}</CustomMarkdown>
         </article>
       )}
-      {v === 'Reviews' && <ProductReviews productId={data.id}></ProductReviews>}
+      {v === 'Reviews' && <ReviewsContainer id={data.id} slug={data.slug} />}
     </div>
   );
 };

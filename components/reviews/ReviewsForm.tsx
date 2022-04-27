@@ -1,11 +1,14 @@
 import React from 'react';
-import { Input } from './Input';
+import { Input } from '../Input';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { TextArea } from './TextArea';
-import { apolloClient } from '../graphql/graphqlClient';
-import { useCreateReviewMutation } from '../generated/graphql';
+import { TextArea } from '../TextArea';
+import { apolloClient } from '../../graphql/graphqlClient';
+import {
+  GetProductReviewsDocument,
+  useCreateReviewMutation,
+} from '../../generated/graphql';
 
 const reviewSchema = yup
   .object({
@@ -21,18 +24,29 @@ type ReviewForm = yup.InferType<typeof reviewSchema>;
 
 interface ProductReviewsProps {
   productId: string;
+  slug: string;
 }
 
-export const ProductReviews = ({ productId }: ProductReviewsProps) => {
+export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitSuccessful },
   } = useForm<ReviewForm>({
     resolver: yupResolver(reviewSchema),
   });
 
-  const [createReview, { data, loading, error }] = useCreateReviewMutation();
+  const [createReview, { data, loading, error }] = useCreateReviewMutation({
+    refetchQueries: [
+      {
+        query: GetProductReviewsDocument,
+        variables: {
+          slug,
+        },
+      },
+    ],
+  });
 
   const onSubmit = handleSubmit(async (values) => {
     await createReview({
@@ -52,6 +66,19 @@ export const ProductReviews = ({ productId }: ProductReviewsProps) => {
       },
     });
   });
+
+  React.useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        headline: '',
+        name: '',
+        email: '',
+        content: '',
+        rating: '',
+      });
+    }
+  }, [isSubmitSuccessful, reset]);
+
   return (
     <section className='mt-4'>
       <form
@@ -111,15 +138,14 @@ export const ProductReviews = ({ productId }: ProductReviewsProps) => {
         <div className='mt-2 col-span-full'>
           <button
             type='submit'
-            className='px-4 py-2 transition-all duration-300 border-2 rounded-full text-slate-700 border-slate-700 hover:text-white hover:bg-slate-700'
+            className='px-8 py-2 transition-all duration-300 border-2 rounded-full text-slate-700 border-slate-700 hover:text-white hover:bg-slate-700'
           >
             Publish
           </button>
         </div>
       </form>
-      {loading && <div className='animate-bounce'>Loading...</div>}
+      {loading && <div className='animate-bounce'>Publishing...</div>}
       {error && <pre>{JSON.stringify(error, null, 2)}</pre>}
-      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
     </section>
   );
 };
