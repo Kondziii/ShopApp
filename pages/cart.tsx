@@ -5,7 +5,6 @@ import { EmptyCart } from '../components/cart/EmptyCart';
 
 const CartPage = () => {
   const cartState = useCartState();
-
   return (
     <>
       {cartState.items.length !== 0 ? (
