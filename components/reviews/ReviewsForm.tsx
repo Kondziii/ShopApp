@@ -125,11 +125,11 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
     <section className='mt-4'>
       <form
         onSubmit={onSubmit}
-        className='grid grid-cols-12 p-8 bg-white rounded-md shadow-md gap-x-4 gap-y-2'
+        className='grid grid-cols-1 p-8 bg-white rounded-md shadow-md sm:grid-cols-12 gap-x-4 gap-y-2'
       >
         <Input
           {...register('name')}
-          container_classes='col-span-6'
+          container_classes='sm:col-span-6'
           id='name'
           type='text'
           label='Your name'
@@ -139,7 +139,7 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
         ></Input>
         <Input
           {...register('email')}
-          container_classes='col-span-6'
+          container_classes='sm:col-span-6'
           id='email'
           type='email'
           label='Email'
@@ -149,7 +149,7 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
         ></Input>
         <Input
           {...register('headline')}
-          container_classes='col-span-10'
+          container_classes='sm:col-span-10'
           id='headline'
           type='text'
           label='Headline'
@@ -158,7 +158,7 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
         ></Input>
         <Input
           {...register('rating')}
-          container_classes='col-span-2'
+          container_classes='sm:col-span-2'
           id='rating'
           type='number'
           label='Rating'
