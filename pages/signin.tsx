@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Input } from '../components/Input';
 import { useRouter } from 'next/router';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 const signInSchema = yup
   .object({
@@ -15,6 +15,7 @@ const signInSchema = yup
 type SignInForm = yup.InferType<typeof signInSchema>;
 
 const SignInPage = () => {
+  const session = useSession();
   const router = useRouter();
   const {
     register,
@@ -31,6 +32,15 @@ const SignInPage = () => {
       callbackUrl: router.query.callbackUrl?.toString() || '/',
     });
   });
+
+  if (session.status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (session.status === 'authenticated') {
+    router.push('/');
+    return null;
+  }
 
   return (
     <div className='flex items-center justify-center flex-grow'>
