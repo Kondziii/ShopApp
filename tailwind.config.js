@@ -6,13 +6,13 @@ module.exports = {
         logo: 'Dancing Script, sans-serif',
       },
       animation: {
-        'slide-show': 'slideShow 2s linear  ',
+        'fade-in': 'fadeIn 1s linear ',
       },
 
       keyframes: {
-        slideShow: {
-          from: { height: 0 },
-          to: { height: '100%' },
+        fadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
         },
       },
     },
