@@ -496,6 +496,7 @@ export type Asset = Node & {
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
+  imageCarousel: Array<Carousel>;
   /** System Locale field */
   locale: Locale;
   /** Get the other localizations for this document */
@@ -548,6 +549,19 @@ export type AssetHistoryArgs = {
   limit?: Scalars['Int'];
   skip?: Scalars['Int'];
   stageOverride?: InputMaybe<Stage>;
+};
+
+
+/** Asset system model */
+export type AssetImageCarouselArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<CarouselOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<CarouselWhereInput>;
 };
 
 
@@ -634,6 +648,7 @@ export type AssetCreateInput = {
   fileName: Scalars['String'];
   handle: Scalars['String'];
   height?: InputMaybe<Scalars['Float']>;
+  imageCarousel?: InputMaybe<CarouselCreateManyInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<AssetCreateLocalizationsInput>;
   mimeType?: InputMaybe<Scalars['String']>;
@@ -733,6 +748,9 @@ export type AssetManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  imageCarousel_every?: InputMaybe<CarouselWhereInput>;
+  imageCarousel_none?: InputMaybe<CarouselWhereInput>;
+  imageCarousel_some?: InputMaybe<CarouselWhereInput>;
   productImages_every?: InputMaybe<ProductWhereInput>;
   productImages_none?: InputMaybe<ProductWhereInput>;
   productImages_some?: InputMaybe<ProductWhereInput>;
@@ -808,6 +826,7 @@ export type AssetUpdateInput = {
   fileName?: InputMaybe<Scalars['String']>;
   handle?: InputMaybe<Scalars['String']>;
   height?: InputMaybe<Scalars['Float']>;
+  imageCarousel?: InputMaybe<CarouselUpdateManyInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<AssetUpdateLocalizationsInput>;
   mimeType?: InputMaybe<Scalars['String']>;
@@ -1032,6 +1051,9 @@ export type AssetWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  imageCarousel_every?: InputMaybe<CarouselWhereInput>;
+  imageCarousel_none?: InputMaybe<CarouselWhereInput>;
+  imageCarousel_some?: InputMaybe<CarouselWhereInput>;
   mimeType?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   mimeType_contains?: InputMaybe<Scalars['String']>;
@@ -1130,6 +1152,460 @@ export type BatchPayload = {
   __typename?: 'BatchPayload';
   /** The number of nodes that have been affected by the Batch operation. */
   count: Scalars['Long'];
+};
+
+export type Carousel = Node & {
+  __typename?: 'Carousel';
+  /** The time the document was created */
+  createdAt: Scalars['DateTime'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  description?: Maybe<Scalars['String']>;
+  /** Get the document in other stages */
+  documentInStages: Array<Carousel>;
+  /** List of Carousel versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID'];
+  image?: Maybe<Asset>;
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  title?: Maybe<Scalars['String']>;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+
+export type CarouselCreatedByArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type CarouselDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  inheritLocale?: Scalars['Boolean'];
+  stages?: Array<Stage>;
+};
+
+
+export type CarouselHistoryArgs = {
+  limit?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+export type CarouselImageArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type CarouselPublishedByArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type CarouselScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+export type CarouselUpdatedByArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type CarouselConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: CarouselWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type CarouselConnection = {
+  __typename?: 'CarouselConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<CarouselEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type CarouselCreateInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  description?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<AssetCreateOneInlineInput>;
+  title?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type CarouselCreateManyInlineInput = {
+  /** Connect multiple existing Carousel documents */
+  connect?: InputMaybe<Array<CarouselWhereUniqueInput>>;
+  /** Create and connect multiple existing Carousel documents */
+  create?: InputMaybe<Array<CarouselCreateInput>>;
+};
+
+export type CarouselCreateOneInlineInput = {
+  /** Connect one existing Carousel document */
+  connect?: InputMaybe<CarouselWhereUniqueInput>;
+  /** Create and connect one Carousel document */
+  create?: InputMaybe<CarouselCreateInput>;
+};
+
+/** An edge in a connection. */
+export type CarouselEdge = {
+  __typename?: 'CarouselEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: Carousel;
+};
+
+/** Identifies documents */
+export type CarouselManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<CarouselWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<CarouselWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<CarouselWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  description?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  description_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  description_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  description_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  description_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  description_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  description_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  description_starts_with?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  image?: InputMaybe<AssetWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  title?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  title_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  title_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  title_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  title_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  title_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  title_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  title_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  title_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  title_starts_with?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export enum CarouselOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  DescriptionAsc = 'description_ASC',
+  DescriptionDesc = 'description_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+}
+
+export type CarouselUpdateInput = {
+  description?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<AssetUpdateOneInlineInput>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type CarouselUpdateManyInlineInput = {
+  /** Connect multiple existing Carousel documents */
+  connect?: InputMaybe<Array<CarouselConnectInput>>;
+  /** Create and connect multiple Carousel documents */
+  create?: InputMaybe<Array<CarouselCreateInput>>;
+  /** Delete multiple Carousel documents */
+  delete?: InputMaybe<Array<CarouselWhereUniqueInput>>;
+  /** Disconnect multiple Carousel documents */
+  disconnect?: InputMaybe<Array<CarouselWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing Carousel documents */
+  set?: InputMaybe<Array<CarouselWhereUniqueInput>>;
+  /** Update multiple Carousel documents */
+  update?: InputMaybe<Array<CarouselUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple Carousel documents */
+  upsert?: InputMaybe<Array<CarouselUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type CarouselUpdateManyInput = {
+  description?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type CarouselUpdateManyWithNestedWhereInput = {
+  /** Update many input */
+  data: CarouselUpdateManyInput;
+  /** Document search */
+  where: CarouselWhereInput;
+};
+
+export type CarouselUpdateOneInlineInput = {
+  /** Connect existing Carousel document */
+  connect?: InputMaybe<CarouselWhereUniqueInput>;
+  /** Create and connect one Carousel document */
+  create?: InputMaybe<CarouselCreateInput>;
+  /** Delete currently connected Carousel document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected Carousel document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single Carousel document */
+  update?: InputMaybe<CarouselUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single Carousel document */
+  upsert?: InputMaybe<CarouselUpsertWithNestedWhereUniqueInput>;
+};
+
+export type CarouselUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: CarouselUpdateInput;
+  /** Unique document search */
+  where: CarouselWhereUniqueInput;
+};
+
+export type CarouselUpsertInput = {
+  /** Create document if it didn't exist */
+  create: CarouselCreateInput;
+  /** Update document if it exists */
+  update: CarouselUpdateInput;
+};
+
+export type CarouselUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: CarouselUpsertInput;
+  /** Unique document search */
+  where: CarouselWhereUniqueInput;
+};
+
+/** Identifies documents */
+export type CarouselWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<CarouselWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<CarouselWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<CarouselWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  description?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  description_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  description_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  description_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  description_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  description_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  description_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  description_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  description_starts_with?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  image?: InputMaybe<AssetWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  title?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  title_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  title_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  title_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  title_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  title_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  title_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  title_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  title_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  title_starts_with?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** References Carousel record uniquely */
+export type CarouselWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 /** Category of products, e.g. Menswear. */
@@ -2851,6 +3327,8 @@ export type Mutation = {
    * @deprecated Asset mutations will be overhauled soon
    */
   createAsset?: Maybe<Asset>;
+  /** Create one carousel */
+  createCarousel?: Maybe<Carousel>;
   /** Create one category */
   createCategory?: Maybe<Category>;
   /** Create one collection */
@@ -2877,6 +3355,8 @@ export type Mutation = {
   deleteAccount?: Maybe<Account>;
   /** Delete one asset from _all_ existing stages. Returns deleted document. */
   deleteAsset?: Maybe<Asset>;
+  /** Delete one carousel from _all_ existing stages. Returns deleted document. */
+  deleteCarousel?: Maybe<Carousel>;
   /** Delete one category from _all_ existing stages. Returns deleted document. */
   deleteCategory?: Maybe<Category>;
   /** Delete one collection from _all_ existing stages. Returns deleted document. */
@@ -2897,6 +3377,13 @@ export type Mutation = {
   deleteManyAssets: BatchPayload;
   /** Delete many Asset documents, return deleted documents */
   deleteManyAssetsConnection: AssetConnection;
+  /**
+   * Delete many Carousel documents
+   * @deprecated Please use the new paginated many mutation (deleteManyCarouselsConnection)
+   */
+  deleteManyCarousels: BatchPayload;
+  /** Delete many Carousel documents, return deleted documents */
+  deleteManyCarouselsConnection: CarouselConnection;
   /**
    * Delete many Category documents
    * @deprecated Please use the new paginated many mutation (deleteManyCategoriesConnection)
@@ -2989,6 +3476,8 @@ export type Mutation = {
   publishAccount?: Maybe<Account>;
   /** Publish one asset */
   publishAsset?: Maybe<Asset>;
+  /** Publish one carousel */
+  publishCarousel?: Maybe<Carousel>;
   /** Publish one category */
   publishCategory?: Maybe<Category>;
   /** Publish one collection */
@@ -3009,6 +3498,13 @@ export type Mutation = {
   publishManyAssets: BatchPayload;
   /** Publish many Asset documents */
   publishManyAssetsConnection: AssetConnection;
+  /**
+   * Publish many Carousel documents
+   * @deprecated Please use the new paginated many mutation (publishManyCarouselsConnection)
+   */
+  publishManyCarousels: BatchPayload;
+  /** Publish many Carousel documents */
+  publishManyCarouselsConnection: CarouselConnection;
   /**
    * Publish many Category documents
    * @deprecated Please use the new paginated many mutation (publishManyCategoriesConnection)
@@ -3097,6 +3593,8 @@ export type Mutation = {
   schedulePublishAccount?: Maybe<Account>;
   /** Schedule to publish one asset */
   schedulePublishAsset?: Maybe<Asset>;
+  /** Schedule to publish one carousel */
+  schedulePublishCarousel?: Maybe<Carousel>;
   /** Schedule to publish one category */
   schedulePublishCategory?: Maybe<Category>;
   /** Schedule to publish one collection */
@@ -3121,6 +3619,8 @@ export type Mutation = {
   scheduleUnpublishAccount?: Maybe<Account>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishAsset?: Maybe<Asset>;
+  /** Unpublish one carousel from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishCarousel?: Maybe<Carousel>;
   /** Unpublish one category from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishCategory?: Maybe<Category>;
   /** Unpublish one collection from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3145,6 +3645,8 @@ export type Mutation = {
   unpublishAccount?: Maybe<Account>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishAsset?: Maybe<Asset>;
+  /** Unpublish one carousel from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishCarousel?: Maybe<Carousel>;
   /** Unpublish one category from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishCategory?: Maybe<Category>;
   /** Unpublish one collection from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3165,6 +3667,13 @@ export type Mutation = {
   unpublishManyAssets: BatchPayload;
   /** Find many Asset documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyAssetsConnection: AssetConnection;
+  /**
+   * Unpublish many Carousel documents
+   * @deprecated Please use the new paginated many mutation (unpublishManyCarouselsConnection)
+   */
+  unpublishManyCarousels: BatchPayload;
+  /** Find many Carousel documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyCarouselsConnection: CarouselConnection;
   /**
    * Unpublish many Category documents
    * @deprecated Please use the new paginated many mutation (unpublishManyCategoriesConnection)
@@ -3253,6 +3762,8 @@ export type Mutation = {
   updateAccount?: Maybe<Account>;
   /** Update one asset */
   updateAsset?: Maybe<Asset>;
+  /** Update one carousel */
+  updateCarousel?: Maybe<Carousel>;
   /** Update one category */
   updateCategory?: Maybe<Category>;
   /** Update one collection */
@@ -3273,6 +3784,13 @@ export type Mutation = {
   updateManyAssets: BatchPayload;
   /** Update many Asset documents */
   updateManyAssetsConnection: AssetConnection;
+  /**
+   * Update many carousels
+   * @deprecated Please use the new paginated many mutation (updateManyCarouselsConnection)
+   */
+  updateManyCarousels: BatchPayload;
+  /** Update many Carousel documents */
+  updateManyCarouselsConnection: CarouselConnection;
   /**
    * Update many categories
    * @deprecated Please use the new paginated many mutation (updateManyCategoriesConnection)
@@ -3363,6 +3881,8 @@ export type Mutation = {
   upsertAccount?: Maybe<Account>;
   /** Upsert one asset */
   upsertAsset?: Maybe<Asset>;
+  /** Upsert one carousel */
+  upsertCarousel?: Maybe<Carousel>;
   /** Upsert one category */
   upsertCategory?: Maybe<Category>;
   /** Upsert one collection */
@@ -3393,6 +3913,11 @@ export type MutationCreateAccountArgs = {
 
 export type MutationCreateAssetArgs = {
   data: AssetCreateInput;
+};
+
+
+export type MutationCreateCarouselArgs = {
+  data: CarouselCreateInput;
 };
 
 
@@ -3461,6 +3986,11 @@ export type MutationDeleteAssetArgs = {
 };
 
 
+export type MutationDeleteCarouselArgs = {
+  where: CarouselWhereUniqueInput;
+};
+
+
 export type MutationDeleteCategoryArgs = {
   where: CategoryWhereUniqueInput;
 };
@@ -3503,6 +4033,21 @@ export type MutationDeleteManyAssetsConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<AssetManyWhereInput>;
+};
+
+
+export type MutationDeleteManyCarouselsArgs = {
+  where?: InputMaybe<CarouselManyWhereInput>;
+};
+
+
+export type MutationDeleteManyCarouselsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<CarouselManyWhereInput>;
 };
 
 
@@ -3716,6 +4261,12 @@ export type MutationPublishAssetArgs = {
 };
 
 
+export type MutationPublishCarouselArgs = {
+  to?: Array<Stage>;
+  where: CarouselWhereUniqueInput;
+};
+
+
 export type MutationPublishCategoryArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']>;
@@ -3779,6 +4330,24 @@ export type MutationPublishManyAssetsConnectionArgs = {
   to?: Array<Stage>;
   where?: InputMaybe<AssetManyWhereInput>;
   withDefaultLocale?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationPublishManyCarouselsArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<CarouselManyWhereInput>;
+};
+
+
+export type MutationPublishManyCarouselsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<CarouselManyWhereInput>;
 };
 
 
@@ -4071,6 +4640,14 @@ export type MutationSchedulePublishAssetArgs = {
 };
 
 
+export type MutationSchedulePublishCarouselArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  to?: Array<Stage>;
+  where: CarouselWhereUniqueInput;
+};
+
+
 export type MutationSchedulePublishCategoryArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']>;
@@ -4187,6 +4764,14 @@ export type MutationScheduleUnpublishAssetArgs = {
 };
 
 
+export type MutationScheduleUnpublishCarouselArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  where: CarouselWhereUniqueInput;
+};
+
+
 export type MutationScheduleUnpublishCategoryArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -4293,6 +4878,12 @@ export type MutationUnpublishAssetArgs = {
 };
 
 
+export type MutationUnpublishCarouselArgs = {
+  from?: Array<Stage>;
+  where: CarouselWhereUniqueInput;
+};
+
+
 export type MutationUnpublishCategoryArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -4352,6 +4943,24 @@ export type MutationUnpublishManyAssetsConnectionArgs = {
   stage?: InputMaybe<Stage>;
   unpublishBase?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<AssetManyWhereInput>;
+};
+
+
+export type MutationUnpublishManyCarouselsArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<CarouselManyWhereInput>;
+};
+
+
+export type MutationUnpublishManyCarouselsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<CarouselManyWhereInput>;
 };
 
 
@@ -4621,6 +5230,12 @@ export type MutationUpdateAssetArgs = {
 };
 
 
+export type MutationUpdateCarouselArgs = {
+  data: CarouselUpdateInput;
+  where: CarouselWhereUniqueInput;
+};
+
+
 export type MutationUpdateCategoryArgs = {
   data: CategoryUpdateInput;
   where: CategoryWhereUniqueInput;
@@ -4670,6 +5285,23 @@ export type MutationUpdateManyAssetsConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<AssetManyWhereInput>;
+};
+
+
+export type MutationUpdateManyCarouselsArgs = {
+  data: CarouselUpdateManyInput;
+  where?: InputMaybe<CarouselManyWhereInput>;
+};
+
+
+export type MutationUpdateManyCarouselsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  data: CarouselUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<CarouselManyWhereInput>;
 };
 
 
@@ -4900,6 +5532,12 @@ export type MutationUpsertAccountArgs = {
 export type MutationUpsertAssetArgs = {
   upsert: AssetUpsertInput;
   where: AssetWhereUniqueInput;
+};
+
+
+export type MutationUpsertCarouselArgs = {
+  upsert: CarouselUpsertInput;
+  where: CarouselWhereUniqueInput;
 };
 
 
@@ -8280,6 +8918,14 @@ export type Query = {
   assets: Array<Asset>;
   /** Retrieve multiple assets using the Relay connection interface */
   assetsConnection: AssetConnection;
+  /** Retrieve a single carousel */
+  carousel?: Maybe<Carousel>;
+  /** Retrieve document version */
+  carouselVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple carousels */
+  carousels: Array<Carousel>;
+  /** Retrieve multiple carousels using the Relay connection interface */
+  carouselsConnection: CarouselConnection;
   /** Retrieve multiple categories */
   categories: Array<Category>;
   /** Retrieve multiple categories using the Relay connection interface */
@@ -8456,6 +9102,44 @@ export type QueryAssetsConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<AssetWhereInput>;
+};
+
+
+export type QueryCarouselArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: CarouselWhereUniqueInput;
+};
+
+
+export type QueryCarouselVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type QueryCarouselsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<CarouselOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<CarouselWhereInput>;
+};
+
+
+export type QueryCarouselsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<CarouselOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<CarouselWhereInput>;
 };
 
 
@@ -9629,7 +10313,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Account | Asset | Category | Collection | Currency | Order | OrderItem | Product | ProductColorVariant | ProductSizeColorVariant | ProductSizeVariant | Review;
+export type ScheduledOperationAffectedDocument = Account | Asset | Carousel | Category | Collection | Currency | Order | OrderItem | Product | ProductColorVariant | ProductSizeColorVariant | ProductSizeVariant | Review;
 
 export type ScheduledOperationConnectInput = {
   /** Allow to specify document position in list of connected documents, will default to appending at end of list */
@@ -11074,6 +11758,13 @@ export type GetAccountByEmailQueryVariables = Exact<{
 
 export type GetAccountByEmailQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, email: string, password: string } | null };
 
+export type CarouselItemFragment = { __typename?: 'Carousel', id: string, title?: string | null, description?: string | null, image?: { __typename?: 'Asset', id: string, url: string } | null };
+
+export type GetCarouselDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCarouselDataQuery = { __typename?: 'Query', carousels: Array<{ __typename?: 'Carousel', id: string, title?: string | null, description?: string | null, image?: { __typename?: 'Asset', id: string, url: string } | null }> };
+
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
   id
@@ -11082,6 +11773,17 @@ export const ReviewContentFragmentDoc = gql`
   name
   email
   rating
+}
+    `;
+export const CarouselItemFragmentDoc = gql`
+    fragment carouselItem on Carousel {
+  id
+  title
+  description
+  image {
+    id
+    url
+  }
 }
     `;
 export const CreateReviewDocument = gql`
@@ -11385,3 +12087,37 @@ export function useGetAccountByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetAccountByEmailQueryHookResult = ReturnType<typeof useGetAccountByEmailQuery>;
 export type GetAccountByEmailLazyQueryHookResult = ReturnType<typeof useGetAccountByEmailLazyQuery>;
 export type GetAccountByEmailQueryResult = Apollo.QueryResult<GetAccountByEmailQuery, GetAccountByEmailQueryVariables>;
+export const GetCarouselDataDocument = gql`
+    query getCarouselData {
+  carousels {
+    ...carouselItem
+  }
+}
+    ${CarouselItemFragmentDoc}`;
+
+/**
+ * __useGetCarouselDataQuery__
+ *
+ * To run a query within a React component, call `useGetCarouselDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCarouselDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCarouselDataQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCarouselDataQuery(baseOptions?: Apollo.QueryHookOptions<GetCarouselDataQuery, GetCarouselDataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCarouselDataQuery, GetCarouselDataQueryVariables>(GetCarouselDataDocument, options);
+      }
+export function useGetCarouselDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCarouselDataQuery, GetCarouselDataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCarouselDataQuery, GetCarouselDataQueryVariables>(GetCarouselDataDocument, options);
+        }
+export type GetCarouselDataQueryHookResult = ReturnType<typeof useGetCarouselDataQuery>;
+export type GetCarouselDataLazyQueryHookResult = ReturnType<typeof useGetCarouselDataLazyQuery>;
+export type GetCarouselDataQueryResult = Apollo.QueryResult<GetCarouselDataQuery, GetCarouselDataQueryVariables>;

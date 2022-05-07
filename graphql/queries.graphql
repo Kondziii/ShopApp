@@ -68,3 +68,19 @@ query getAccountByEmail($email: String!) {
     password
   }
 }
+
+fragment carouselItem on Carousel {
+  	id,
+    title,
+    description,
+    image {
+      id
+      url
+  }
+}
+
+query getCarouselData {
+  carousels {
+    ...carouselItem
+  }
+}

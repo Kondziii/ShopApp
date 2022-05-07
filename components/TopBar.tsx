@@ -30,7 +30,7 @@ export const TopBar = () => {
   }, [curTitle]);
 
   return (
-    <div className='bg-slate-700 text-white py-3 shadow-sm shadow-slate-500 '>
+    <div className='bg-slate-700 text-white py-3 shadow-sm shadow-slate-500 sticky top-0 z-60'>
       <ul className='sm:flex sm:gap-10 md:gap-16 lg:gap-20 text-xs justify-center uppercase font-medium tracking-wider px-2 container mx-auto hidden'>
         {titles.map((title) => {
           return <li key={title.id}>{title.title}</li>;
