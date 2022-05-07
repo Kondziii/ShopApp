@@ -25,7 +25,7 @@ export const Header = () => {
   };
 
   return (
-    <header className='sticky top-0 z-50'>
+    <header className='sticky top-0 z-[999]'>
       <TopBar />
       <div className=' px-8 py-5 text-sm font-semibold text-gray-500 uppercase bg-white shadow-md sm:flex sm:items-center'>
         <div className='container flex flex-wrap items-center justify-between mx-auto sm:flex-nowrap max-w-7xl'>

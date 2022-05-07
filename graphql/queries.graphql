@@ -70,17 +70,37 @@ query getAccountByEmail($email: String!) {
 }
 
 fragment carouselItem on Carousel {
-  	id,
-    title,
-    description,
-    image {
-      id
-      url
+  id
+  title
+  description
+  image {
+    id
+    url
   }
 }
 
 query getCarouselData {
   carousels {
     ...carouselItem
+  }
+}
+
+fragment socksSection on HomeSection {
+  id
+  title
+  image {
+    url
+  }
+  category {
+    displayName
+    slug
+    name
+    type
+  }
+}
+
+query getSocksSection {
+  sections: homeSections {
+    ...socksSection
   }
 }
