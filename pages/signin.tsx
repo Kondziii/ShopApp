@@ -76,7 +76,7 @@ const SignInPage = () => {
           Sign in
         </button>
         <small className='block mt-1 text-center'>
-          Haven't got account yet?{' '}
+          Haven&apos;t got account yet?{' '}
           <button
             onClick={() => router.push('/signup')}
             type='button'
