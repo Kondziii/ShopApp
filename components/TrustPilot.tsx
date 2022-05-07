@@ -2,7 +2,12 @@ import React from 'react';
 
 export const TrustPilot = () => {
   return (
-    <div className='flex items-center justify-center my-8 sm:gap-4 gap-2'>
+    <a
+      href='https://pl.trustpilot.com/'
+      target='_blank'
+      rel='noreferrer'
+      className='flex items-center justify-center my-8 sm:gap-4 gap-2'
+    >
       <h3 className='text-lg font-semibold'>Nasza ocena</h3>
       <svg
         role='img'
@@ -107,6 +112,6 @@ export const TrustPilot = () => {
           d='M21.631369 20.26169l-.799928-2.463625-5.755033 4.153914z'
         ></path>
       </svg>
-    </div>
+    </a>
   );
 };
