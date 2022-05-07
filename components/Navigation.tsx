@@ -2,10 +2,10 @@ import React from 'react';
 import { ActiveLink } from './ActiveLink';
 
 const navOptions = [
-  { title: 'Home', path: '/' },
+  { title: 'Strona główna', path: '/' },
   // { title: 'Products', path: '/products', exact: false },
-  { title: 'Offer', path: '/offer', exact: false },
-  { title: 'About', path: '/about' },
+  { title: 'Oferta', path: '/offer', exact: false },
+  { title: 'O nas', path: '/about' },
   // { title: 'Pagination1', path: '/pagination1', exact: false },
   // { title: 'Pagination2', path: '/pagination2', exact: false },
 ];

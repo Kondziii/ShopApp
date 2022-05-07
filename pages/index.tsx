@@ -1,6 +1,7 @@
 import { InferGetStaticPropsType } from 'next';
 import { AppCarousel } from '../components/AppCarousel';
 import { AppMarquee } from '../components/AppMarquee';
+import { HomeSection } from '../components/HomeSection';
 import { NewsLetterForm } from '../components/NewsLetterForm';
 import { SectionItem } from '../components/SectionItem';
 import { SectionTitle } from '../components/SectionTitle';
@@ -27,18 +28,8 @@ const Home = ({
     <>
       <AppCarousel items={slides} />
       <TrustPilot />
-      <section>
-        <SectionTitle title='Skarpety' />
-        <hr />
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6'>
-          {socksSection.map((section) => {
-            return <SectionItem key={section.title} item={section} />;
-          })}
-        </div>
-      </section>
-
+      <HomeSection title='Skarpety' items={socksSection} />
       <AppMarquee />
-
       <NewsLetterForm />
     </>
   );
