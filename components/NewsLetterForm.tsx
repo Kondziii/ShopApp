@@ -47,11 +47,17 @@ export const NewsLetterForm = () => {
   }, [isSuccess]);
 
   return (
-    <section className='p-12 bg-yellow-200 sm:p-16 md:p-20'>
-      <div className='relative w-full p-10 mx-auto bg-white rounded-md shadow-sm sm:w-3/4 md:w-1/2 sm:p-14 shadow-yellow-500'>
+    <section
+      style={{
+        backgroundImage: 'url(/bg.webp)',
+        backgroundBlendMode: 'screen',
+      }}
+      className='p-12 sm:p-16 md:p-20 bg-yellow-500'
+    >
+      <div className='relative w-full p-10 mx-auto bg-white rounded-md shadow-sm sm:w-3/4 lg:w-1/2 sm:p-14 shadow-yellow-500'>
         <header>
           <h1 className='block mb-6 text-2xl font-bold tracking-wide text-center'>
-            Subscribe to stay up to date with our offer!
+            Zapisz się do newslettera!
           </h1>
         </header>
         <form onSubmit={onSubmit}>
@@ -61,18 +67,18 @@ export const NewsLetterForm = () => {
             {...register('email')}
             id='newsletter_email'
             autoComplete='email'
-            placeholder='Your email...'
+            placeholder='Twój email...'
             error={errors.email}
           ></Input>
           <button
             className='block px-8 py-2 mx-auto mt-6 transition-all duration-300 border rounded-full border-slate-700 text-slate-700 hover:text-white hover:bg-slate-700'
             type='submit'
           >
-            Confirm your subscription
+            Zapisz się
           </button>
           <p className='mt-2 text-xs text-center text-gray-500'>
-            By signing up to the newsletter, you agree on receiving from us the
-            news, promotions and information about our products.
+            Zapisując się do naszego newslettera wyrażasz zgodę na otrzymywanie
+            od nas wiadomości z nowościami, promocjami i aktualnościami.
           </p>
 
           {feedback && (

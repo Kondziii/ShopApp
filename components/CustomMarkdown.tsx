@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote';
 import type { MarkdownResult } from '../types';
+import Image from 'next/image';
 
 const CustomMarkdown = ({ children }: { children: MarkdownResult }) => {
   return (
@@ -20,6 +21,21 @@ const CustomMarkdown = ({ children }: { children: MarkdownResult }) => {
             <Link href={href}>
               <a {...props}>{href}</a>
             </Link>
+          );
+        },
+        img: ({ src, alt, width, height }) => {
+          return (
+            <div className='w-1/2 mx-auto'>
+              <Image
+                className='block mx-auto'
+                src={src!}
+                alt={alt}
+                width={1}
+                height={1}
+                layout='responsive'
+                objectFit='cover'
+              />
+            </div>
           );
         },
       }}

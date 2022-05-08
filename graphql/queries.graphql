@@ -104,3 +104,26 @@ query getSocksSection {
     ...socksSection
   }
 }
+
+query getNewsSection {
+  newsSections {
+    ...newsSectionFragment
+  }
+}
+
+fragment newsSectionFragment on NewsSection {
+  id
+  title
+  shortDescription
+  longDescription
+  slug
+  image {
+    url
+  }
+}
+
+query getNewsSectionBySlug($slug: String!) {
+  newsSection(where: { slug: $slug }) {
+    ...newsSectionFragment
+  }
+}

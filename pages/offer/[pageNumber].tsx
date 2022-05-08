@@ -11,7 +11,6 @@ import {
   GetAllProductsListQuery,
 } from '../../generated/graphql';
 
-
 const PaginationPage = ({
   data,
   pageNumber,
