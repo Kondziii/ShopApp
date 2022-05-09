@@ -128,10 +128,18 @@ query getNewsSectionBySlug($slug: String!) {
   }
 }
 
-query getAboutLink ($title: String!){
-  link(where: {title: $title}) {
-    title,
+query getAboutLink($title: String!) {
+  link(where: { title: $title }) {
+    title
     description
   }
 }
 
+query getFaqData {
+  faqs {
+    id
+    question
+    answer
+    section
+  }
+}

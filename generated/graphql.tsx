@@ -3332,6 +3332,470 @@ export type DocumentVersion = {
   stage: Stage;
 };
 
+export type Faq = Node & {
+  __typename?: 'Faq';
+  answer: Scalars['String'];
+  /** The time the document was created */
+  createdAt: Scalars['DateTime'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  /** Get the document in other stages */
+  documentInStages: Array<Faq>;
+  /** List of Faq versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID'];
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  question: Scalars['String'];
+  scheduledIn: Array<ScheduledOperation>;
+  section: Question;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+
+export type FaqCreatedByArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type FaqDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean'];
+  inheritLocale?: Scalars['Boolean'];
+  stages?: Array<Stage>;
+};
+
+
+export type FaqHistoryArgs = {
+  limit?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+export type FaqPublishedByArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type FaqScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+export type FaqUpdatedByArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type FaqConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: FaqWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type FaqConnection = {
+  __typename?: 'FaqConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<FaqEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type FaqCreateInput = {
+  answer: Scalars['String'];
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  question: Scalars['String'];
+  section: Question;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type FaqCreateManyInlineInput = {
+  /** Connect multiple existing Faq documents */
+  connect?: InputMaybe<Array<FaqWhereUniqueInput>>;
+  /** Create and connect multiple existing Faq documents */
+  create?: InputMaybe<Array<FaqCreateInput>>;
+};
+
+export type FaqCreateOneInlineInput = {
+  /** Connect one existing Faq document */
+  connect?: InputMaybe<FaqWhereUniqueInput>;
+  /** Create and connect one Faq document */
+  create?: InputMaybe<FaqCreateInput>;
+};
+
+/** An edge in a connection. */
+export type FaqEdge = {
+  __typename?: 'FaqEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node: Faq;
+};
+
+/** Identifies documents */
+export type FaqManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<FaqWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<FaqWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<FaqWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  answer?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  answer_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  answer_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  answer_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  answer_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  answer_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  answer_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  answer_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  answer_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  answer_starts_with?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  question?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  question_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  question_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  question_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  question_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  question_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  question_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  question_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  question_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  question_starts_with?: InputMaybe<Scalars['String']>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  section?: InputMaybe<Question>;
+  /** All values that are contained in given list. */
+  section_in?: InputMaybe<Array<Question>>;
+  /** All values that are not equal to given value. */
+  section_not?: InputMaybe<Question>;
+  /** All values that are not contained in given list. */
+  section_not_in?: InputMaybe<Array<Question>>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export enum FaqOrderByInput {
+  AnswerAsc = 'answer_ASC',
+  AnswerDesc = 'answer_DESC',
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  QuestionAsc = 'question_ASC',
+  QuestionDesc = 'question_DESC',
+  SectionAsc = 'section_ASC',
+  SectionDesc = 'section_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+}
+
+export type FaqUpdateInput = {
+  answer?: InputMaybe<Scalars['String']>;
+  question?: InputMaybe<Scalars['String']>;
+  section?: InputMaybe<Question>;
+};
+
+export type FaqUpdateManyInlineInput = {
+  /** Connect multiple existing Faq documents */
+  connect?: InputMaybe<Array<FaqConnectInput>>;
+  /** Create and connect multiple Faq documents */
+  create?: InputMaybe<Array<FaqCreateInput>>;
+  /** Delete multiple Faq documents */
+  delete?: InputMaybe<Array<FaqWhereUniqueInput>>;
+  /** Disconnect multiple Faq documents */
+  disconnect?: InputMaybe<Array<FaqWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing Faq documents */
+  set?: InputMaybe<Array<FaqWhereUniqueInput>>;
+  /** Update multiple Faq documents */
+  update?: InputMaybe<Array<FaqUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple Faq documents */
+  upsert?: InputMaybe<Array<FaqUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type FaqUpdateManyInput = {
+  answer?: InputMaybe<Scalars['String']>;
+  question?: InputMaybe<Scalars['String']>;
+  section?: InputMaybe<Question>;
+};
+
+export type FaqUpdateManyWithNestedWhereInput = {
+  /** Update many input */
+  data: FaqUpdateManyInput;
+  /** Document search */
+  where: FaqWhereInput;
+};
+
+export type FaqUpdateOneInlineInput = {
+  /** Connect existing Faq document */
+  connect?: InputMaybe<FaqWhereUniqueInput>;
+  /** Create and connect one Faq document */
+  create?: InputMaybe<FaqCreateInput>;
+  /** Delete currently connected Faq document */
+  delete?: InputMaybe<Scalars['Boolean']>;
+  /** Disconnect currently connected Faq document */
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  /** Update single Faq document */
+  update?: InputMaybe<FaqUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single Faq document */
+  upsert?: InputMaybe<FaqUpsertWithNestedWhereUniqueInput>;
+};
+
+export type FaqUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: FaqUpdateInput;
+  /** Unique document search */
+  where: FaqWhereUniqueInput;
+};
+
+export type FaqUpsertInput = {
+  /** Create document if it didn't exist */
+  create: FaqCreateInput;
+  /** Update document if it exists */
+  update: FaqUpdateInput;
+};
+
+export type FaqUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: FaqUpsertInput;
+  /** Unique document search */
+  where: FaqWhereUniqueInput;
+};
+
+/** Identifies documents */
+export type FaqWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<FaqWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<FaqWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<FaqWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']>;
+  answer?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  answer_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  answer_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  answer_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  answer_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  answer_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  answer_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  answer_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  answer_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  answer_starts_with?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  question?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  question_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  question_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  question_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  question_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  question_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  question_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  question_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  question_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  question_starts_with?: InputMaybe<Scalars['String']>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  section?: InputMaybe<Question>;
+  /** All values that are contained in given list. */
+  section_in?: InputMaybe<Array<Question>>;
+  /** All values that are not equal to given value. */
+  section_not?: InputMaybe<Question>;
+  /** All values that are not contained in given list. */
+  section_not_in?: InputMaybe<Array<Question>>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** References Faq record uniquely */
+export type FaqWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 export type HomeSection = Node & {
   __typename?: 'HomeSection';
   category?: Maybe<Category>;
@@ -4266,6 +4730,8 @@ export type Mutation = {
   createCollection?: Maybe<Collection>;
   /** Create one currency */
   createCurrency?: Maybe<Currency>;
+  /** Create one faq */
+  createFaq?: Maybe<Faq>;
   /** Create one homeSection */
   createHomeSection?: Maybe<HomeSection>;
   /** Create one link */
@@ -4300,6 +4766,8 @@ export type Mutation = {
   deleteCollection?: Maybe<Collection>;
   /** Delete one currency from _all_ existing stages. Returns deleted document. */
   deleteCurrency?: Maybe<Currency>;
+  /** Delete one faq from _all_ existing stages. Returns deleted document. */
+  deleteFaq?: Maybe<Faq>;
   /** Delete one homeSection from _all_ existing stages. Returns deleted document. */
   deleteHomeSection?: Maybe<HomeSection>;
   /** Delete one link from _all_ existing stages. Returns deleted document. */
@@ -4346,6 +4814,13 @@ export type Mutation = {
   deleteManyCurrencies: BatchPayload;
   /** Delete many Currency documents, return deleted documents */
   deleteManyCurrenciesConnection: CurrencyConnection;
+  /**
+   * Delete many Faq documents
+   * @deprecated Please use the new paginated many mutation (deleteManyFaqsConnection)
+   */
+  deleteManyFaqs: BatchPayload;
+  /** Delete many Faq documents, return deleted documents */
+  deleteManyFaqsConnection: FaqConnection;
   /**
    * Delete many HomeSection documents
    * @deprecated Please use the new paginated many mutation (deleteManyHomeSectionsConnection)
@@ -4448,6 +4923,8 @@ export type Mutation = {
   publishCollection?: Maybe<Collection>;
   /** Publish one currency */
   publishCurrency?: Maybe<Currency>;
+  /** Publish one faq */
+  publishFaq?: Maybe<Faq>;
   /** Publish one homeSection */
   publishHomeSection?: Maybe<HomeSection>;
   /** Publish one link */
@@ -4494,6 +4971,13 @@ export type Mutation = {
   publishManyCurrencies: BatchPayload;
   /** Publish many Currency documents */
   publishManyCurrenciesConnection: CurrencyConnection;
+  /**
+   * Publish many Faq documents
+   * @deprecated Please use the new paginated many mutation (publishManyFaqsConnection)
+   */
+  publishManyFaqs: BatchPayload;
+  /** Publish many Faq documents */
+  publishManyFaqsConnection: FaqConnection;
   /**
    * Publish many HomeSection documents
    * @deprecated Please use the new paginated many mutation (publishManyHomeSectionsConnection)
@@ -4592,6 +5076,8 @@ export type Mutation = {
   schedulePublishCollection?: Maybe<Collection>;
   /** Schedule to publish one currency */
   schedulePublishCurrency?: Maybe<Currency>;
+  /** Schedule to publish one faq */
+  schedulePublishFaq?: Maybe<Faq>;
   /** Schedule to publish one homeSection */
   schedulePublishHomeSection?: Maybe<HomeSection>;
   /** Schedule to publish one link */
@@ -4624,6 +5110,8 @@ export type Mutation = {
   scheduleUnpublishCollection?: Maybe<Collection>;
   /** Unpublish one currency from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishCurrency?: Maybe<Currency>;
+  /** Unpublish one faq from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishFaq?: Maybe<Faq>;
   /** Unpublish one homeSection from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishHomeSection?: Maybe<HomeSection>;
   /** Unpublish one link from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -4656,6 +5144,8 @@ export type Mutation = {
   unpublishCollection?: Maybe<Collection>;
   /** Unpublish one currency from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishCurrency?: Maybe<Currency>;
+  /** Unpublish one faq from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishFaq?: Maybe<Faq>;
   /** Unpublish one homeSection from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishHomeSection?: Maybe<HomeSection>;
   /** Unpublish one link from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -4702,6 +5192,13 @@ export type Mutation = {
   unpublishManyCurrencies: BatchPayload;
   /** Find many Currency documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyCurrenciesConnection: CurrencyConnection;
+  /**
+   * Unpublish many Faq documents
+   * @deprecated Please use the new paginated many mutation (unpublishManyFaqsConnection)
+   */
+  unpublishManyFaqs: BatchPayload;
+  /** Find many Faq documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyFaqsConnection: FaqConnection;
   /**
    * Unpublish many HomeSection documents
    * @deprecated Please use the new paginated many mutation (unpublishManyHomeSectionsConnection)
@@ -4800,6 +5297,8 @@ export type Mutation = {
   updateCollection?: Maybe<Collection>;
   /** Update one currency */
   updateCurrency?: Maybe<Currency>;
+  /** Update one faq */
+  updateFaq?: Maybe<Faq>;
   /** Update one homeSection */
   updateHomeSection?: Maybe<HomeSection>;
   /** Update one link */
@@ -4846,6 +5345,13 @@ export type Mutation = {
   updateManyCurrencies: BatchPayload;
   /** Update many Currency documents */
   updateManyCurrenciesConnection: CurrencyConnection;
+  /**
+   * Update many faqs
+   * @deprecated Please use the new paginated many mutation (updateManyFaqsConnection)
+   */
+  updateManyFaqs: BatchPayload;
+  /** Update many Faq documents */
+  updateManyFaqsConnection: FaqConnection;
   /**
    * Update many homeSections
    * @deprecated Please use the new paginated many mutation (updateManyHomeSectionsConnection)
@@ -4946,6 +5452,8 @@ export type Mutation = {
   upsertCollection?: Maybe<Collection>;
   /** Upsert one currency */
   upsertCurrency?: Maybe<Currency>;
+  /** Upsert one faq */
+  upsertFaq?: Maybe<Faq>;
   /** Upsert one homeSection */
   upsertHomeSection?: Maybe<HomeSection>;
   /** Upsert one link */
@@ -4996,6 +5504,11 @@ export type MutationCreateCollectionArgs = {
 
 export type MutationCreateCurrencyArgs = {
   data: CurrencyCreateInput;
+};
+
+
+export type MutationCreateFaqArgs = {
+  data: FaqCreateInput;
 };
 
 
@@ -5081,6 +5594,11 @@ export type MutationDeleteCollectionArgs = {
 
 export type MutationDeleteCurrencyArgs = {
   where: CurrencyWhereUniqueInput;
+};
+
+
+export type MutationDeleteFaqArgs = {
+  where: FaqWhereUniqueInput;
 };
 
 
@@ -5181,6 +5699,21 @@ export type MutationDeleteManyCurrenciesConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<CurrencyManyWhereInput>;
+};
+
+
+export type MutationDeleteManyFaqsArgs = {
+  where?: InputMaybe<FaqManyWhereInput>;
+};
+
+
+export type MutationDeleteManyFaqsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<FaqManyWhereInput>;
 };
 
 
@@ -5426,6 +5959,12 @@ export type MutationPublishCurrencyArgs = {
 };
 
 
+export type MutationPublishFaqArgs = {
+  to?: Array<Stage>;
+  where: FaqWhereUniqueInput;
+};
+
+
 export type MutationPublishHomeSectionArgs = {
   to?: Array<Stage>;
   where: HomeSectionWhereUniqueInput;
@@ -5555,6 +6094,24 @@ export type MutationPublishManyCurrenciesConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   to?: Array<Stage>;
   where?: InputMaybe<CurrencyManyWhereInput>;
+};
+
+
+export type MutationPublishManyFaqsArgs = {
+  to?: Array<Stage>;
+  where?: InputMaybe<FaqManyWhereInput>;
+};
+
+
+export type MutationPublishManyFaqsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<FaqManyWhereInput>;
 };
 
 
@@ -5876,6 +6433,14 @@ export type MutationSchedulePublishCurrencyArgs = {
 };
 
 
+export type MutationSchedulePublishFaqArgs = {
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  to?: Array<Stage>;
+  where: FaqWhereUniqueInput;
+};
+
+
 export type MutationSchedulePublishHomeSectionArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
@@ -6020,6 +6585,14 @@ export type MutationScheduleUnpublishCurrencyArgs = {
 };
 
 
+export type MutationScheduleUnpublishFaqArgs = {
+  from?: Array<Stage>;
+  releaseAt?: InputMaybe<Scalars['DateTime']>;
+  releaseId?: InputMaybe<Scalars['String']>;
+  where: FaqWhereUniqueInput;
+};
+
+
 export type MutationScheduleUnpublishHomeSectionArgs = {
   from?: Array<Stage>;
   releaseAt?: InputMaybe<Scalars['DateTime']>;
@@ -6148,6 +6721,12 @@ export type MutationUnpublishCurrencyArgs = {
 };
 
 
+export type MutationUnpublishFaqArgs = {
+  from?: Array<Stage>;
+  where: FaqWhereUniqueInput;
+};
+
+
 export type MutationUnpublishHomeSectionArgs = {
   from?: Array<Stage>;
   where: HomeSectionWhereUniqueInput;
@@ -6273,6 +6852,24 @@ export type MutationUnpublishManyCurrenciesConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: InputMaybe<Stage>;
   where?: InputMaybe<CurrencyManyWhereInput>;
+};
+
+
+export type MutationUnpublishManyFaqsArgs = {
+  from?: Array<Stage>;
+  where?: InputMaybe<FaqManyWhereInput>;
+};
+
+
+export type MutationUnpublishManyFaqsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  first?: InputMaybe<Scalars['Int']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: InputMaybe<Stage>;
+  where?: InputMaybe<FaqManyWhereInput>;
 };
 
 
@@ -6564,6 +7161,12 @@ export type MutationUpdateCurrencyArgs = {
 };
 
 
+export type MutationUpdateFaqArgs = {
+  data: FaqUpdateInput;
+  where: FaqWhereUniqueInput;
+};
+
+
 export type MutationUpdateHomeSectionArgs = {
   data: HomeSectionUpdateInput;
   where: HomeSectionWhereUniqueInput;
@@ -6675,6 +7278,23 @@ export type MutationUpdateManyCurrenciesConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<CurrencyManyWhereInput>;
+};
+
+
+export type MutationUpdateManyFaqsArgs = {
+  data: FaqUpdateManyInput;
+  where?: InputMaybe<FaqManyWhereInput>;
+};
+
+
+export type MutationUpdateManyFaqsConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']>;
+  before?: InputMaybe<Scalars['ID']>;
+  data: FaqUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<FaqManyWhereInput>;
 };
 
 
@@ -6935,6 +7555,12 @@ export type MutationUpsertCollectionArgs = {
 export type MutationUpsertCurrencyArgs = {
   upsert: CurrencyUpsertInput;
   where: CurrencyWhereUniqueInput;
+};
+
+
+export type MutationUpsertFaqArgs = {
+  upsert: FaqUpsertInput;
+  where: FaqWhereUniqueInput;
 };
 
 
@@ -10894,6 +11520,14 @@ export type Query = {
   currency?: Maybe<Currency>;
   /** Retrieve document version */
   currencyVersion?: Maybe<DocumentVersion>;
+  /** Retrieve a single faq */
+  faq?: Maybe<Faq>;
+  /** Retrieve document version */
+  faqVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple faqs */
+  faqs: Array<Faq>;
+  /** Retrieve multiple faqs using the Relay connection interface */
+  faqsConnection: FaqConnection;
   /** Retrieve a single homeSection */
   homeSection?: Maybe<HomeSection>;
   /** Retrieve document version */
@@ -11222,6 +11856,44 @@ export type QueryCurrencyArgs = {
 
 export type QueryCurrencyVersionArgs = {
   where: VersionWhereInput;
+};
+
+
+export type QueryFaqArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: FaqWhereUniqueInput;
+};
+
+
+export type QueryFaqVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type QueryFaqsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<FaqOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<FaqWhereInput>;
+};
+
+
+export type QueryFaqsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<FaqOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  stage?: Stage;
+  where?: InputMaybe<FaqWhereInput>;
 };
 
 
@@ -11709,6 +12381,13 @@ export type QueryUsersConnectionArgs = {
   stage?: Stage;
   where?: InputMaybe<UserWhereInput>;
 };
+
+export enum Question {
+  Delivery = 'Delivery',
+  Order = 'Order',
+  Product = 'Product',
+  Return = 'Return'
+}
 
 /** Representing a RGBA color value: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgb()_and_rgba() */
 export type Rgba = {
@@ -12395,7 +13074,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Account | Asset | Carousel | Category | Collection | Currency | HomeSection | Link | NewsSection | Order | OrderItem | Product | ProductColorVariant | ProductSizeColorVariant | ProductSizeVariant | Review;
+export type ScheduledOperationAffectedDocument = Account | Asset | Carousel | Category | Collection | Currency | Faq | HomeSection | Link | NewsSection | Order | OrderItem | Product | ProductColorVariant | ProductSizeColorVariant | ProductSizeVariant | Review;
 
 export type ScheduledOperationConnectInput = {
   /** Allow to specify document position in list of connected documents, will default to appending at end of list */
@@ -13875,6 +14554,11 @@ export type GetAboutLinkQueryVariables = Exact<{
 
 export type GetAboutLinkQuery = { __typename?: 'Query', link?: { __typename?: 'Link', title: string, description: string } | null };
 
+export type GetFaqDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetFaqDataQuery = { __typename?: 'Query', faqs: Array<{ __typename?: 'Faq', id: string, question: string, answer: string, section: Question }> };
+
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
   id
@@ -14397,3 +15081,40 @@ export function useGetAboutLinkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetAboutLinkQueryHookResult = ReturnType<typeof useGetAboutLinkQuery>;
 export type GetAboutLinkLazyQueryHookResult = ReturnType<typeof useGetAboutLinkLazyQuery>;
 export type GetAboutLinkQueryResult = Apollo.QueryResult<GetAboutLinkQuery, GetAboutLinkQueryVariables>;
+export const GetFaqDataDocument = gql`
+    query getFaqData {
+  faqs {
+    id
+    question
+    answer
+    section
+  }
+}
+    `;
+
+/**
+ * __useGetFaqDataQuery__
+ *
+ * To run a query within a React component, call `useGetFaqDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFaqDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFaqDataQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetFaqDataQuery(baseOptions?: Apollo.QueryHookOptions<GetFaqDataQuery, GetFaqDataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFaqDataQuery, GetFaqDataQueryVariables>(GetFaqDataDocument, options);
+      }
+export function useGetFaqDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFaqDataQuery, GetFaqDataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFaqDataQuery, GetFaqDataQueryVariables>(GetFaqDataDocument, options);
+        }
+export type GetFaqDataQueryHookResult = ReturnType<typeof useGetFaqDataQuery>;
+export type GetFaqDataLazyQueryHookResult = ReturnType<typeof useGetFaqDataLazyQuery>;
+export type GetFaqDataQueryResult = Apollo.QueryResult<GetFaqDataQuery, GetFaqDataQueryVariables>;
