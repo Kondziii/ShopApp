@@ -27,7 +27,7 @@ const footerLinks = [
     title: 'Pomoc',
     links: [
       {
-        title: 'Faq',
+        title: 'FAQ',
         href: '/faq',
       },
       {
