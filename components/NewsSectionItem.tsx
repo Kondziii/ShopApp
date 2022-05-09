@@ -13,8 +13,8 @@ export const NewsSectionItem = ({ item }: NewsSectionItemProps) => {
       <h3 className='text-md uppercase tracking-wide mb-4 font-semibold'>
         {item.title}
       </h3>
-      <div className='flex items-center justify-center gap-2'>
-        <div className='w-3/4'>
+      <div className='block md:flex sm:w-full items-center justify-center gap-2'>
+        <div className='w-full md:w-3/4 sm:mb-2'>
           <Image
             src={item.image.url}
             alt={item.title}
@@ -24,12 +24,14 @@ export const NewsSectionItem = ({ item }: NewsSectionItemProps) => {
             objectFit='cover'
           />
         </div>
-        <p className='w-3/4 text-justify font-light'>{item.shortDescription}</p>
+        <p className='w-full md:w-3/4 text-justify font-light'>
+          {item.shortDescription}
+        </p>
       </div>
-      <div className='flex justify-end mt-1'>
+      <div className='flex justify-end mt-4'>
         <Link href={`news/${item.slug}`}>
           <a className='px-4 py-2 text-slate-700 border border-slate-700 rounded-full transition duration-300 hover:text-white hover:bg-slate-700'>
-            Zobacz więcej
+            Czytaj więcej
           </a>
         </Link>
       </div>

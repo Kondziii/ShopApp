@@ -6,6 +6,7 @@ const navOptions = [
   // { title: 'Products', path: '/products', exact: false },
   { title: 'Oferta', path: '/offer', exact: false },
   { title: 'O nas', path: '/about' },
+  { title: 'Kontakt', path: '/contact' },
   // { title: 'Pagination1', path: '/pagination1', exact: false },
   // { title: 'Pagination2', path: '/pagination2', exact: false },
 ];

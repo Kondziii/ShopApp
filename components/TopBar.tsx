@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 const titles = [
   {
     id: 1,
-    title: 'Free shipping from 100$',
+    title: 'Darmowa dostawa od 100zł',
   },
   {
     id: 2,
-    title: 'Return up to 30 days',
+    title: 'Możliwosć zwrotu do 30 dni',
   },
   {
     id: 3,
-    title: 'Delivery within 1-3 working days',
+    title: 'Szybka dostawa w przeciągu 2-3 dni',
   },
 ];
 
