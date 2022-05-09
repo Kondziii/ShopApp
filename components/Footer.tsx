@@ -69,7 +69,10 @@ export const Footer = () => {
       <div className='container grid grid-cols-1 mx-auto text-sm text-center sm:text-left sm:grid-cols-2 md:grid-cols-4 max-w-7xl'>
         {footerLinks.map((section) => {
           return (
-            <div key={section.title} className='text-white'>
+            <div
+              key={section.title}
+              className='mx-auto text-white min-w-[175px]'
+            >
               <h4 className='font-semibold uppercase sm:text-left'>
                 {section.title}
               </h4>
@@ -89,7 +92,7 @@ export const Footer = () => {
             </div>
           );
         })}
-        <div className='text-center text-white'>
+        <div className='mx-auto text-center text-white min-w-[175px]'>
           <h4 className='font-semibold uppercase sm:text-left'>Kontakt</h4>
           <ul className='my-4 '>
             <li className='leading-7'>

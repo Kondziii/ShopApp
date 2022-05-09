@@ -12,7 +12,7 @@ export const Layout = ({ children }: LayoutProps) => {
     <div className='flex flex-col items-stretch min-h-screen '>
       <DefaultSeo {...SEO} />
       <Header />
-      <main className='relative flex flex-col flex-grow w-full h-full mx-auto max-w-7xl px-2 sm:px-0'>
+      <main className='relative flex flex-col flex-grow w-full h-full mx-auto max-w-7xl px-2 sm:px-0 min-h-[70vh]'>
         {children}
       </main>
       <Footer />

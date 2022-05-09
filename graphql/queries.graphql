@@ -127,3 +127,11 @@ query getNewsSectionBySlug($slug: String!) {
     ...newsSectionFragment
   }
 }
+
+query getAboutLink ($title: String!){
+  link(where: {title: $title}) {
+    title,
+    description
+  }
+}
+
