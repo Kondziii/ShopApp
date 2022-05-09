@@ -12,7 +12,7 @@ export const NewsSection = ({ news }: NewsSectionProps) => {
     <section className='my-4'>
       <SectionTitle title='Aktualności' />
       <hr />
-      <div className='grid grid-cols-1 sm:grid-cols-2'>
+      <div className='grid grid-cols-1 gap-8 sm:grid-cols-2'>
         {news.map((section) => {
           return <NewsSectionItem key={section.id} item={section} />;
         })}

@@ -57,7 +57,7 @@ const footerLinks = [
       },
       {
         title: 'Rejestracja',
-        href: 'signup',
+        href: '/signup',
       },
     ],
   },
@@ -104,13 +104,14 @@ export const Footer = () => {
               </a>
             </li>
             <li className='leading-7 '>
-              <a className='flex items-center justify-center py-1 space-x-3 sm:justify-start '>
+              <a
+                href='mailTo:stoopki@gmail.com'
+                className='flex items-center justify-center py-1 space-x-3 sm:justify-start '
+              >
                 <MailIcon className='h-6' />
-                <a href='mailTo:stoopki@gmail.com'>
-                  <span className='font-semibold tracking-wider'>
-                    stoopki@gmail.com
-                  </span>
-                </a>
+                <span className='font-semibold tracking-wider'>
+                  stoopki@gmail.com
+                </span>
               </a>
             </li>
           </ul>

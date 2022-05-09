@@ -7,6 +7,7 @@ export const Logo = (props: React.LinkHTMLAttributes<HTMLAnchorElement>) => {
     <Link href='/' passHref>
       <div className='h-12 w-32 sm:w-40'>
         <Image
+          priority
           className='cursor-pointer'
           src='/Logo.png'
           alt='Stoopki logo'

@@ -9,11 +9,11 @@ interface NewsSectionItemProps {
 
 export const NewsSectionItem = ({ item }: NewsSectionItemProps) => {
   return (
-    <article className='m-2 bg-white p-6 shadow-md rounded'>
-      <h3 className='text-md uppercase tracking-wide mb-4 font-semibold'>
+    <article className='p-6 my-8 bg-white rounded shadow-md'>
+      <h3 className='mb-4 font-semibold tracking-wide uppercase text-md'>
         {item.title}
       </h3>
-      <div className='block md:flex sm:w-full items-center justify-center gap-2'>
+      <div className='items-center justify-center block gap-2 md:flex sm:w-full'>
         <div className='w-full md:w-3/4 sm:mb-2'>
           <Image
             src={item.image.url}
@@ -24,13 +24,13 @@ export const NewsSectionItem = ({ item }: NewsSectionItemProps) => {
             objectFit='cover'
           />
         </div>
-        <p className='w-full md:w-3/4 text-justify font-light'>
+        <p className='w-full font-light text-justify md:w-3/4'>
           {item.shortDescription}
         </p>
       </div>
       <div className='flex justify-end mt-4'>
         <Link href={`news/${item.slug}`}>
-          <a className='px-4 py-2 text-slate-700 border border-slate-700 rounded-full transition duration-300 hover:text-white hover:bg-slate-700'>
+          <a className='px-4 py-2 transition duration-300 border rounded-full text-slate-700 border-slate-700 hover:text-white hover:bg-slate-700'>
             Czytaj więcej
           </a>
         </Link>
