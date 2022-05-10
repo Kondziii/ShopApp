@@ -4260,6 +4260,7 @@ export type Link = Node & {
   /** User that last published this document */
   publishedBy?: Maybe<User>;
   scheduledIn: Array<ScheduledOperation>;
+  slug: Scalars['String'];
   /** System stage field */
   stage: Stage;
   title: Scalars['String'];
@@ -4329,6 +4330,7 @@ export type LinkConnection = {
 export type LinkCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   description: Scalars['String'];
+  slug: Scalars['String'];
   title: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -4439,6 +4441,25 @@ export type LinkManyWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  slug?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  slug_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  slug_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  slug_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  slug_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  slug_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  slug_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  slug_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  slug_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  slug_starts_with?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   title_contains?: InputMaybe<Scalars['String']>;
@@ -4485,6 +4506,8 @@ export enum LinkOrderByInput {
   IdDesc = 'id_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
   TitleAsc = 'title_ASC',
   TitleDesc = 'title_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
@@ -4493,6 +4516,7 @@ export enum LinkOrderByInput {
 
 export type LinkUpdateInput = {
   description?: InputMaybe<Scalars['String']>;
+  slug?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };
 
@@ -4643,6 +4667,25 @@ export type LinkWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  slug?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  slug_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  slug_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  slug_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values that are not equal to given value. */
+  slug_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  slug_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string */
+  slug_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  slug_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  slug_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  slug_starts_with?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   title_contains?: InputMaybe<Scalars['String']>;
@@ -4683,6 +4726,7 @@ export type LinkWhereInput = {
 /** References Link record uniquely */
 export type LinkWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
+  slug?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };
 
@@ -14547,17 +14591,22 @@ export type GetNewsSectionBySlugQueryVariables = Exact<{
 
 export type GetNewsSectionBySlugQuery = { __typename?: 'Query', newsSection?: { __typename?: 'NewsSection', id: string, title: string, shortDescription: string, longDescription: string, slug: string, image: { __typename?: 'Asset', url: string } } | null };
 
-export type GetAboutLinkQueryVariables = Exact<{
-  title: Scalars['String'];
-}>;
-
-
-export type GetAboutLinkQuery = { __typename?: 'Query', link?: { __typename?: 'Link', title: string, description: string } | null };
-
 export type GetFaqDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetFaqDataQuery = { __typename?: 'Query', faqs: Array<{ __typename?: 'Faq', id: string, question: string, answer: string, section: Question }> };
+
+export type GetInfoSectionBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type GetInfoSectionBySlugQuery = { __typename?: 'Query', link?: { __typename?: 'Link', id: string, slug: string, title: string, description: string } | null };
+
+export type GetInfoSectionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetInfoSectionsQuery = { __typename?: 'Query', links: Array<{ __typename?: 'Link', slug: string }> };
 
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
@@ -15045,42 +15094,6 @@ export function useGetNewsSectionBySlugLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetNewsSectionBySlugQueryHookResult = ReturnType<typeof useGetNewsSectionBySlugQuery>;
 export type GetNewsSectionBySlugLazyQueryHookResult = ReturnType<typeof useGetNewsSectionBySlugLazyQuery>;
 export type GetNewsSectionBySlugQueryResult = Apollo.QueryResult<GetNewsSectionBySlugQuery, GetNewsSectionBySlugQueryVariables>;
-export const GetAboutLinkDocument = gql`
-    query getAboutLink($title: String!) {
-  link(where: {title: $title}) {
-    title
-    description
-  }
-}
-    `;
-
-/**
- * __useGetAboutLinkQuery__
- *
- * To run a query within a React component, call `useGetAboutLinkQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAboutLinkQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAboutLinkQuery({
- *   variables: {
- *      title: // value for 'title'
- *   },
- * });
- */
-export function useGetAboutLinkQuery(baseOptions: Apollo.QueryHookOptions<GetAboutLinkQuery, GetAboutLinkQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAboutLinkQuery, GetAboutLinkQueryVariables>(GetAboutLinkDocument, options);
-      }
-export function useGetAboutLinkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAboutLinkQuery, GetAboutLinkQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAboutLinkQuery, GetAboutLinkQueryVariables>(GetAboutLinkDocument, options);
-        }
-export type GetAboutLinkQueryHookResult = ReturnType<typeof useGetAboutLinkQuery>;
-export type GetAboutLinkLazyQueryHookResult = ReturnType<typeof useGetAboutLinkLazyQuery>;
-export type GetAboutLinkQueryResult = Apollo.QueryResult<GetAboutLinkQuery, GetAboutLinkQueryVariables>;
 export const GetFaqDataDocument = gql`
     query getFaqData {
   faqs {
@@ -15118,3 +15131,75 @@ export function useGetFaqDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetFaqDataQueryHookResult = ReturnType<typeof useGetFaqDataQuery>;
 export type GetFaqDataLazyQueryHookResult = ReturnType<typeof useGetFaqDataLazyQuery>;
 export type GetFaqDataQueryResult = Apollo.QueryResult<GetFaqDataQuery, GetFaqDataQueryVariables>;
+export const GetInfoSectionBySlugDocument = gql`
+    query getInfoSectionBySlug($slug: String!) {
+  link(where: {slug: $slug}) {
+    id
+    slug
+    title
+    description
+  }
+}
+    `;
+
+/**
+ * __useGetInfoSectionBySlugQuery__
+ *
+ * To run a query within a React component, call `useGetInfoSectionBySlugQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInfoSectionBySlugQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInfoSectionBySlugQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetInfoSectionBySlugQuery(baseOptions: Apollo.QueryHookOptions<GetInfoSectionBySlugQuery, GetInfoSectionBySlugQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetInfoSectionBySlugQuery, GetInfoSectionBySlugQueryVariables>(GetInfoSectionBySlugDocument, options);
+      }
+export function useGetInfoSectionBySlugLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInfoSectionBySlugQuery, GetInfoSectionBySlugQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetInfoSectionBySlugQuery, GetInfoSectionBySlugQueryVariables>(GetInfoSectionBySlugDocument, options);
+        }
+export type GetInfoSectionBySlugQueryHookResult = ReturnType<typeof useGetInfoSectionBySlugQuery>;
+export type GetInfoSectionBySlugLazyQueryHookResult = ReturnType<typeof useGetInfoSectionBySlugLazyQuery>;
+export type GetInfoSectionBySlugQueryResult = Apollo.QueryResult<GetInfoSectionBySlugQuery, GetInfoSectionBySlugQueryVariables>;
+export const GetInfoSectionsDocument = gql`
+    query getInfoSections {
+  links {
+    slug
+  }
+}
+    `;
+
+/**
+ * __useGetInfoSectionsQuery__
+ *
+ * To run a query within a React component, call `useGetInfoSectionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInfoSectionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInfoSectionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetInfoSectionsQuery(baseOptions?: Apollo.QueryHookOptions<GetInfoSectionsQuery, GetInfoSectionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetInfoSectionsQuery, GetInfoSectionsQueryVariables>(GetInfoSectionsDocument, options);
+      }
+export function useGetInfoSectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetInfoSectionsQuery, GetInfoSectionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetInfoSectionsQuery, GetInfoSectionsQueryVariables>(GetInfoSectionsDocument, options);
+        }
+export type GetInfoSectionsQueryHookResult = ReturnType<typeof useGetInfoSectionsQuery>;
+export type GetInfoSectionsLazyQueryHookResult = ReturnType<typeof useGetInfoSectionsLazyQuery>;
+export type GetInfoSectionsQueryResult = Apollo.QueryResult<GetInfoSectionsQuery, GetInfoSectionsQueryVariables>;
