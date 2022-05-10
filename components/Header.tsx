@@ -6,6 +6,10 @@ import { Navigation } from './Navigation';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { TopBar } from './TopBar';
+import { UserIcon, HeartIcon } from '@heroicons/react/solid';
+import { MenuItem } from '@szhsin/react-menu';
+import { Menu } from './Menu';
+import { UserBar } from './UserBar';
 
 export const Header = () => {
   const session = useSession();
@@ -33,38 +37,39 @@ export const Header = () => {
           <Logo></Logo>
 
           <div className='flex items-center space-x-4 sm:order-3'>
+            <Menu as={<UserBar />}>
+              {session.status === 'unauthenticated' && (
+                <>
+                  <MenuItem className='text-gray-700 text-sm capitalize hover:bg-yellow-100 transition duration-300'>
+                    <button
+                      onClick={() =>
+                        router.push({
+                          pathname: '/signin',
+                          query: { callbackUrl: router.asPath },
+                        })
+                      }
+                    >
+                      Logowanie
+                    </button>
+                  </MenuItem>
+                  <MenuItem className='text-gray-700 text-sm capitalize hover:bg-yellow-100 transition duration-300'>
+                    <button onClick={register}>Rejestracja</button>
+                  </MenuItem>
+                </>
+              )}
+              {session.status === 'authenticated' && (
+                <>
+                  <MenuItem className='text-gray-700 hover:bg-yellow-100 transition duration-300'>
+                    <button>Twoje zamówienia</button>
+                  </MenuItem>
+                  <MenuItem className='text-gray-700 hover:bg-yellow-100 transition duration-300'>
+                    <button onClick={() => signOut()}>Wyloguj</button>
+                  </MenuItem>
+                </>
+              )}
+            </Menu>
+            <HeartIcon className='h-7 text-gray-600' />
             <CartBar />
-
-            {session.status === 'authenticated' && (
-              <button
-                onClick={() => signOut()}
-                className='px-4 py-2 transition duration-300 border rounded-full text-slate-700 border-slate-700 hover:text-white hover:bg-slate-700'
-              >
-                Logout
-              </button>
-            )}
-
-            {session.status === 'unauthenticated' && (
-              <>
-                <button
-                  onClick={register}
-                  className='px-4 py-2 transition duration-300 border rounded-full text-slate-700 border-slate-700 hover:text-white hover:bg-slate-700'
-                >
-                  Register
-                </button>
-                <button
-                  onClick={() =>
-                    router.push({
-                      pathname: '/signin',
-                      query: { callbackUrl: router.asPath },
-                    })
-                  }
-                  className='px-4 py-2 text-white transition duration-300 border rounded-full bg-slate-700 border-slate-700 hover:bg-slate-800'
-                >
-                  Login
-                </button>
-              </>
-            )}
           </div>
 
           <Navigation ref={nav}></Navigation>
