@@ -6,7 +6,7 @@ import {
 interface PaginationProps
   extends usePaginationProps,
     React.HTMLAttributes<HTMLUListElement> {
-  take: number;
+  take?: number;
   activeClassName?: string;
   onSelected: (value: number) => void;
 }
@@ -23,7 +23,7 @@ export const Pagination = (props: PaginationProps) => {
   }
 
   return (
-    <div className='flex items-center justify-center mt-10 space-x-3 text-gray-700'>
+    <div className='flex items-center justify-center my-4 space-x-3 text-gray-700'>
       <button
         disabled={props.currentPage === props.firstPage}
         onClick={() => props.onSelected(props.currentPage - 1)}

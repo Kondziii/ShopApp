@@ -9190,6 +9190,7 @@ export type Product = Node & {
   /** User that created this document */
   createdBy?: Maybe<User>;
   description: Scalars['String'];
+  discount?: Maybe<Scalars['Int']>;
   /** Get the document in other stages */
   documentInStages: Array<Product>;
   /** List of Product versions */
@@ -9210,6 +9211,8 @@ export type Product = Node & {
   publishedBy?: Maybe<User>;
   reviews: Array<Review>;
   scheduledIn: Array<ScheduledOperation>;
+  sex: Sex;
+  size: Array<Sizes>;
   slug: Scalars['String'];
   /** System stage field */
   stage: Stage;
@@ -9886,6 +9889,7 @@ export type ProductCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** description input for default locale (en) */
   description: Scalars['String'];
+  discount?: InputMaybe<Scalars['Int']>;
   images?: InputMaybe<AssetCreateManyInlineInput>;
   /** Inline mutations for managing document localizations excluding the default locale */
   localizations?: InputMaybe<ProductCreateLocalizationsInput>;
@@ -9895,6 +9899,8 @@ export type ProductCreateInput = {
   /** price input for default locale (en) */
   price: Scalars['Int'];
   reviews?: InputMaybe<ReviewCreateManyInlineInput>;
+  sex: Sex;
+  size?: InputMaybe<Array<Sizes>>;
   slug: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   variants?: InputMaybe<ProductVariantsCreateManyInlineInput>;
@@ -9974,6 +9980,21 @@ export type ProductManyWhereInput = {
   /** All values that are not contained in given list. */
   createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
   createdBy?: InputMaybe<UserWhereInput>;
+  discount?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  discount_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  discount_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  discount_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  discount_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  discount_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  discount_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  discount_not_in?: InputMaybe<Array<Scalars['Int']>>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -10021,6 +10042,23 @@ export type ProductManyWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  sex?: InputMaybe<Sex>;
+  /** All values that are contained in given list. */
+  sex_in?: InputMaybe<Array<Sex>>;
+  /** All values that are not equal to given value. */
+  sex_not?: InputMaybe<Sex>;
+  /** All values that are not contained in given list. */
+  sex_not_in?: InputMaybe<Array<Sex>>;
+  /** Matches if the field array contains *all* items provided to the filter and order does match */
+  size?: InputMaybe<Array<Sizes>>;
+  /** Matches if the field array contains *all* items provided to the filter */
+  size_contains_all?: InputMaybe<Array<Sizes>>;
+  /** Matches if the field array does not contain any of the items provided to the filter */
+  size_contains_none?: InputMaybe<Array<Sizes>>;
+  /** Matches if the field array contains at least one item provided to the filter */
+  size_contains_some?: InputMaybe<Array<Sizes>>;
+  /** Matches if the field array does not contains *all* items provided to the filter or order does not match */
+  size_not?: InputMaybe<Array<Sizes>>;
   slug?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   slug_contains?: InputMaybe<Scalars['String']>;
@@ -10063,6 +10101,8 @@ export enum ProductOrderByInput {
   CreatedAtDesc = 'createdAt_DESC',
   DescriptionAsc = 'description_ASC',
   DescriptionDesc = 'description_DESC',
+  DiscountAsc = 'discount_ASC',
+  DiscountDesc = 'discount_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
   NameAsc = 'name_ASC',
@@ -10071,6 +10111,10 @@ export enum ProductOrderByInput {
   PriceDesc = 'price_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
+  SexAsc = 'sex_ASC',
+  SexDesc = 'sex_DESC',
+  SizeAsc = 'size_ASC',
+  SizeDesc = 'size_DESC',
   SlugAsc = 'slug_ASC',
   SlugDesc = 'slug_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
@@ -11112,6 +11156,7 @@ export type ProductUpdateInput = {
   collections?: InputMaybe<CollectionUpdateManyInlineInput>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['String']>;
+  discount?: InputMaybe<Scalars['Int']>;
   images?: InputMaybe<AssetUpdateManyInlineInput>;
   /** Manage document localizations */
   localizations?: InputMaybe<ProductUpdateLocalizationsInput>;
@@ -11121,6 +11166,8 @@ export type ProductUpdateInput = {
   /** price input for default locale (en) */
   price?: InputMaybe<Scalars['Int']>;
   reviews?: InputMaybe<ReviewUpdateManyInlineInput>;
+  sex?: InputMaybe<Sex>;
+  size?: InputMaybe<Array<Sizes>>;
   slug?: InputMaybe<Scalars['String']>;
   variants?: InputMaybe<ProductVariantsUpdateManyInlineInput>;
 };
@@ -11166,10 +11213,13 @@ export type ProductUpdateManyInlineInput = {
 export type ProductUpdateManyInput = {
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['String']>;
+  discount?: InputMaybe<Scalars['Int']>;
   /** Optional updates to localizations */
   localizations?: InputMaybe<ProductUpdateManyLocalizationsInput>;
   /** price input for default locale (en) */
   price?: InputMaybe<Scalars['Int']>;
+  sex?: InputMaybe<Sex>;
+  size?: InputMaybe<Array<Sizes>>;
 };
 
 export type ProductUpdateManyLocalizationDataInput = {
@@ -11383,6 +11433,21 @@ export type ProductWhereInput = {
   description_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   description_starts_with?: InputMaybe<Scalars['String']>;
+  discount?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  discount_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  discount_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  discount_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  discount_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  discount_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  discount_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  discount_not_in?: InputMaybe<Array<Scalars['Int']>>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -11464,6 +11529,23 @@ export type ProductWhereInput = {
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  sex?: InputMaybe<Sex>;
+  /** All values that are contained in given list. */
+  sex_in?: InputMaybe<Array<Sex>>;
+  /** All values that are not equal to given value. */
+  sex_not?: InputMaybe<Sex>;
+  /** All values that are not contained in given list. */
+  sex_not_in?: InputMaybe<Array<Sex>>;
+  /** Matches if the field array contains *all* items provided to the filter and order does match */
+  size?: InputMaybe<Array<Sizes>>;
+  /** Matches if the field array contains *all* items provided to the filter */
+  size_contains_all?: InputMaybe<Array<Sizes>>;
+  /** Matches if the field array does not contain any of the items provided to the filter */
+  size_contains_none?: InputMaybe<Array<Sizes>>;
+  /** Matches if the field array contains at least one item provided to the filter */
+  size_contains_some?: InputMaybe<Array<Sizes>>;
+  /** Matches if the field array does not contains *all* items provided to the filter or order does not match */
+  size_not?: InputMaybe<Array<Sizes>>;
   slug?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   slug_contains?: InputMaybe<Scalars['String']>;
@@ -14029,6 +14111,21 @@ export type ScheduledReleaseWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
+export enum Sex {
+  Child = 'CHILD',
+  Man = 'MAN',
+  Unisex = 'UNISEX',
+  Woman = 'WOMAN'
+}
+
+export enum Sizes {
+  L = 'L',
+  M = 'M',
+  S = 'S',
+  Xl = 'XL',
+  Xxl = 'XXL'
+}
+
 /** Stage system enumeration */
 export enum Stage {
   /** The Draft is the default stage for all your content. */
@@ -14523,15 +14620,13 @@ export type CreateAccountMutationVariables = Exact<{
 
 export type CreateAccountMutation = { __typename?: 'Mutation', createAccount?: { __typename?: 'Account', id: string } | null };
 
-export type GetAllProductsListQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllProductsQueryVariables = Exact<{
+  first: Scalars['Int'];
+  skip: Scalars['Int'];
+}>;
 
 
-export type GetAllProductsListQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, slug: string, images: Array<{ __typename?: 'Asset', url: string }> }> };
-
-export type GetProductSlugsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetProductSlugsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', slug: string }> };
+export type GetAllProductsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
 
 export type GetProductDetailsBySlugQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']>;
@@ -14723,80 +14818,58 @@ export function useCreateAccountMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateAccountMutationHookResult = ReturnType<typeof useCreateAccountMutation>;
 export type CreateAccountMutationResult = Apollo.MutationResult<CreateAccountMutation>;
 export type CreateAccountMutationOptions = Apollo.BaseMutationOptions<CreateAccountMutation, CreateAccountMutationVariables>;
-export const GetAllProductsListDocument = gql`
-    query getAllProductsList {
-  products {
+export const GetAllProductsDocument = gql`
+    query getAllProducts($first: Int!, $skip: Int!) {
+  products(first: $first, skip: $skip) {
     id
     name
     price
+    sex
     slug
     images(first: 1) {
       url
+    }
+    categories(first: 1) {
+      id
+      name
+    }
+  }
+  totalCount: productsConnection {
+    aggregate {
+      count
     }
   }
 }
     `;
 
 /**
- * __useGetAllProductsListQuery__
+ * __useGetAllProductsQuery__
  *
- * To run a query within a React component, call `useGetAllProductsListQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllProductsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllProductsListQuery({
+ * const { data, loading, error } = useGetAllProductsQuery({
  *   variables: {
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
  *   },
  * });
  */
-export function useGetAllProductsListQuery(baseOptions?: Apollo.QueryHookOptions<GetAllProductsListQuery, GetAllProductsListQueryVariables>) {
+export function useGetAllProductsQuery(baseOptions: Apollo.QueryHookOptions<GetAllProductsQuery, GetAllProductsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllProductsListQuery, GetAllProductsListQueryVariables>(GetAllProductsListDocument, options);
+        return Apollo.useQuery<GetAllProductsQuery, GetAllProductsQueryVariables>(GetAllProductsDocument, options);
       }
-export function useGetAllProductsListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllProductsListQuery, GetAllProductsListQueryVariables>) {
+export function useGetAllProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllProductsQuery, GetAllProductsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllProductsListQuery, GetAllProductsListQueryVariables>(GetAllProductsListDocument, options);
+          return Apollo.useLazyQuery<GetAllProductsQuery, GetAllProductsQueryVariables>(GetAllProductsDocument, options);
         }
-export type GetAllProductsListQueryHookResult = ReturnType<typeof useGetAllProductsListQuery>;
-export type GetAllProductsListLazyQueryHookResult = ReturnType<typeof useGetAllProductsListLazyQuery>;
-export type GetAllProductsListQueryResult = Apollo.QueryResult<GetAllProductsListQuery, GetAllProductsListQueryVariables>;
-export const GetProductSlugsDocument = gql`
-    query getProductSlugs {
-  products {
-    slug
-  }
-}
-    `;
-
-/**
- * __useGetProductSlugsQuery__
- *
- * To run a query within a React component, call `useGetProductSlugsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetProductSlugsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetProductSlugsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetProductSlugsQuery(baseOptions?: Apollo.QueryHookOptions<GetProductSlugsQuery, GetProductSlugsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProductSlugsQuery, GetProductSlugsQueryVariables>(GetProductSlugsDocument, options);
-      }
-export function useGetProductSlugsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProductSlugsQuery, GetProductSlugsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProductSlugsQuery, GetProductSlugsQueryVariables>(GetProductSlugsDocument, options);
-        }
-export type GetProductSlugsQueryHookResult = ReturnType<typeof useGetProductSlugsQuery>;
-export type GetProductSlugsLazyQueryHookResult = ReturnType<typeof useGetProductSlugsLazyQuery>;
-export type GetProductSlugsQueryResult = Apollo.QueryResult<GetProductSlugsQuery, GetProductSlugsQueryVariables>;
+export type GetAllProductsQueryHookResult = ReturnType<typeof useGetAllProductsQuery>;
+export type GetAllProductsLazyQueryHookResult = ReturnType<typeof useGetAllProductsLazyQuery>;
+export type GetAllProductsQueryResult = Apollo.QueryResult<GetAllProductsQuery, GetAllProductsQueryVariables>;
 export const GetProductDetailsBySlugDocument = gql`
     query getProductDetailsBySlug($slug: String) {
   product(where: {slug: $slug}) {

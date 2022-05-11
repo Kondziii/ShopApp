@@ -1,18 +1,22 @@
-query getAllProductsList {
-  products {
+query getAllProducts($first: Int!, $skip: Int!) {
+  products(first: $first, skip: $skip) {
     id
     name
     price
+    sex
     slug
     images(first: 1) {
       url
     }
+    categories(first: 1) {
+      id
+      name
+    }
   }
-}
-
-query getProductSlugs {
-  products {
-    slug
+  totalCount: productsConnection {
+    aggregate {
+      count
+    }
   }
 }
 
