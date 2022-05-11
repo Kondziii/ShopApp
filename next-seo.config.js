@@ -1,14 +1,14 @@
-const title = 'ShopApp';
-const description = 'ShopApp';
+const title = 'Stoopki';
+const description = 'Sklep z bielizną i skarpetkami damskimi i męskimi.';
 
 const seoConfig = {
-  title: 'ShopApp',
+  title: 'Stoopki',
   description: description,
   openGraph: {
     url: `http://https://shop-app-blue.vercel.app/offer/products`,
     title: title,
     description: description,
-    site_name: 'ShopApp',
+    site_name: 'Stoopki',
   },
 };
 
