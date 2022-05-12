@@ -6,16 +6,19 @@ import { SectionTitle } from './SectionTitle';
 interface HomeSectionProps {
   title: string;
   items: Array<SocksSectionFragment>;
+  queryName: string;
 }
 
-export const HomeSection = ({ title, items }: HomeSectionProps) => {
+export const HomeSection = ({ title, items, queryName }: HomeSectionProps) => {
   return (
     <section>
       <SectionTitle title={title} />
       <hr />
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6'>
+      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4'>
         {items.map((item) => {
-          return <SectionItem key={item.title} item={item} />;
+          return (
+            <SectionItem queryName={queryName} key={item.title} item={item} />
+          );
         })}
       </div>
     </section>

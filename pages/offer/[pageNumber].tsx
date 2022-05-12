@@ -27,11 +27,10 @@ const PaginationPage = ({
   const filterState = useFilterState();
 
   useEffect(() => {
-    if (router.pathname.includes('/offer')) {
+    return () => {
       filterState.resetFilters();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.pathname]);
+    };
+  }, []);
 
   useEffect(() => {
     const filters = [];
@@ -69,7 +68,8 @@ const PaginationPage = ({
   ]);
 
   useEffect(() => {
-    setPageNumber(1);
+    setPageNumber(router.query.pageNumber || 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterState.searchValue, filterState.sexFilterOptions]);
 
   const handleSelectedPage = (page: number) => setPageNumber(page);

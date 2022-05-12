@@ -2,15 +2,38 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { SocksSectionFragment } from '../generated/graphql';
+import { useFilterState } from './FilterContext';
 
 interface SectionItemProps {
   item: SocksSectionFragment;
+  queryName: string;
 }
-export const SectionItem = ({ item }: SectionItemProps) => {
+export const SectionItem = ({ item, queryName }: SectionItemProps) => {
+  const filterState = useFilterState();
+
+  const handleFilter = () => {
+    filterState.setCategoryFilterOptions((prev) => {
+      return prev.map((category) => {
+        if (category.title === item.category?.name)
+          return {
+            ...category,
+            checked: true,
+          };
+        return category;
+      });
+    });
+  };
+
   return (
-    <Link href='/offer' passHref>
-      <article className='relative group my-4 cursor-pointer w-3/4 mx-auto sm:w-full bg-gray-100'>
-        <span className='group-hover:h-1/4 transition-all duration-300 absolute bottom-0 left-0 w-full h-1/5 bg-black flex items-center z-50 justify-center bg-opacity-40 text-white'>
+    <Link
+      href={`/offer/1?${queryName}=${item.category?.name}&from=section`}
+      passHref
+    >
+      <article
+        onClick={handleFilter}
+        className='relative w-3/4 mx-auto my-4 bg-gray-100 cursor-pointer group sm:w-full'
+      >
+        <span className='absolute bottom-0 left-0 z-50 flex items-center justify-center w-full text-white transition-all duration-300 bg-black group-hover:h-1/4 h-1/5 bg-opacity-40'>
           {item.category?.displayName}
         </span>
         <Image

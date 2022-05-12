@@ -35,8 +35,12 @@ const Home = ({
     <>
       <AppCarousel items={slides} />
       <TrustPilot />
-      <HomeSection title='Skarpety' items={socksSection} />
-      <HomeSection title='Bielizna' items={underwearSection} />
+      <HomeSection queryName='category' title='Skarpety' items={socksSection} />
+      <HomeSection
+        queryName='category'
+        title='Bielizna'
+        items={underwearSection}
+      />
       <AppMarquee />
       <NewsLetterForm />
       <NewsSection news={news} />
