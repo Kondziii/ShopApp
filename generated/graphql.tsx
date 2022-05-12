@@ -14605,6 +14605,113 @@ export enum _SystemDateTimeFieldVariation {
   Localization = 'localization'
 }
 
+/** One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string. */
+export type __EnumValue = {
+  __typename?: '__EnumValue';
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  isDeprecated: Scalars['Boolean'];
+  deprecationReason?: Maybe<Scalars['String']>;
+};
+
+/** Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type. */
+export type __Field = {
+  __typename?: '__Field';
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  args: Array<__InputValue>;
+  type: __Type;
+  isDeprecated: Scalars['Boolean'];
+  deprecationReason?: Maybe<Scalars['String']>;
+};
+
+
+/** Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type. */
+export type __FieldArgsArgs = {
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value. */
+export type __InputValue = {
+  __typename?: '__InputValue';
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  type: __Type;
+  /** A GraphQL-formatted string representing the default value for this input value. */
+  defaultValue?: Maybe<Scalars['String']>;
+  isDeprecated: Scalars['Boolean'];
+  deprecationReason?: Maybe<Scalars['String']>;
+};
+
+/**
+ * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
+ *
+ * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByURL`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+ */
+export type __Type = {
+  __typename?: '__Type';
+  kind: __TypeKind;
+  name?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  specifiedByURL?: Maybe<Scalars['String']>;
+  fields?: Maybe<Array<__Field>>;
+  interfaces?: Maybe<Array<__Type>>;
+  possibleTypes?: Maybe<Array<__Type>>;
+  enumValues?: Maybe<Array<__EnumValue>>;
+  inputFields?: Maybe<Array<__InputValue>>;
+  ofType?: Maybe<__Type>;
+};
+
+
+/**
+ * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
+ *
+ * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByURL`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+ */
+export type __TypeFieldsArgs = {
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
+ *
+ * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByURL`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+ */
+export type __TypeEnumValuesArgs = {
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
+ *
+ * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByURL`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+ */
+export type __TypeInputFieldsArgs = {
+  includeDeprecated?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** An enum describing what kind of type a given `__Type` is. */
+export enum __TypeKind {
+  /** Indicates this type is a scalar. */
+  Scalar = 'SCALAR',
+  /** Indicates this type is an object. `fields` and `interfaces` are valid fields. */
+  Object = 'OBJECT',
+  /** Indicates this type is an interface. `fields`, `interfaces`, and `possibleTypes` are valid fields. */
+  Interface = 'INTERFACE',
+  /** Indicates this type is a union. `possibleTypes` is a valid field. */
+  Union = 'UNION',
+  /** Indicates this type is an enum. `enumValues` is a valid field. */
+  Enum = 'ENUM',
+  /** Indicates this type is an input object. `inputFields` is a valid field. */
+  InputObject = 'INPUT_OBJECT',
+  /** Indicates this type is a list. `ofType` is a valid field. */
+  List = 'LIST',
+  /** Indicates this type is a non-null. `ofType` is a valid field. */
+  NonNull = 'NON_NULL'
+}
+
 export type CreateReviewMutationVariables = Exact<{
   review: ReviewCreateInput;
 }>;
@@ -14623,10 +14730,38 @@ export type CreateAccountMutation = { __typename?: 'Mutation', createAccount?: {
 export type GetAllProductsQueryVariables = Exact<{
   first: Scalars['Int'];
   skip: Scalars['Int'];
+  s?: Scalars['String'];
+  sex?: InputMaybe<Array<Sex> | Sex>;
 }>;
 
 
 export type GetAllProductsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+
+export type GetAllProductsWithCategoryQueryVariables = Exact<{
+  first: Scalars['Int'];
+  skip: Scalars['Int'];
+  s?: Scalars['String'];
+  sex?: InputMaybe<Array<Sex> | Sex>;
+  category?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+}>;
+
+
+export type GetAllProductsWithCategoryQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+
+export type GetSexFiltersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSexFiltersQuery = { __typename?: 'Query', sexOptions?: { __typename?: '__Type', enumValues?: Array<{ __typename?: '__EnumValue', name: string }> | null } | null };
+
+export type GetCategoryFiltersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCategoryFiltersQuery = { __typename?: 'Query', __type?: { __typename?: '__Type', enumValues?: Array<{ __typename?: '__EnumValue', name: string }> | null } | null };
+
+export type GetAllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, type: ProductCategory }> };
 
 export type GetProductDetailsBySlugQueryVariables = Exact<{
   slug?: InputMaybe<Scalars['String']>;
@@ -14819,8 +14954,8 @@ export type CreateAccountMutationHookResult = ReturnType<typeof useCreateAccount
 export type CreateAccountMutationResult = Apollo.MutationResult<CreateAccountMutation>;
 export type CreateAccountMutationOptions = Apollo.BaseMutationOptions<CreateAccountMutation, CreateAccountMutationVariables>;
 export const GetAllProductsDocument = gql`
-    query getAllProducts($first: Int!, $skip: Int!) {
-  products(first: $first, skip: $skip) {
+    query getAllProducts($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX]) {
+  products(first: $first, skip: $skip, where: {name_contains: $s, sex_in: $sex}) {
     id
     name
     price
@@ -14834,7 +14969,11 @@ export const GetAllProductsDocument = gql`
       name
     }
   }
-  totalCount: productsConnection {
+  totalCount: productsConnection(
+    first: $first
+    skip: $skip
+    where: {name_contains: $s, sex_in: $sex}
+  ) {
     aggregate {
       count
     }
@@ -14856,6 +14995,8 @@ export const GetAllProductsDocument = gql`
  *   variables: {
  *      first: // value for 'first'
  *      skip: // value for 'skip'
+ *      s: // value for 's'
+ *      sex: // value for 'sex'
  *   },
  * });
  */
@@ -14870,6 +15011,177 @@ export function useGetAllProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetAllProductsQueryHookResult = ReturnType<typeof useGetAllProductsQuery>;
 export type GetAllProductsLazyQueryHookResult = ReturnType<typeof useGetAllProductsLazyQuery>;
 export type GetAllProductsQueryResult = Apollo.QueryResult<GetAllProductsQuery, GetAllProductsQueryVariables>;
+export const GetAllProductsWithCategoryDocument = gql`
+    query getAllProductsWithCategory($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $category: [String!]) {
+  products(
+    first: $first
+    skip: $skip
+    where: {name_contains: $s, sex_in: $sex, categories_every: {name_in: $category}}
+  ) {
+    id
+    name
+    price
+    sex
+    slug
+    images(first: 1) {
+      url
+    }
+    categories(first: 1) {
+      id
+      name
+      type
+    }
+  }
+  totalCount: productsConnection(
+    first: $first
+    skip: $skip
+    where: {name_contains: $s, sex_in: $sex, categories_every: {name_in: $category}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllProductsWithCategoryQuery__
+ *
+ * To run a query within a React component, call `useGetAllProductsWithCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllProductsWithCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllProductsWithCategoryQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *      s: // value for 's'
+ *      sex: // value for 'sex'
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useGetAllProductsWithCategoryQuery(baseOptions: Apollo.QueryHookOptions<GetAllProductsWithCategoryQuery, GetAllProductsWithCategoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllProductsWithCategoryQuery, GetAllProductsWithCategoryQueryVariables>(GetAllProductsWithCategoryDocument, options);
+      }
+export function useGetAllProductsWithCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllProductsWithCategoryQuery, GetAllProductsWithCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllProductsWithCategoryQuery, GetAllProductsWithCategoryQueryVariables>(GetAllProductsWithCategoryDocument, options);
+        }
+export type GetAllProductsWithCategoryQueryHookResult = ReturnType<typeof useGetAllProductsWithCategoryQuery>;
+export type GetAllProductsWithCategoryLazyQueryHookResult = ReturnType<typeof useGetAllProductsWithCategoryLazyQuery>;
+export type GetAllProductsWithCategoryQueryResult = Apollo.QueryResult<GetAllProductsWithCategoryQuery, GetAllProductsWithCategoryQueryVariables>;
+export const GetSexFiltersDocument = gql`
+    query getSexFilters {
+  sexOptions: __type(name: "Sex") {
+    enumValues {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSexFiltersQuery__
+ *
+ * To run a query within a React component, call `useGetSexFiltersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSexFiltersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSexFiltersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSexFiltersQuery(baseOptions?: Apollo.QueryHookOptions<GetSexFiltersQuery, GetSexFiltersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSexFiltersQuery, GetSexFiltersQueryVariables>(GetSexFiltersDocument, options);
+      }
+export function useGetSexFiltersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSexFiltersQuery, GetSexFiltersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSexFiltersQuery, GetSexFiltersQueryVariables>(GetSexFiltersDocument, options);
+        }
+export type GetSexFiltersQueryHookResult = ReturnType<typeof useGetSexFiltersQuery>;
+export type GetSexFiltersLazyQueryHookResult = ReturnType<typeof useGetSexFiltersLazyQuery>;
+export type GetSexFiltersQueryResult = Apollo.QueryResult<GetSexFiltersQuery, GetSexFiltersQueryVariables>;
+export const GetCategoryFiltersDocument = gql`
+    query getCategoryFilters {
+  __type(name: "ProductCategory") {
+    enumValues {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCategoryFiltersQuery__
+ *
+ * To run a query within a React component, call `useGetCategoryFiltersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoryFiltersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoryFiltersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCategoryFiltersQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoryFiltersQuery, GetCategoryFiltersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoryFiltersQuery, GetCategoryFiltersQueryVariables>(GetCategoryFiltersDocument, options);
+      }
+export function useGetCategoryFiltersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoryFiltersQuery, GetCategoryFiltersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoryFiltersQuery, GetCategoryFiltersQueryVariables>(GetCategoryFiltersDocument, options);
+        }
+export type GetCategoryFiltersQueryHookResult = ReturnType<typeof useGetCategoryFiltersQuery>;
+export type GetCategoryFiltersLazyQueryHookResult = ReturnType<typeof useGetCategoryFiltersLazyQuery>;
+export type GetCategoryFiltersQueryResult = Apollo.QueryResult<GetCategoryFiltersQuery, GetCategoryFiltersQueryVariables>;
+export const GetAllCategoriesDocument = gql`
+    query getAllCategories {
+  categories {
+    name
+    type
+  }
+}
+    `;
+
+/**
+ * __useGetAllCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetAllCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>(GetAllCategoriesDocument, options);
+      }
+export function useGetAllCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>(GetAllCategoriesDocument, options);
+        }
+export type GetAllCategoriesQueryHookResult = ReturnType<typeof useGetAllCategoriesQuery>;
+export type GetAllCategoriesLazyQueryHookResult = ReturnType<typeof useGetAllCategoriesLazyQuery>;
+export type GetAllCategoriesQueryResult = Apollo.QueryResult<GetAllCategoriesQuery, GetAllCategoriesQueryVariables>;
 export const GetProductDetailsBySlugDocument = gql`
     query getProductDetailsBySlug($slug: String) {
   product(where: {slug: $slug}) {

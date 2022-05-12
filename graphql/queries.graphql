@@ -1,5 +1,14 @@
-query getAllProducts($first: Int!, $skip: Int!) {
-  products(first: $first, skip: $skip) {
+query getAllProducts(
+  $first: Int!
+  $skip: Int!
+  $s: String! = ""
+  $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX]
+) {
+  products(
+    first: $first
+    skip: $skip
+    where: { name_contains: $s, sex_in: $sex }
+  ) {
     id
     name
     price
@@ -13,10 +22,82 @@ query getAllProducts($first: Int!, $skip: Int!) {
       name
     }
   }
-  totalCount: productsConnection {
+  totalCount: productsConnection(
+    first: $first
+    skip: $skip
+    where: { name_contains: $s, sex_in: $sex }
+  ) {
     aggregate {
       count
     }
+  }
+}
+
+query getAllProductsWithCategory(
+  $first: Int!
+  $skip: Int!
+  $s: String! = ""
+  $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX]
+  $category: [String!]
+) {
+  products(
+    first: $first
+    skip: $skip
+    where: {
+      name_contains: $s
+      sex_in: $sex
+      categories_every: { name_in: $category }
+    }
+  ) {
+    id
+    name
+    price
+    sex
+    slug
+    images(first: 1) {
+      url
+    }
+    categories(first: 1) {
+      id
+      name
+      type
+    }
+  }
+  totalCount: productsConnection(
+    first: $first
+    skip: $skip
+    where: {
+      name_contains: $s
+      sex_in: $sex
+      categories_every: { name_in: $category }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getSexFilters {
+  sexOptions: __type(name: "Sex") {
+    enumValues {
+      name
+    }
+  }
+}
+
+query getCategoryFilters {
+  __type(name: "ProductCategory") {
+    enumValues {
+      name
+    }
+  }
+}
+
+query getAllCategories {
+  categories {
+    name
+    type
   }
 }
 
