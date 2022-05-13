@@ -115,8 +115,8 @@ export const ProductFilterSection = () => {
             className='mt-2 mb-8'
             onChange={handleChangePrice}
             marks={{
-              [priceRange[0]]: Math.round(prices[0] / 100),
-              [priceRange[1]]: Math.round(prices[1] / 100),
+              [priceRange[0]]: Math.round(prices[0] / 100) + 'zł',
+              [priceRange[1]]: Math.round(prices[1] / 100) + 'zł',
             }}
           />
         </div>

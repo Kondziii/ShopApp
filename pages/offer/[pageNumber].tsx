@@ -18,6 +18,7 @@ import { ProductFilterSection } from '../../components/ProductFilterSection';
 import { useFilterState } from '../../components/FilterContext';
 import { NoProducts } from '../../components/NoProducts';
 import { AdjustmentsIcon } from '@heroicons/react/outline';
+import AppModal from '../../components/AppModal';
 
 const PaginationPage = ({
   pagination,
@@ -92,9 +93,14 @@ const PaginationPage = ({
         <ProductFilterSection />
       </div>
       <div className='mb-4 sm:hidden'>
-        <button className='px-4 py-2 transition duration-300 rounded-full hover:bg-yellow-100'>
-          <AdjustmentsIcon className='inline h-5' /> Filtruj
-        </button>
+        <AppModal
+          btnCaption='Filtruj'
+          leftIcon={<AdjustmentsIcon className='inline h-5 mr-1' />}
+          title=''
+          isVisible={false}
+        >
+          <ProductFilterSection />
+        </AppModal>
       </div>
 
       {products.length !== 0 && (
