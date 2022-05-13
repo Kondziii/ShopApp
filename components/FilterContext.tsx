@@ -40,10 +40,7 @@ interface filterBoxType {
   type?: string;
 }
 
-interface priceFilter {
-  min: number;
-  max: number;
-}
+export type sortFilterType = 'price_ASC' | 'price_DSC' | '';
 
 interface FilterState {
   sexFilterOptions: Array<filterBoxType>;
@@ -57,6 +54,8 @@ interface FilterState {
   priceFilters: number[];
   setPriceFilters: Dispatch<SetStateAction<number[]>>;
   priceRange: number[];
+  sortFilter: sortFilterType;
+  setSortFilter: Dispatch<SetStateAction<sortFilterType>>;
 }
 
 const optionCaption = (val: String) => {
@@ -90,6 +89,7 @@ export const FilterContextProvider = ({
   const [generalCategories, setGeneralCategories] = useState<Array<string>>([]);
   const [priceFilters, setPriceFilters] = useState<Array<number>>([0, 10000]);
   const [priceRange, setPriceRange] = useState<Array<number>>([0, 10000]);
+  const [sortFilter, setSortFilter] = useState<sortFilterType>('');
 
   useEffect(() => {
     getFilterOptions();
@@ -182,6 +182,8 @@ export const FilterContextProvider = ({
         priceFilters,
         setPriceFilters,
         priceRange,
+        sortFilter,
+        setSortFilter,
       }}
     >
       {children}

@@ -14734,6 +14734,7 @@ export type GetAllProductsQueryVariables = Exact<{
   sex?: InputMaybe<Array<Sex> | Sex>;
   min?: InputMaybe<Scalars['Int']>;
   max?: InputMaybe<Scalars['Int']>;
+  sort: ProductOrderByInput;
 }>;
 
 
@@ -14747,6 +14748,7 @@ export type GetAllProductsWithCategoryQueryVariables = Exact<{
   category?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
   min?: InputMaybe<Scalars['Int']>;
   max?: InputMaybe<Scalars['Int']>;
+  sort: ProductOrderByInput;
 }>;
 
 
@@ -14963,11 +14965,12 @@ export type CreateAccountMutationHookResult = ReturnType<typeof useCreateAccount
 export type CreateAccountMutationResult = Apollo.MutationResult<CreateAccountMutation>;
 export type CreateAccountMutationOptions = Apollo.BaseMutationOptions<CreateAccountMutation, CreateAccountMutationVariables>;
 export const GetAllProductsDocument = gql`
-    query getAllProducts($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $min: Int, $max: Int) {
+    query getAllProducts($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $min: Int, $max: Int, $sort: ProductOrderByInput!) {
   products(
     first: $first
     skip: $skip
     where: {name_contains: $s, sex_in: $sex, price_lte: $max, price_gte: $min}
+    orderBy: $sort
   ) {
     id
     name
@@ -15012,6 +15015,7 @@ export const GetAllProductsDocument = gql`
  *      sex: // value for 'sex'
  *      min: // value for 'min'
  *      max: // value for 'max'
+ *      sort: // value for 'sort'
  *   },
  * });
  */
@@ -15027,11 +15031,12 @@ export type GetAllProductsQueryHookResult = ReturnType<typeof useGetAllProductsQ
 export type GetAllProductsLazyQueryHookResult = ReturnType<typeof useGetAllProductsLazyQuery>;
 export type GetAllProductsQueryResult = Apollo.QueryResult<GetAllProductsQuery, GetAllProductsQueryVariables>;
 export const GetAllProductsWithCategoryDocument = gql`
-    query getAllProductsWithCategory($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $category: [String!], $min: Int, $max: Int) {
+    query getAllProductsWithCategory($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $category: [String!], $min: Int, $max: Int, $sort: ProductOrderByInput!) {
   products(
     first: $first
     skip: $skip
     where: {name_contains: $s, sex_in: $sex, categories_every: {name_in: $category}, price_lte: $max, price_gte: $min}
+    orderBy: $sort
   ) {
     id
     name
@@ -15078,6 +15083,7 @@ export const GetAllProductsWithCategoryDocument = gql`
  *      category: // value for 'category'
  *      min: // value for 'min'
  *      max: // value for 'max'
+ *      sort: // value for 'sort'
  *   },
  * });
  */

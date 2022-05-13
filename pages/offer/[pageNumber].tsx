@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { ProductListItem } from '../../components/ProductListItem';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { ChangeEventHandler, useCallback, useEffect, useState } from 'react';
 import { Pagination } from '../../components/Pagination';
 import { apolloClient } from '../../graphql/graphqlClient';
 import {
@@ -12,13 +12,26 @@ import {
   GetAllProductsWithCategoryQuery,
   GetAllProductsWithCategoryQueryVariables,
   InputMaybe,
+  ProductOrderByInput,
   Sex,
 } from '../../generated/graphql';
 import { ProductFilterSection } from '../../components/ProductFilterSection';
-import { useFilterState } from '../../components/FilterContext';
+import { sortFilterType, useFilterState } from '../../components/FilterContext';
 import { NoProducts } from '../../components/NoProducts';
 import { AdjustmentsIcon } from '@heroicons/react/outline';
 import AppModal from '../../components/AppModal';
+import { Select } from '../../components/Select';
+
+const filterOptions = [
+  {
+    title: 'Cena: od najniższej',
+    value: 'price_ASC',
+  },
+  {
+    title: 'Cena: od najwyższej',
+    value: 'price_DESC',
+  },
+];
 
 const PaginationPage = ({
   pagination,
@@ -68,6 +81,10 @@ const PaginationPage = ({
       );
     }
 
+    if (filterState.sortFilter !== '') {
+      filters.push(`sort=${filterState.sortFilter}`);
+    }
+
     router.replace(`/offer/${pageNumber}?${filters.join('&')}`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,6 +94,7 @@ const PaginationPage = ({
     filterState.sexFilterOptions,
     filterState.categoryFilterOptions,
     filterState.priceFilters,
+    filterState.sortFilter,
   ]);
 
   useEffect(() => {
@@ -85,6 +103,10 @@ const PaginationPage = ({
   }, [filterState.searchValue, filterState.sexFilterOptions]);
 
   const handleSelectedPage = (page: number) => setPageNumber(page);
+
+  const handleSortList: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    filterState.setSortFilter(e.target.value as sortFilterType);
+  };
 
   return (
     <div className='gap-4 p-6 sm:flex '>
@@ -105,6 +127,14 @@ const PaginationPage = ({
 
       {products.length !== 0 && (
         <section className='flex-grow'>
+          <div className='flex justify-end'>
+            <Select
+              items={filterOptions}
+              container_classes='w-fit  mb-3'
+              placeholder='Sortuj'
+              onChange={handleSortList}
+            />
+          </div>
           <ul className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
             {products?.map((product) => {
               return (
@@ -143,7 +173,7 @@ const PaginationPage = ({
 export default PaginationPage;
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { pageNumber, s, sex, category, min, max } = ctx.query;
+  const { pageNumber, s, sex, category, min, max, sort } = ctx.query;
   const first = 5;
   const skip = pageNumber ? (+pageNumber - 1) * first : 0;
 
@@ -155,6 +185,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const minThreshold = min ? +min : -1;
   const maxThreshold = max ? +max : 9999999;
+
+  const sortFilter = sort ? sort : 'createdAt_DESC';
 
   if (!category) {
     response = await apolloClient.query<
@@ -169,6 +201,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         sex: sexOptions as InputMaybe<Sex | Sex[]>,
         min: minThreshold,
         max: maxThreshold,
+        sort: sortFilter as ProductOrderByInput,
       },
     });
   } else {
@@ -185,6 +218,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         category: categoryOptions,
         min: minThreshold,
         max: maxThreshold,
+        sort: sortFilter as ProductOrderByInput,
       },
     });
   }

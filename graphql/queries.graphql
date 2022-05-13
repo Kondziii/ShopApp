@@ -5,11 +5,13 @@ query getAllProducts(
   $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX]
   $min: Int
   $max: Int
+  $sort: ProductOrderByInput!
 ) {
   products(
     first: $first
     skip: $skip
     where: { name_contains: $s, sex_in: $sex, price_lte: $max, price_gte: $min }
+    orderBy: $sort
   ) {
     id
     name
@@ -43,6 +45,7 @@ query getAllProductsWithCategory(
   $category: [String!]
   $min: Int
   $max: Int
+  $sort: ProductOrderByInput!
 ) {
   products(
     first: $first
@@ -54,6 +57,7 @@ query getAllProductsWithCategory(
       price_lte: $max
       price_gte: $min
     }
+    orderBy: $sort
   ) {
     id
     name
