@@ -114,7 +114,7 @@ const PaginationPage = ({
       <div className='hidden sm:block'>
         <ProductFilterSection />
       </div>
-      <div className='mb-4 sm:hidden'>
+      <div className='mb-4 flex justify-between items-center sm:hidden'>
         <AppModal
           btnCaption='Filtruj'
           leftIcon={<AdjustmentsIcon className='inline h-5 mr-1' />}
@@ -123,14 +123,22 @@ const PaginationPage = ({
         >
           <ProductFilterSection />
         </AppModal>
+        <div className='justify-end flex'>
+          <Select
+            items={filterOptions}
+            container_classes='w-fit mb-3'
+            placeholder='Sortuj'
+            onChange={handleSortList}
+          />
+        </div>
       </div>
 
       {products.length !== 0 && (
         <section className='flex-grow'>
-          <div className='flex justify-end'>
+          <div className=' justify-end hidden sm:flex'>
             <Select
               items={filterOptions}
-              container_classes='w-fit  mb-3'
+              container_classes='w-fit mb-3'
               placeholder='Sortuj'
               onChange={handleSortList}
             />
