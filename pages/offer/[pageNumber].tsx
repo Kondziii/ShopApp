@@ -17,6 +17,7 @@ import {
 import { ProductFilterSection } from '../../components/ProductFilterSection';
 import { useFilterState } from '../../components/FilterContext';
 import { NoProducts } from '../../components/NoProducts';
+import { AdjustmentsIcon } from '@heroicons/react/outline';
 
 const PaginationPage = ({
   pagination,
@@ -57,7 +58,16 @@ const PaginationPage = ({
       );
     }
 
-    router.push(`/offer/${pageNumber}?${filters.join('&')}`);
+    if (
+      filterState.priceFilters &&
+      filterState.priceFilters.join() !== filterState.priceRange.join()
+    ) {
+      filters.push(
+        `min=${filterState.priceFilters[0]}&max=${filterState.priceFilters[1]}`
+      );
+    }
+
+    router.replace(`/offer/${pageNumber}?${filters.join('&')}`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -65,6 +75,7 @@ const PaginationPage = ({
     filterState.searchValue,
     filterState.sexFilterOptions,
     filterState.categoryFilterOptions,
+    filterState.priceFilters,
   ]);
 
   useEffect(() => {
@@ -75,11 +86,20 @@ const PaginationPage = ({
   const handleSelectedPage = (page: number) => setPageNumber(page);
 
   return (
-    <div className='grid grid-cols-12 gap-4 p-6 '>
-      <ProductFilterSection />
+    <div className='gap-4 p-6 sm:flex '>
+      {/* Filter bar according to device size */}
+      <div className='hidden sm:block'>
+        <ProductFilterSection />
+      </div>
+      <div className='mb-4 sm:hidden'>
+        <button className='px-4 py-2 transition duration-300 rounded-full hover:bg-yellow-100'>
+          <AdjustmentsIcon className='inline h-5' /> Filtruj
+        </button>
+      </div>
+
       {products.length !== 0 && (
-        <section className='col-span-9'>
-          <ul className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3'>
+        <section className='flex-grow'>
+          <ul className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
             {products?.map((product) => {
               return (
                 <ProductListItem
@@ -117,7 +137,7 @@ const PaginationPage = ({
 export default PaginationPage;
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { pageNumber, s, sex, category } = ctx.query;
+  const { pageNumber, s, sex, category, min, max } = ctx.query;
   const first = 5;
   const skip = pageNumber ? (+pageNumber - 1) * first : 0;
 
@@ -126,6 +146,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     typeof category === 'string' ? category.split(',') : category;
 
   let response;
+
+  const minThreshold = min ? +min : -1;
+  const maxThreshold = max ? +max : 9999999;
 
   if (!category) {
     response = await apolloClient.query<
@@ -138,6 +161,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         skip,
         s: s?.toString() || '',
         sex: sexOptions as InputMaybe<Sex | Sex[]>,
+        min: minThreshold,
+        max: maxThreshold,
       },
     });
   } else {
@@ -152,6 +177,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         s: s?.toString() || '',
         sex: sexOptions as InputMaybe<Sex | Sex[]>,
         category: categoryOptions,
+        min: minThreshold,
+        max: maxThreshold,
       },
     });
   }

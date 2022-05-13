@@ -3,11 +3,13 @@ query getAllProducts(
   $skip: Int!
   $s: String! = ""
   $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX]
+  $min: Int
+  $max: Int
 ) {
   products(
     first: $first
     skip: $skip
-    where: { name_contains: $s, sex_in: $sex }
+    where: { name_contains: $s, sex_in: $sex, price_lte: $max, price_gte: $min }
   ) {
     id
     name
@@ -25,7 +27,7 @@ query getAllProducts(
   totalCount: productsConnection(
     first: $first
     skip: $skip
-    where: { name_contains: $s, sex_in: $sex }
+    where: { name_contains: $s, sex_in: $sex, price_lte: $max, price_gte: $min }
   ) {
     aggregate {
       count
@@ -39,6 +41,8 @@ query getAllProductsWithCategory(
   $s: String! = ""
   $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX]
   $category: [String!]
+  $min: Int
+  $max: Int
 ) {
   products(
     first: $first
@@ -47,6 +51,8 @@ query getAllProductsWithCategory(
       name_contains: $s
       sex_in: $sex
       categories_every: { name_in: $category }
+      price_lte: $max
+      price_gte: $min
     }
   ) {
     id
@@ -70,6 +76,8 @@ query getAllProductsWithCategory(
       name_contains: $s
       sex_in: $sex
       categories_every: { name_in: $category }
+      price_lte: $max
+      price_gte: $min
     }
   ) {
     aggregate {
@@ -91,6 +99,15 @@ query getCategoryFilters {
     enumValues {
       name
     }
+  }
+}
+
+query getPriceFilters {
+  max: products(where: {}, orderBy: price_DESC, first: 1) {
+    price
+  }
+  min: products(where: {}, orderBy: price_ASC, first: 1) {
+    price
   }
 }
 

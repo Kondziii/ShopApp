@@ -1,11 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from './Input';
 import yup from '../yup';
-import { AppCheckbox } from './AppCheckbox';
 import { AppCheckboxGroup } from './AppCheckboxGroup';
 import { useFilterState } from './FilterContext';
+import Slider from 'rc-slider';
 
 const searchFormSchema = yup
   .object({
@@ -16,6 +16,7 @@ const searchFormSchema = yup
 type searchForm = yup.InferType<typeof searchFormSchema>;
 
 export const ProductFilterSection = () => {
+  const [renderKey, setRenderKey] = useState(0);
   const {
     sexFilterOptions,
     setSexFilterOptions,
@@ -23,6 +24,9 @@ export const ProductFilterSection = () => {
     setCategoryFilterOptions,
     generalCategories,
     resetFilters,
+    priceFilters,
+    setPriceFilters,
+    priceRange,
     ...filterState
   } = useFilterState();
 
@@ -40,15 +44,34 @@ export const ProductFilterSection = () => {
   });
 
   const handleReset = () => {
+    console.log('slo');
+    setPrices([...priceRange]);
+    setRenderKey((val) => val + 1);
     resetFilters();
     reset({
       search: '',
     });
+    console.log('hvg', prices);
+  };
+
+  const [prices, setPrices] = useState<Array<number>>([0, 5000]);
+
+  useEffect(() => {
+    if (priceRange) {
+      setPrices([...priceRange]);
+    }
+  }, [priceRange]);
+
+  const handleChangePrice = (values: number | number[]) => {
+    if (typeof values !== 'number') {
+      setPrices([...values]);
+    }
   };
 
   return (
-    <aside className='col-span-3 p-4 bg-white rounded shadow h-fit'>
+    <aside className='col-span-3 p-4 bg-white rounded shadow sm:p-8 h-fit min-w-[150px] '>
       <h2 className='text-xl font-semibold md:text-2xl'>Filtry</h2>
+
       <form onSubmit={onSubmit} className='mt-2'>
         <Input
           id='search'
@@ -67,6 +90,38 @@ export const ProductFilterSection = () => {
           </button>
         </div>
       </form>
+
+      {priceFilters && (
+        <div
+          className='my-2 ml-2'
+          onMouseLeave={() => setPriceFilters([...prices])}
+          key={renderKey}
+        >
+          <h3 className='-ml-2 font-semibold text-md'>Cena:</h3>
+          <Slider
+            range
+            min={priceRange[0]}
+            max={priceRange[1]}
+            defaultValue={priceRange}
+            trackStyle={{ background: '#334155', height: '5px' }}
+            activeDotStyle={{ boxShadow: '0 0 0 5px #334155' }}
+            handleStyle={{
+              borderColor: '#334155',
+              height: '16px',
+              width: '16px',
+              boxShadow: '0 0 0 1px rgba(51, 65, 85, 0.3)',
+            }}
+            railStyle={{ height: '5px' }}
+            className='mt-2 mb-8'
+            onChange={handleChangePrice}
+            marks={{
+              [priceRange[0]]: Math.round(prices[0] / 100),
+              [priceRange[1]]: Math.round(prices[1] / 100),
+            }}
+          />
+        </div>
+      )}
+
       <div className='my-2 ml-2'>
         <h3 className='-ml-2 font-semibold text-md'>Płeć:</h3>
         <AppCheckboxGroup

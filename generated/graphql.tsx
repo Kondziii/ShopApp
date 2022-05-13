@@ -14732,6 +14732,8 @@ export type GetAllProductsQueryVariables = Exact<{
   skip: Scalars['Int'];
   s?: Scalars['String'];
   sex?: InputMaybe<Array<Sex> | Sex>;
+  min?: InputMaybe<Scalars['Int']>;
+  max?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -14743,6 +14745,8 @@ export type GetAllProductsWithCategoryQueryVariables = Exact<{
   s?: Scalars['String'];
   sex?: InputMaybe<Array<Sex> | Sex>;
   category?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  min?: InputMaybe<Scalars['Int']>;
+  max?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -14757,6 +14761,11 @@ export type GetCategoryFiltersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetCategoryFiltersQuery = { __typename?: 'Query', __type?: { __typename?: '__Type', enumValues?: Array<{ __typename?: '__EnumValue', name: string }> | null } | null };
+
+export type GetPriceFiltersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPriceFiltersQuery = { __typename?: 'Query', max: Array<{ __typename?: 'Product', price: number }>, min: Array<{ __typename?: 'Product', price: number }> };
 
 export type GetAllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -14954,8 +14963,12 @@ export type CreateAccountMutationHookResult = ReturnType<typeof useCreateAccount
 export type CreateAccountMutationResult = Apollo.MutationResult<CreateAccountMutation>;
 export type CreateAccountMutationOptions = Apollo.BaseMutationOptions<CreateAccountMutation, CreateAccountMutationVariables>;
 export const GetAllProductsDocument = gql`
-    query getAllProducts($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX]) {
-  products(first: $first, skip: $skip, where: {name_contains: $s, sex_in: $sex}) {
+    query getAllProducts($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $min: Int, $max: Int) {
+  products(
+    first: $first
+    skip: $skip
+    where: {name_contains: $s, sex_in: $sex, price_lte: $max, price_gte: $min}
+  ) {
     id
     name
     price
@@ -14972,7 +14985,7 @@ export const GetAllProductsDocument = gql`
   totalCount: productsConnection(
     first: $first
     skip: $skip
-    where: {name_contains: $s, sex_in: $sex}
+    where: {name_contains: $s, sex_in: $sex, price_lte: $max, price_gte: $min}
   ) {
     aggregate {
       count
@@ -14997,6 +15010,8 @@ export const GetAllProductsDocument = gql`
  *      skip: // value for 'skip'
  *      s: // value for 's'
  *      sex: // value for 'sex'
+ *      min: // value for 'min'
+ *      max: // value for 'max'
  *   },
  * });
  */
@@ -15012,11 +15027,11 @@ export type GetAllProductsQueryHookResult = ReturnType<typeof useGetAllProductsQ
 export type GetAllProductsLazyQueryHookResult = ReturnType<typeof useGetAllProductsLazyQuery>;
 export type GetAllProductsQueryResult = Apollo.QueryResult<GetAllProductsQuery, GetAllProductsQueryVariables>;
 export const GetAllProductsWithCategoryDocument = gql`
-    query getAllProductsWithCategory($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $category: [String!]) {
+    query getAllProductsWithCategory($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $category: [String!], $min: Int, $max: Int) {
   products(
     first: $first
     skip: $skip
-    where: {name_contains: $s, sex_in: $sex, categories_every: {name_in: $category}}
+    where: {name_contains: $s, sex_in: $sex, categories_every: {name_in: $category}, price_lte: $max, price_gte: $min}
   ) {
     id
     name
@@ -15035,7 +15050,7 @@ export const GetAllProductsWithCategoryDocument = gql`
   totalCount: productsConnection(
     first: $first
     skip: $skip
-    where: {name_contains: $s, sex_in: $sex, categories_every: {name_in: $category}}
+    where: {name_contains: $s, sex_in: $sex, categories_every: {name_in: $category}, price_lte: $max, price_gte: $min}
   ) {
     aggregate {
       count
@@ -15061,6 +15076,8 @@ export const GetAllProductsWithCategoryDocument = gql`
  *      s: // value for 's'
  *      sex: // value for 'sex'
  *      category: // value for 'category'
+ *      min: // value for 'min'
+ *      max: // value for 'max'
  *   },
  * });
  */
@@ -15147,6 +15164,43 @@ export function useGetCategoryFiltersLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetCategoryFiltersQueryHookResult = ReturnType<typeof useGetCategoryFiltersQuery>;
 export type GetCategoryFiltersLazyQueryHookResult = ReturnType<typeof useGetCategoryFiltersLazyQuery>;
 export type GetCategoryFiltersQueryResult = Apollo.QueryResult<GetCategoryFiltersQuery, GetCategoryFiltersQueryVariables>;
+export const GetPriceFiltersDocument = gql`
+    query getPriceFilters {
+  max: products(where: {}, orderBy: price_DESC, first: 1) {
+    price
+  }
+  min: products(where: {}, orderBy: price_ASC, first: 1) {
+    price
+  }
+}
+    `;
+
+/**
+ * __useGetPriceFiltersQuery__
+ *
+ * To run a query within a React component, call `useGetPriceFiltersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPriceFiltersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPriceFiltersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPriceFiltersQuery(baseOptions?: Apollo.QueryHookOptions<GetPriceFiltersQuery, GetPriceFiltersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPriceFiltersQuery, GetPriceFiltersQueryVariables>(GetPriceFiltersDocument, options);
+      }
+export function useGetPriceFiltersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPriceFiltersQuery, GetPriceFiltersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPriceFiltersQuery, GetPriceFiltersQueryVariables>(GetPriceFiltersDocument, options);
+        }
+export type GetPriceFiltersQueryHookResult = ReturnType<typeof useGetPriceFiltersQuery>;
+export type GetPriceFiltersLazyQueryHookResult = ReturnType<typeof useGetPriceFiltersLazyQuery>;
+export type GetPriceFiltersQueryResult = Apollo.QueryResult<GetPriceFiltersQuery, GetPriceFiltersQueryVariables>;
 export const GetAllCategoriesDocument = gql`
     query getAllCategories {
   categories {

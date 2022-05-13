@@ -15,6 +15,9 @@ import {
   GetCategoryFiltersDocument,
   GetCategoryFiltersQuery,
   GetCategoryFiltersQueryVariables,
+  GetPriceFiltersDocument,
+  GetPriceFiltersQuery,
+  GetPriceFiltersQueryVariables,
   GetSexFiltersDocument,
   GetSexFiltersQuery,
   GetSexFiltersQueryVariables,
@@ -37,6 +40,11 @@ interface filterBoxType {
   type?: string;
 }
 
+interface priceFilter {
+  min: number;
+  max: number;
+}
+
 interface FilterState {
   sexFilterOptions: Array<filterBoxType>;
   setSexFilterOptions: Dispatch<SetStateAction<filterBoxType[]>>;
@@ -46,6 +54,9 @@ interface FilterState {
   setCategoryFilterOptions: Dispatch<SetStateAction<filterBoxType[]>>;
   generalCategories: Array<string>;
   resetFilters: () => void;
+  priceFilters: number[];
+  setPriceFilters: Dispatch<SetStateAction<number[]>>;
+  priceRange: number[];
 }
 
 const optionCaption = (val: String) => {
@@ -77,12 +88,27 @@ export const FilterContextProvider = ({
   >([]);
 
   const [generalCategories, setGeneralCategories] = useState<Array<string>>([]);
+  const [priceFilters, setPriceFilters] = useState<Array<number>>([0, 10000]);
+  const [priceRange, setPriceRange] = useState<Array<number>>([0, 10000]);
 
   useEffect(() => {
     getFilterOptions();
+    getPriceFilterOptions();
     getGeneralCategories();
     getCategoryFilterOptions();
   }, []);
+
+  const getPriceFilterOptions = async () => {
+    const options = await apolloClient.query<
+      GetPriceFiltersQuery,
+      GetPriceFiltersQueryVariables
+    >({
+      query: GetPriceFiltersDocument,
+    });
+
+    setPriceRange([options.data.min[0].price, options.data.max[0].price]);
+    setPriceFilters([options.data.min[0].price, options.data.max[0].price]);
+  };
 
   const getFilterOptions = async () => {
     const options = await apolloClient.query<
@@ -138,6 +164,7 @@ export const FilterContextProvider = ({
   const resetFilters = () => {
     setSexFilterOptions((prev) => resetFilterArrays(prev));
     setCategoryFilterOptions((prev) => resetFilterArrays(prev));
+    setPriceFilters([...priceRange]);
     setSearchValue('');
   };
 
@@ -152,6 +179,9 @@ export const FilterContextProvider = ({
         setCategoryFilterOptions,
         generalCategories,
         resetFilters,
+        priceFilters,
+        setPriceFilters,
+        priceRange,
       }}
     >
       {children}
