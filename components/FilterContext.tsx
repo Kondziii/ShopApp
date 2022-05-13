@@ -166,6 +166,7 @@ export const FilterContextProvider = ({
     setCategoryFilterOptions((prev) => resetFilterArrays(prev));
     setPriceFilters([...priceRange]);
     setSearchValue('');
+    setSortFilter('');
   };
 
   return (

@@ -11,6 +11,7 @@ import { ApolloProvider } from '@apollo/client';
 import { apolloClient } from '../graphql/graphqlClient';
 import { SessionProvider } from 'next-auth/react';
 import { FilterContextProvider } from '../components/FilterContext';
+import NextNProgress from 'nextjs-progressbar';
 
 const client = new QueryClient();
 
@@ -22,6 +23,10 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <CartContextProvider>
             <Layout>
               <QueryClientProvider client={client}>
+                <NextNProgress
+                  color='#FACC15'
+                  options={{ showSpinner: false }}
+                />
                 <Component {...pageProps} />
                 {/* <ReactQueryDevtools /> */}
               </QueryClientProvider>
