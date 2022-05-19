@@ -6,7 +6,7 @@ module.exports = {
         logo: 'Dancing Script, sans-serif',
       },
       animation: {
-        'fade-in': 'fadeIn 1s linear ',
+        'fade-in': 'fadeIn 0.3s linear forwards',
       },
 
       fontSize: {

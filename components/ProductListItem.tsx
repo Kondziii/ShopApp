@@ -29,15 +29,15 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
 
   return (
     <Link href={`/offer/products/${data.slug}`} passHref>
-      <li className='group relative text-sm sm:text-base p-6 pt-10 transition-all duration-300 bg-white rounded shadow cursor-pointer hover:shadow-lg'>
-        <span className='bg-green-600 text-white absolute top-5 left-5 rounded-full text-xxs px-2 py-1 lowercase'>
+      <li className='relative z-20 p-6 pt-10 text-sm transition-all duration-300 bg-white rounded shadow cursor-pointer group sm:text-base hover:shadow-lg'>
+        <span className='absolute px-2 py-1 text-white lowercase bg-green-600 rounded-full top-5 left-5 text-xxs'>
           {sexCaption(data.sex)}
         </span>
         {session.status === 'authenticated' && (
           <FavouriteBtn itemId={data.id} />
         )}
 
-        <div className='w-full relative'>
+        <div className='relative w-full'>
           <Image
             layout='responsive'
             width={4}
@@ -80,7 +80,7 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
               count: 1,
             })
           }
-          className='flex items-center space-x-2 rounded-full px-4 py-2 mt-4 text-sm transition duration-300 border  text-slate-700 border-slate-700 hover:bg-slate-700 hover:text-white focus:ring-1 ring-slate-500'
+          className='flex items-center px-4 py-2 mt-4 space-x-2 text-sm transition duration-300 border rounded-full text-slate-700 border-slate-700 hover:bg-slate-700 hover:text-white focus:ring-1 ring-slate-500'
         >
           <ShoppingCartIcon className='h-4' />
           <span>Dodaj do koszyka</span>

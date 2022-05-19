@@ -3,6 +3,7 @@ import { HeartIcon as HeartIconOutline } from '@heroicons/react/outline';
 import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { getSession, useSession } from 'next-auth/react';
 import { useUserState } from './UserContext';
+import Tooltip from 'rc-tooltip';
 
 interface FavouriteBtnProps {
   itemId: string;
@@ -26,19 +27,32 @@ export const FavouriteBtn = ({ itemId }: FavouriteBtnProps) => {
   };
 
   return (
-    <>
-      <button
-        onMouseOver={() => setIsMouseOver(true)}
-        onMouseLeave={() => setIsMouseOver(false)}
-        onClick={handleClick}
-        key={isFavorite(itemId)}
-      >
-        {isFavorite(itemId) ? (
-          <HeartIcon className='text-slate-700 h-6 absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition duration-300 ' />
-        ) : (
-          <HeartIconOutline className='h-6 text-slate-700 absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition duration-300 ' />
+    <button
+      onMouseOver={() => setIsMouseOver(true)}
+      onMouseLeave={() => setIsMouseOver(false)}
+      onClick={handleClick}
+      key={isFavorite(itemId)}
+      className='absolute top-5 right-5 '
+    >
+      <div className='relative'>
+        {isMouseOver && (
+          <span className='absolute px-4 py-1 text-xs rounded-full shadow opacity-0 animate-fade-in -right-8 bg-gray-50 w-fit -top-10'>
+            {!isFavorite(itemId) ? 'Dodaj do ulubionych' : 'Usuń z ulubionych'}
+          </span>
         )}
-      </button>
-    </>
+
+        {isFavorite(itemId) ? (
+          <HeartIcon
+            aria-describedby={`tip${itemId}`}
+            className='h-6 transition duration-300 opacity-0 text-slate-700 group-hover:opacity-100 '
+          />
+        ) : (
+          <HeartIconOutline
+            aria-describedby={`tip${itemId}`}
+            className='h-6 transition duration-300 opacity-0 text-slate-700 group-hover:opacity-100'
+          />
+        )}
+      </div>
+    </button>
   );
 };
