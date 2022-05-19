@@ -68,7 +68,9 @@ export const Header = () => {
                 </>
               )}
             </Menu>
-            <HeartIcon className='h-7 text-gray-600' />
+            {session.status === 'authenticated' && (
+              <HeartIcon className='h-7 text-gray-600' />
+            )}
             <CartBar />
           </div>
 

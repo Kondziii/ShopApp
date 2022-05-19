@@ -12,6 +12,7 @@ import { apolloClient } from '../graphql/graphqlClient';
 import { SessionProvider } from 'next-auth/react';
 import { FilterContextProvider } from '../components/FilterContext';
 import NextNProgress from 'nextjs-progressbar';
+import { UserContextProvider } from '../components/UserContext';
 
 const client = new QueryClient();
 
@@ -19,20 +20,22 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
       <ApolloProvider client={apolloClient}>
-        <FilterContextProvider>
-          <CartContextProvider>
-            <Layout>
-              <QueryClientProvider client={client}>
-                <NextNProgress
-                  color='#FACC15'
-                  options={{ showSpinner: false }}
-                />
-                <Component {...pageProps} />
-                {/* <ReactQueryDevtools /> */}
-              </QueryClientProvider>
-            </Layout>
-          </CartContextProvider>
-        </FilterContextProvider>
+        <QueryClientProvider client={client}>
+          <UserContextProvider>
+            <FilterContextProvider>
+              <CartContextProvider>
+                <Layout>
+                  <NextNProgress
+                    color='#FACC15'
+                    options={{ showSpinner: false }}
+                  />
+                  <Component {...pageProps} />
+                  {/* <ReactQueryDevtools /> */}
+                </Layout>
+              </CartContextProvider>
+            </FilterContextProvider>
+          </UserContextProvider>
+        </QueryClientProvider>
       </ApolloProvider>
     </SessionProvider>
   );

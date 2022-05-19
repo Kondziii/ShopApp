@@ -44,7 +44,6 @@ export const ProductFilterSection = () => {
   });
 
   const handleReset = () => {
-    console.log('slo');
     setPrices([...priceRange]);
     setRenderKey((val) => val + 1);
     resetFilters();

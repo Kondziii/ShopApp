@@ -17,7 +17,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         <select
           ref={ref}
           {...props}
-          className='mt-2 rounded focus:border-yellow-500 focus:ring-yellow-500 ring-offset-yellow-500 '
+          className='mt-2 rounded text-sm focus:border-yellow-500 focus:ring-yellow-500 ring-offset-yellow-500 '
         >
           <option value={''} className='hidden'>
             {props.placeholder}

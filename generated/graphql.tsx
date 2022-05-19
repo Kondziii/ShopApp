@@ -37,6 +37,7 @@ export type Account = Node & {
   /** Get the document in other stages */
   documentInStages: Array<Account>;
   email: Scalars['String'];
+  favorites: Array<Product>;
   /** List of Account versions */
   history: Array<Version>;
   /** The unique identifier */
@@ -65,6 +66,18 @@ export type AccountDocumentInStagesArgs = {
   includeCurrent?: Scalars['Boolean'];
   inheritLocale?: Scalars['Boolean'];
   stages?: Array<Stage>;
+};
+
+
+export type AccountFavoritesArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  locales?: InputMaybe<Array<Locale>>;
+  orderBy?: InputMaybe<ProductOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ProductWhereInput>;
 };
 
 
@@ -115,6 +128,7 @@ export type AccountConnection = {
 export type AccountCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
+  favorites?: InputMaybe<ProductCreateManyInlineInput>;
   password: Scalars['String'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
@@ -187,6 +201,9 @@ export type AccountManyWhereInput = {
   email_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   email_starts_with?: InputMaybe<Scalars['String']>;
+  favorites_every?: InputMaybe<ProductWhereInput>;
+  favorites_none?: InputMaybe<ProductWhereInput>;
+  favorites_some?: InputMaybe<ProductWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -279,6 +296,7 @@ export enum AccountOrderByInput {
 
 export type AccountUpdateInput = {
   email?: InputMaybe<Scalars['String']>;
+  favorites?: InputMaybe<ProductUpdateManyInlineInput>;
   password?: InputMaybe<Scalars['String']>;
 };
 
@@ -391,6 +409,9 @@ export type AccountWhereInput = {
   email_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   email_starts_with?: InputMaybe<Scalars['String']>;
+  favorites_every?: InputMaybe<ProductWhereInput>;
+  favorites_none?: InputMaybe<ProductWhereInput>;
+  favorites_some?: InputMaybe<ProductWhereInput>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -9885,6 +9906,7 @@ export type ProductConnection = {
 
 export type ProductCreateInput = {
   categories?: InputMaybe<CategoryCreateManyInlineInput>;
+  cl3bxoyq73gis01yy2wmkao8z?: InputMaybe<AccountCreateManyInlineInput>;
   collections?: InputMaybe<CollectionCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** description input for default locale (en) */
@@ -11153,6 +11175,7 @@ export type ProductSizeVariantWhereUniqueInput = {
 
 export type ProductUpdateInput = {
   categories?: InputMaybe<CategoryUpdateManyInlineInput>;
+  cl3bxoyq73gis01yy2wmkao8z?: InputMaybe<AccountUpdateManyInlineInput>;
   collections?: InputMaybe<CollectionUpdateManyInlineInput>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['String']>;
@@ -14727,6 +14750,22 @@ export type CreateAccountMutationVariables = Exact<{
 
 export type CreateAccountMutation = { __typename?: 'Mutation', createAccount?: { __typename?: 'Account', id: string } | null };
 
+export type AddToFavoriteMutationVariables = Exact<{
+  user: Scalars['String'];
+  item: Scalars['ID'];
+}>;
+
+
+export type AddToFavoriteMutation = { __typename?: 'Mutation', updateAccount?: { __typename?: 'Account', favorites: Array<{ __typename?: 'Product', id: string }> } | null };
+
+export type DeleteFromFavoriteMutationVariables = Exact<{
+  user: Scalars['String'];
+  item: Scalars['ID'];
+}>;
+
+
+export type DeleteFromFavoriteMutation = { __typename?: 'Mutation', updateAccount?: { __typename?: 'Account', id: string, favorites: Array<{ __typename?: 'Product', id: string, name: string }> } | null };
+
 export type GetAllProductsQueryVariables = Exact<{
   first: Scalars['Int'];
   skip: Scalars['Int'];
@@ -14738,7 +14777,7 @@ export type GetAllProductsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllProductsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+export type GetAllProductsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, discount?: number | null, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
 
 export type GetAllProductsWithCategoryQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -14752,7 +14791,7 @@ export type GetAllProductsWithCategoryQueryVariables = Exact<{
 }>;
 
 
-export type GetAllProductsWithCategoryQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+export type GetAllProductsWithCategoryQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, discount?: number | null, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
 
 export type GetSexFiltersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -14802,7 +14841,7 @@ export type GetAccountByEmailQueryVariables = Exact<{
 }>;
 
 
-export type GetAccountByEmailQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, email: string, password: string } | null };
+export type GetAccountByEmailQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: string, email: string, password: string, favorites: Array<{ __typename?: 'Product', id: string }> } | null };
 
 export type CarouselItemFragment = { __typename?: 'Carousel', id: string, title?: string | null, description?: string | null, image?: { __typename?: 'Asset', id: string, url: string } | null };
 
@@ -14964,6 +15003,86 @@ export function useCreateAccountMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateAccountMutationHookResult = ReturnType<typeof useCreateAccountMutation>;
 export type CreateAccountMutationResult = Apollo.MutationResult<CreateAccountMutation>;
 export type CreateAccountMutationOptions = Apollo.BaseMutationOptions<CreateAccountMutation, CreateAccountMutationVariables>;
+export const AddToFavoriteDocument = gql`
+    mutation addToFavorite($user: String!, $item: ID!) {
+  updateAccount(
+    where: {email: $user}
+    data: {favorites: {connect: {where: {id: $item}}}}
+  ) {
+    favorites {
+      id
+    }
+  }
+}
+    `;
+export type AddToFavoriteMutationFn = Apollo.MutationFunction<AddToFavoriteMutation, AddToFavoriteMutationVariables>;
+
+/**
+ * __useAddToFavoriteMutation__
+ *
+ * To run a mutation, you first call `useAddToFavoriteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddToFavoriteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addToFavoriteMutation, { data, loading, error }] = useAddToFavoriteMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *      item: // value for 'item'
+ *   },
+ * });
+ */
+export function useAddToFavoriteMutation(baseOptions?: Apollo.MutationHookOptions<AddToFavoriteMutation, AddToFavoriteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddToFavoriteMutation, AddToFavoriteMutationVariables>(AddToFavoriteDocument, options);
+      }
+export type AddToFavoriteMutationHookResult = ReturnType<typeof useAddToFavoriteMutation>;
+export type AddToFavoriteMutationResult = Apollo.MutationResult<AddToFavoriteMutation>;
+export type AddToFavoriteMutationOptions = Apollo.BaseMutationOptions<AddToFavoriteMutation, AddToFavoriteMutationVariables>;
+export const DeleteFromFavoriteDocument = gql`
+    mutation deleteFromFavorite($user: String!, $item: ID!) {
+  updateAccount(
+    data: {favorites: {disconnect: {id: $item}}}
+    where: {email: $user}
+  ) {
+    id
+    favorites {
+      id
+      name
+    }
+  }
+}
+    `;
+export type DeleteFromFavoriteMutationFn = Apollo.MutationFunction<DeleteFromFavoriteMutation, DeleteFromFavoriteMutationVariables>;
+
+/**
+ * __useDeleteFromFavoriteMutation__
+ *
+ * To run a mutation, you first call `useDeleteFromFavoriteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFromFavoriteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFromFavoriteMutation, { data, loading, error }] = useDeleteFromFavoriteMutation({
+ *   variables: {
+ *      user: // value for 'user'
+ *      item: // value for 'item'
+ *   },
+ * });
+ */
+export function useDeleteFromFavoriteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteFromFavoriteMutation, DeleteFromFavoriteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteFromFavoriteMutation, DeleteFromFavoriteMutationVariables>(DeleteFromFavoriteDocument, options);
+      }
+export type DeleteFromFavoriteMutationHookResult = ReturnType<typeof useDeleteFromFavoriteMutation>;
+export type DeleteFromFavoriteMutationResult = Apollo.MutationResult<DeleteFromFavoriteMutation>;
+export type DeleteFromFavoriteMutationOptions = Apollo.BaseMutationOptions<DeleteFromFavoriteMutation, DeleteFromFavoriteMutationVariables>;
 export const GetAllProductsDocument = gql`
     query getAllProducts($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $min: Int, $max: Int, $sort: ProductOrderByInput!) {
   products(
@@ -14977,6 +15096,7 @@ export const GetAllProductsDocument = gql`
     price
     sex
     slug
+    discount
     images(first: 1) {
       url
     }
@@ -15043,6 +15163,7 @@ export const GetAllProductsWithCategoryDocument = gql`
     price
     sex
     slug
+    discount
     images(first: 1) {
       url
     }
@@ -15371,6 +15492,9 @@ export const GetAccountByEmailDocument = gql`
     id
     email
     password
+    favorites {
+      id
+    }
   }
 }
     `;

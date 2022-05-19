@@ -33,7 +33,7 @@ const filterOptions = [
   },
 ];
 
-const PaginationPage = ({
+const ProductListPage = ({
   pagination,
   products,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -155,6 +155,8 @@ const PaginationPage = ({
                     price: product.price,
                     thumbnailSrc: product.images[0].url,
                     thumbnailAlt: product.name,
+                    discount: product.discount,
+                    sex: product.sex,
                   }}
                 />
               );
@@ -178,7 +180,7 @@ const PaginationPage = ({
   );
 };
 
-export default PaginationPage;
+export default ProductListPage;
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { pageNumber, s, sex, category, min, max, sort } = ctx.query;

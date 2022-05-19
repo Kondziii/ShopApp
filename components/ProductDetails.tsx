@@ -4,6 +4,7 @@ import CustomMarkdown from './CustomMarkdown';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ReviewsContainer } from './reviews/ReviewsContainer';
+import { Sex } from '../generated/graphql';
 
 export interface ProductDetails {
   id: string;
@@ -15,6 +16,8 @@ export interface ProductDetails {
   thumbnailAlt: string;
   rating: number;
   longDescription: MarkdownResult;
+  discount?: number | null;
+  sex: Sex;
 }
 
 interface ProductDetailsProps {

@@ -18,6 +18,7 @@ query getAllProducts(
     price
     sex
     slug
+    discount
     images(first: 1) {
       url
     }
@@ -64,6 +65,7 @@ query getAllProductsWithCategory(
     price
     sex
     slug
+    discount
     images(first: 1) {
       url
     }
@@ -172,6 +174,9 @@ query getAccountByEmail($email: String!) {
     id
     email
     password
+    favorites {
+      id
+    }
   }
 }
 

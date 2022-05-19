@@ -9,6 +9,10 @@ module.exports = {
         'fade-in': 'fadeIn 1s linear ',
       },
 
+      fontSize: {
+        xxs: ['.6rem', '0.7rem'],
+      },
+
       keyframes: {
         fadeIn: {
           from: { opacity: 0 },

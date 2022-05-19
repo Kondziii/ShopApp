@@ -23,6 +23,7 @@ import {
   GetSexFiltersQueryVariables,
 } from '../generated/graphql';
 import { apolloClient } from '../graphql/graphqlClient';
+import { sexCaption } from './utils/functions';
 
 const resetFilterArrays = (array: filterBoxType[]) => {
   return array.map((item) => {
@@ -57,21 +58,6 @@ interface FilterState {
   sortFilter: sortFilterType;
   setSortFilter: Dispatch<SetStateAction<sortFilterType>>;
 }
-
-const optionCaption = (val: String) => {
-  switch (val) {
-    case 'MAN':
-      return 'Mężczyzna';
-    case 'WOMAN':
-      return 'Kobieta';
-    case 'CHILD':
-      return 'Dziecko';
-    case 'UNISEX':
-      return 'Uniwersalne';
-    default:
-      return '';
-  }
-};
 
 const FilterContext = createContext<FilterState | null>(null);
 
@@ -120,7 +106,7 @@ export const FilterContextProvider = ({
     if (options.data.sexOptions && options.data.sexOptions.enumValues) {
       setSexFilterOptions(
         options.data.sexOptions.enumValues?.map((item) => ({
-          title: optionCaption(item.name),
+          title: sexCaption(item.name),
           value: item.name,
           checked: false,
         }))

@@ -9,3 +9,27 @@ mutation createAccount($email: String!, $password: String!) {
     id
   }
 }
+
+mutation addToFavorite($user: String!, $item: ID!) {
+  updateAccount(
+    where: { email: $user }
+    data: { favorites: { connect: { where: { id: $item } } } }
+  ) {
+    favorites {
+      id
+    }
+  }
+}
+
+mutation deleteFromFavorite($user: String!, $item: ID!) {
+  updateAccount(
+    data: { favorites: { disconnect: { id: $item } } }
+    where: { email: $user }
+  ) {
+    id
+    favorites {
+      id
+      name
+    }
+  }
+}
