@@ -114,7 +114,7 @@ const ProductListPage = ({
       <div className='hidden sm:block'>
         <ProductFilterSection />
       </div>
-      <div className='mb-4 flex justify-between items-center sm:hidden'>
+      <div className='flex items-center justify-between mb-4 sm:hidden'>
         <AppModal
           btnCaption='Filtruj'
           leftIcon={<AdjustmentsIcon className='inline h-5 mr-1' />}
@@ -123,7 +123,7 @@ const ProductListPage = ({
         >
           <ProductFilterSection />
         </AppModal>
-        <div className='justify-end flex'>
+        <div className='flex justify-end'>
           <Select
             items={filterOptions}
             container_classes='w-fit mb-3'
@@ -135,7 +135,7 @@ const ProductListPage = ({
 
       {products.length !== 0 && (
         <section className='flex-grow'>
-          <div className=' justify-end hidden sm:flex'>
+          <div className='justify-end hidden sm:flex'>
             <Select
               items={filterOptions}
               container_classes='w-fit mb-3'
@@ -157,6 +157,8 @@ const ProductListPage = ({
                     thumbnailAlt: product.name,
                     discount: product.discount,
                     sex: product.sex,
+                    rating: product.rating,
+                    ratingCount: product.ratingCount,
                   }}
                 />
               );

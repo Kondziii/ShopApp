@@ -6,6 +6,7 @@ import { formatPrice, sexCaption } from './utils/functions';
 import { ShoppingCartIcon, HeartIcon } from '@heroicons/react/outline';
 import { FavouriteBtn } from './FavouriteBtn';
 import { useSession } from 'next-auth/react';
+import { Rating } from 'react-simple-star-rating';
 
 type ProductListItem = Pick<
   ProductDetails,
@@ -17,6 +18,8 @@ type ProductListItem = Pick<
   | 'slug'
   | 'discount'
   | 'sex'
+  | 'rating'
+  | 'ratingCount'
 >;
 
 interface ProductListItemProps {
@@ -29,7 +32,7 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
 
   return (
     <Link href={`/offer/products/${data.slug}`} passHref>
-      <li className='relative z-20 p-6 pt-10 text-sm transition-all duration-300 bg-white rounded shadow cursor-pointer group sm:text-base hover:shadow-lg'>
+      <li className='relative z-20 p-6 pt-10 text-base transition-all duration-300 bg-white rounded shadow cursor-pointer sm:text-sm group sm:text-base hover:shadow-lg'>
         <span className='absolute px-2 py-1 text-white lowercase bg-green-600 rounded-full top-5 left-5 text-xxs'>
           {sexCaption(data.sex)}
         </span>
@@ -49,8 +52,21 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
         </div>
 
         <h2 className='mt-4 mb-1 font-medium '>{data.title}</h2>
+
+        <div className=''>
+          <Rating
+            ratingValue={data.rating * 20}
+            readonly
+            size={20}
+            allowHalfIcon
+            onClick={(e) => console.log(e)}
+            className='transform -translate-y-1'
+          />
+          <span className='ml-1 text-xs font-medium'>({data.ratingCount})</span>
+        </div>
+
         <p
-          className={`font-semibold text-yellow-500 text-bold ${data.discount}`}
+          className={`font-semibold text-yellow-500 text-bold mt-1  ${data.discount}`}
         >
           <span className={`${data.discount && 'line-through'}`}>
             {formatPrice(data.price)}

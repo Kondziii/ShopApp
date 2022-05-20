@@ -9230,6 +9230,8 @@ export type Product = Node & {
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
+  rating: Scalars['Float'];
+  ratingCount: Scalars['Int'];
   reviews: Array<Review>;
   scheduledIn: Array<ScheduledOperation>;
   sex: Sex;
@@ -9920,6 +9922,8 @@ export type ProductCreateInput = {
   orderItems?: InputMaybe<OrderItemCreateManyInlineInput>;
   /** price input for default locale (en) */
   price: Scalars['Int'];
+  rating: Scalars['Float'];
+  ratingCount: Scalars['Int'];
   reviews?: InputMaybe<ReviewCreateManyInlineInput>;
   sex: Sex;
   size?: InputMaybe<Array<Sizes>>;
@@ -10058,6 +10062,36 @@ export type ProductManyWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
   publishedBy?: InputMaybe<UserWhereInput>;
+  rating?: InputMaybe<Scalars['Float']>;
+  ratingCount?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  ratingCount_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  ratingCount_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  ratingCount_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  ratingCount_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  ratingCount_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  ratingCount_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  ratingCount_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values greater than the given value. */
+  rating_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  rating_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  rating_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  rating_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  rating_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  rating_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  rating_not_in?: InputMaybe<Array<Scalars['Float']>>;
   reviews_every?: InputMaybe<ReviewWhereInput>;
   reviews_none?: InputMaybe<ReviewWhereInput>;
   reviews_some?: InputMaybe<ReviewWhereInput>;
@@ -10133,6 +10167,10 @@ export enum ProductOrderByInput {
   PriceDesc = 'price_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
+  RatingCountAsc = 'ratingCount_ASC',
+  RatingCountDesc = 'ratingCount_DESC',
+  RatingAsc = 'rating_ASC',
+  RatingDesc = 'rating_DESC',
   SexAsc = 'sex_ASC',
   SexDesc = 'sex_DESC',
   SizeAsc = 'size_ASC',
@@ -11188,6 +11226,8 @@ export type ProductUpdateInput = {
   orderItems?: InputMaybe<OrderItemUpdateManyInlineInput>;
   /** price input for default locale (en) */
   price?: InputMaybe<Scalars['Int']>;
+  rating?: InputMaybe<Scalars['Float']>;
+  ratingCount?: InputMaybe<Scalars['Int']>;
   reviews?: InputMaybe<ReviewUpdateManyInlineInput>;
   sex?: InputMaybe<Sex>;
   size?: InputMaybe<Array<Sizes>>;
@@ -11241,6 +11281,8 @@ export type ProductUpdateManyInput = {
   localizations?: InputMaybe<ProductUpdateManyLocalizationsInput>;
   /** price input for default locale (en) */
   price?: InputMaybe<Scalars['Int']>;
+  rating?: InputMaybe<Scalars['Float']>;
+  ratingCount?: InputMaybe<Scalars['Int']>;
   sex?: InputMaybe<Sex>;
   size?: InputMaybe<Array<Sizes>>;
 };
@@ -11546,6 +11588,36 @@ export type ProductWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
   publishedBy?: InputMaybe<UserWhereInput>;
+  rating?: InputMaybe<Scalars['Float']>;
+  ratingCount?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  ratingCount_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  ratingCount_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  ratingCount_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  ratingCount_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  ratingCount_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  ratingCount_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  ratingCount_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values greater than the given value. */
+  rating_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  rating_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  rating_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  rating_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  rating_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  rating_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  rating_not_in?: InputMaybe<Array<Scalars['Float']>>;
   reviews_every?: InputMaybe<ReviewWhereInput>;
   reviews_none?: InputMaybe<ReviewWhereInput>;
   reviews_some?: InputMaybe<ReviewWhereInput>;
@@ -14777,7 +14849,7 @@ export type GetAllProductsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllProductsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, discount?: number | null, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+export type GetAllProductsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, discount?: number | null, rating: number, ratingCount: number, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
 
 export type GetAllProductsWithCategoryQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -14791,7 +14863,7 @@ export type GetAllProductsWithCategoryQueryVariables = Exact<{
 }>;
 
 
-export type GetAllProductsWithCategoryQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, discount?: number | null, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+export type GetAllProductsWithCategoryQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, price: number, sex: Sex, slug: string, discount?: number | null, rating: number, ratingCount: number, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> }>, totalCount: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
 
 export type GetSexFiltersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -14888,6 +14960,15 @@ export type GetInfoSectionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetInfoSectionsQuery = { __typename?: 'Query', links: Array<{ __typename?: 'Link', slug: string }> };
 
+export type GetAccountFavoriteItemsByEmailQueryVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type GetAccountFavoriteItemsByEmailQuery = { __typename?: 'Query', account?: { __typename?: 'Account', favorites: Array<{ __typename?: 'Product', id: string, name: string, slug: string, price: number, sex: Sex, discount?: number | null, rating: number, ratingCount: number, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> }> } | null };
+
+export type ProductItemFragment = { __typename?: 'Product', id: string, name: string, slug: string, price: number, sex: Sex, discount?: number | null, rating: number, ratingCount: number, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> };
+
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
   id
@@ -14933,6 +15014,26 @@ export const NewsSectionFragmentFragmentDoc = gql`
   slug
   image {
     url
+  }
+}
+    `;
+export const ProductItemFragmentDoc = gql`
+    fragment ProductItem on Product {
+  id
+  name
+  slug
+  price
+  sex
+  discount
+  rating
+  ratingCount
+  images(first: 1) {
+    url
+  }
+  categories(first: 1) {
+    id
+    name
+    type
   }
 }
     `;
@@ -15097,6 +15198,8 @@ export const GetAllProductsDocument = gql`
     sex
     slug
     discount
+    rating
+    ratingCount
     images(first: 1) {
       url
     }
@@ -15164,6 +15267,8 @@ export const GetAllProductsWithCategoryDocument = gql`
     sex
     slug
     discount
+    rating
+    ratingCount
     images(first: 1) {
       url
     }
@@ -15772,3 +15877,40 @@ export function useGetInfoSectionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetInfoSectionsQueryHookResult = ReturnType<typeof useGetInfoSectionsQuery>;
 export type GetInfoSectionsLazyQueryHookResult = ReturnType<typeof useGetInfoSectionsLazyQuery>;
 export type GetInfoSectionsQueryResult = Apollo.QueryResult<GetInfoSectionsQuery, GetInfoSectionsQueryVariables>;
+export const GetAccountFavoriteItemsByEmailDocument = gql`
+    query getAccountFavoriteItemsByEmail($email: String!) {
+  account(where: {email: $email}, stage: DRAFT) {
+    favorites {
+      ...ProductItem
+    }
+  }
+}
+    ${ProductItemFragmentDoc}`;
+
+/**
+ * __useGetAccountFavoriteItemsByEmailQuery__
+ *
+ * To run a query within a React component, call `useGetAccountFavoriteItemsByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccountFavoriteItemsByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccountFavoriteItemsByEmailQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetAccountFavoriteItemsByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetAccountFavoriteItemsByEmailQuery, GetAccountFavoriteItemsByEmailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAccountFavoriteItemsByEmailQuery, GetAccountFavoriteItemsByEmailQueryVariables>(GetAccountFavoriteItemsByEmailDocument, options);
+      }
+export function useGetAccountFavoriteItemsByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAccountFavoriteItemsByEmailQuery, GetAccountFavoriteItemsByEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAccountFavoriteItemsByEmailQuery, GetAccountFavoriteItemsByEmailQueryVariables>(GetAccountFavoriteItemsByEmailDocument, options);
+        }
+export type GetAccountFavoriteItemsByEmailQueryHookResult = ReturnType<typeof useGetAccountFavoriteItemsByEmailQuery>;
+export type GetAccountFavoriteItemsByEmailLazyQueryHookResult = ReturnType<typeof useGetAccountFavoriteItemsByEmailLazyQuery>;
+export type GetAccountFavoriteItemsByEmailQueryResult = Apollo.QueryResult<GetAccountFavoriteItemsByEmailQuery, GetAccountFavoriteItemsByEmailQueryVariables>;

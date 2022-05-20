@@ -15,6 +15,7 @@ export interface ProductDetails {
   thumbnailSrc: string;
   thumbnailAlt: string;
   rating: number;
+  ratingCount: number;
   longDescription: MarkdownResult;
   discount?: number | null;
   sex: Sex;
