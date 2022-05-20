@@ -13,6 +13,10 @@ import {
   GetAccountByEmailDocument,
   GetAccountByEmailQuery,
   GetAccountByEmailQueryVariables,
+  GetAccountFavoriteItemsByEmailDocument,
+  GetAccountFavoriteItemsByEmailQuery,
+  GetAccountFavoriteItemsByEmailQueryVariables,
+  ProductItemFragment,
 } from '../generated/graphql';
 import { apolloClient } from '../graphql/graphqlClient';
 import {
@@ -21,8 +25,8 @@ import {
 } from '../hooks/useFavoriteMutation';
 
 interface UserContextState {
-  favorites: string[];
-  setFavorites: Dispatch<SetStateAction<string[]>>;
+  favorites: ProductItemFragment[];
+  setFavorites: Dispatch<SetStateAction<ProductItemFragment[]>>;
   addToFavorite: (item: string) => void;
   deleteFromFavorite: (item: string) => void;
 }
@@ -30,23 +34,22 @@ interface UserContextState {
 const UserContext = createContext<UserContextState | null>(null);
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const [favorites, setFavorites] = useState<ProductItemFragment[]>([]);
   const session = useSession();
   const favoriteMutation = useFavoriteMutation();
 
   const fetchUserData = async () => {
     const response = await apolloClient.query<
-      GetAccountByEmailQuery,
-      GetAccountByEmailQueryVariables
+      GetAccountFavoriteItemsByEmailQuery,
+      GetAccountFavoriteItemsByEmailQueryVariables
     >({
-      query: GetAccountByEmailDocument,
+      query: GetAccountFavoriteItemsByEmailDocument,
       variables: {
         email: session.data!.user.email,
       },
     });
-    console.log('response', response);
     if (response.data && response.data.account) {
-      setFavorites(response.data.account.favorites.map((item) => item.id));
+      setFavorites(response.data.account.favorites);
     }
   };
 
@@ -60,7 +63,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     if (session.status !== 'authenticated') {
       return;
     }
-    if (favorites.find((el) => el === item)) {
+    if (favorites.find((el) => el.id === item)) {
       deleteFromFavorite(item);
       return;
     }
@@ -73,7 +76,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (favoriteMutation.data) {
-      setFavorites(favoriteMutation.data.data.map((item: any) => item.id));
+      setFavorites(favoriteMutation.data.data);
     }
   }, [favoriteMutation.isSuccess, favoriteMutation.data]);
 

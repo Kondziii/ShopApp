@@ -23,7 +23,7 @@ export const FavouriteBtn = ({ itemId }: FavouriteBtnProps) => {
   };
 
   const isFavorite = (id: string) => {
-    return userState.favorites.find((el) => el === id);
+    return userState.favorites.find((el) => el.id === id);
   };
 
   return (
@@ -31,7 +31,6 @@ export const FavouriteBtn = ({ itemId }: FavouriteBtnProps) => {
       onMouseOver={() => setIsMouseOver(true)}
       onMouseLeave={() => setIsMouseOver(false)}
       onClick={handleClick}
-      key={isFavorite(itemId)}
       className='absolute top-5 right-5 '
     >
       <div className='relative'>
