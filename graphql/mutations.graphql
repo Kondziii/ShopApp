@@ -29,7 +29,6 @@ mutation deleteFromFavorite($user: String!, $item: ID!) {
     id
     favorites {
       id
-      name
     }
   }
 }

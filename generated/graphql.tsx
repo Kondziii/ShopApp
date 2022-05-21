@@ -14836,7 +14836,7 @@ export type DeleteFromFavoriteMutationVariables = Exact<{
 }>;
 
 
-export type DeleteFromFavoriteMutation = { __typename?: 'Mutation', updateAccount?: { __typename?: 'Account', id: string, favorites: Array<{ __typename?: 'Product', id: string, name: string }> } | null };
+export type DeleteFromFavoriteMutation = { __typename?: 'Mutation', updateAccount?: { __typename?: 'Account', id: string, favorites: Array<{ __typename?: 'Product', id: string }> } | null };
 
 export type GetAllProductsQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -14968,6 +14968,25 @@ export type GetAccountFavoriteItemsByEmailQueryVariables = Exact<{
 export type GetAccountFavoriteItemsByEmailQuery = { __typename?: 'Query', account?: { __typename?: 'Account', favorites: Array<{ __typename?: 'Product', id: string, name: string, slug: string, price: number, sex: Sex, discount?: number | null, rating: number, ratingCount: number, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> }> } | null };
 
 export type ProductItemFragment = { __typename?: 'Product', id: string, name: string, slug: string, price: number, sex: Sex, discount?: number | null, rating: number, ratingCount: number, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> };
+
+export type GetAccountFavoriteItemsByIdQueryVariables = Exact<{
+  favorite: Array<Scalars['ID']> | Scalars['ID'];
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetAccountFavoriteItemsByIdQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, slug: string, price: number, sex: Sex, discount?: number | null, rating: number, ratingCount: number, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> }>, pagination: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+
+export type GetAccountFavoriteItemsByIdWithCategoryQueryVariables = Exact<{
+  favorite: Array<Scalars['ID']> | Scalars['ID'];
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  category?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+}>;
+
+
+export type GetAccountFavoriteItemsByIdWithCategoryQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', id: string, name: string, slug: string, price: number, sex: Sex, discount?: number | null, rating: number, ratingCount: number, images: Array<{ __typename?: 'Asset', url: string }>, categories: Array<{ __typename?: 'Category', id: string, name: string, type: ProductCategory }> }>, pagination: { __typename?: 'ProductConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
 
 export const ReviewContentFragmentDoc = gql`
     fragment reviewContent on Review {
@@ -15152,7 +15171,6 @@ export const DeleteFromFavoriteDocument = gql`
     id
     favorites {
       id
-      name
     }
   }
 }
@@ -15914,3 +15932,94 @@ export function useGetAccountFavoriteItemsByEmailLazyQuery(baseOptions?: Apollo.
 export type GetAccountFavoriteItemsByEmailQueryHookResult = ReturnType<typeof useGetAccountFavoriteItemsByEmailQuery>;
 export type GetAccountFavoriteItemsByEmailLazyQueryHookResult = ReturnType<typeof useGetAccountFavoriteItemsByEmailLazyQuery>;
 export type GetAccountFavoriteItemsByEmailQueryResult = Apollo.QueryResult<GetAccountFavoriteItemsByEmailQuery, GetAccountFavoriteItemsByEmailQueryVariables>;
+export const GetAccountFavoriteItemsByIdDocument = gql`
+    query getAccountFavoriteItemsById($favorite: [ID!]!, $first: Int = 5, $skip: Int = 0) {
+  products(where: {id_in: $favorite}, first: $first, skip: $skip) {
+    ...ProductItem
+  }
+  pagination: productsConnection(where: {id_in: $favorite}) {
+    aggregate {
+      count
+    }
+  }
+}
+    ${ProductItemFragmentDoc}`;
+
+/**
+ * __useGetAccountFavoriteItemsByIdQuery__
+ *
+ * To run a query within a React component, call `useGetAccountFavoriteItemsByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccountFavoriteItemsByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccountFavoriteItemsByIdQuery({
+ *   variables: {
+ *      favorite: // value for 'favorite'
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *   },
+ * });
+ */
+export function useGetAccountFavoriteItemsByIdQuery(baseOptions: Apollo.QueryHookOptions<GetAccountFavoriteItemsByIdQuery, GetAccountFavoriteItemsByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAccountFavoriteItemsByIdQuery, GetAccountFavoriteItemsByIdQueryVariables>(GetAccountFavoriteItemsByIdDocument, options);
+      }
+export function useGetAccountFavoriteItemsByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAccountFavoriteItemsByIdQuery, GetAccountFavoriteItemsByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAccountFavoriteItemsByIdQuery, GetAccountFavoriteItemsByIdQueryVariables>(GetAccountFavoriteItemsByIdDocument, options);
+        }
+export type GetAccountFavoriteItemsByIdQueryHookResult = ReturnType<typeof useGetAccountFavoriteItemsByIdQuery>;
+export type GetAccountFavoriteItemsByIdLazyQueryHookResult = ReturnType<typeof useGetAccountFavoriteItemsByIdLazyQuery>;
+export type GetAccountFavoriteItemsByIdQueryResult = Apollo.QueryResult<GetAccountFavoriteItemsByIdQuery, GetAccountFavoriteItemsByIdQueryVariables>;
+export const GetAccountFavoriteItemsByIdWithCategoryDocument = gql`
+    query getAccountFavoriteItemsByIdWithCategory($favorite: [ID!]!, $first: Int = 5, $skip: Int = 0, $category: [String!]) {
+  products(
+    where: {id_in: $favorite, categories_every: {name_in: $category}}
+    first: $first
+    skip: $skip
+  ) {
+    ...ProductItem
+  }
+  pagination: productsConnection(
+    where: {id_in: $favorite, categories_every: {name_in: $category}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    ${ProductItemFragmentDoc}`;
+
+/**
+ * __useGetAccountFavoriteItemsByIdWithCategoryQuery__
+ *
+ * To run a query within a React component, call `useGetAccountFavoriteItemsByIdWithCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccountFavoriteItemsByIdWithCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccountFavoriteItemsByIdWithCategoryQuery({
+ *   variables: {
+ *      favorite: // value for 'favorite'
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useGetAccountFavoriteItemsByIdWithCategoryQuery(baseOptions: Apollo.QueryHookOptions<GetAccountFavoriteItemsByIdWithCategoryQuery, GetAccountFavoriteItemsByIdWithCategoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAccountFavoriteItemsByIdWithCategoryQuery, GetAccountFavoriteItemsByIdWithCategoryQueryVariables>(GetAccountFavoriteItemsByIdWithCategoryDocument, options);
+      }
+export function useGetAccountFavoriteItemsByIdWithCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAccountFavoriteItemsByIdWithCategoryQuery, GetAccountFavoriteItemsByIdWithCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAccountFavoriteItemsByIdWithCategoryQuery, GetAccountFavoriteItemsByIdWithCategoryQueryVariables>(GetAccountFavoriteItemsByIdWithCategoryDocument, options);
+        }
+export type GetAccountFavoriteItemsByIdWithCategoryQueryHookResult = ReturnType<typeof useGetAccountFavoriteItemsByIdWithCategoryQuery>;
+export type GetAccountFavoriteItemsByIdWithCategoryLazyQueryHookResult = ReturnType<typeof useGetAccountFavoriteItemsByIdWithCategoryLazyQuery>;
+export type GetAccountFavoriteItemsByIdWithCategoryQueryResult = Apollo.QueryResult<GetAccountFavoriteItemsByIdWithCategoryQuery, GetAccountFavoriteItemsByIdWithCategoryQueryVariables>;

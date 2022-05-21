@@ -293,3 +293,40 @@ fragment ProductItem on Product {
     type
   }
 }
+
+query getAccountFavoriteItemsById(
+  $favorite: [ID!]!
+  $first: Int = 5
+  $skip: Int = 0
+) {
+  products(where: { id_in: $favorite }, first: $first, skip: $skip) {
+    ...ProductItem
+  }
+  pagination: productsConnection(where: { id_in: $favorite }) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getAccountFavoriteItemsByIdWithCategory(
+  $favorite: [ID!]!
+  $first: Int = 5
+  $skip: Int = 0
+  $category: [String!]
+) {
+  products(
+    where: { id_in: $favorite, categories_every: { name_in: $category } }
+    first: $first
+    skip: $skip
+  ) {
+    ...ProductItem
+  }
+  pagination: productsConnection(
+    where: { id_in: $favorite, categories_every: { name_in: $category } }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}

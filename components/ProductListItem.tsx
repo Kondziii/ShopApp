@@ -40,16 +40,18 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
           <FavouriteBtn itemId={data.id} />
         )}
 
-        <div className='relative w-full'>
-          <Image
-            layout='responsive'
-            width={4}
-            height={3}
-            objectFit='contain'
-            src={data.thumbnailSrc}
-            alt={data.thumbnailAlt}
-          />
-        </div>
+        {data.thumbnailSrc && (
+          <div className='relative w-full'>
+            <Image
+              layout='responsive'
+              width={4}
+              height={3}
+              objectFit='contain'
+              src={data.thumbnailSrc}
+              alt={data.thumbnailAlt}
+            />
+          </div>
+        )}
 
         <h2 className='mt-4 mb-1 font-medium '>{data.title}</h2>
 

@@ -50,7 +50,6 @@ export const ProductFilterSection = () => {
     reset({
       search: '',
     });
-    console.log('hvg', prices);
   };
 
   const [prices, setPrices] = useState<Array<number>>([0, 5000]);

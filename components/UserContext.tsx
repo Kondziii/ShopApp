@@ -25,8 +25,8 @@ import {
 } from '../hooks/useFavoriteMutation';
 
 interface UserContextState {
-  favorites: ProductItemFragment[];
-  setFavorites: Dispatch<SetStateAction<ProductItemFragment[]>>;
+  favorites: { id: string }[];
+  setFavorites: Dispatch<SetStateAction<{ id: string }[]>>;
   addToFavorite: (item: string) => void;
   deleteFromFavorite: (item: string) => void;
 }
@@ -34,7 +34,7 @@ interface UserContextState {
 const UserContext = createContext<UserContextState | null>(null);
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
-  const [favorites, setFavorites] = useState<ProductItemFragment[]>([]);
+  const [favorites, setFavorites] = useState<{ id: string }[]>([]);
   const session = useSession();
   const favoriteMutation = useFavoriteMutation();
 
@@ -49,7 +49,13 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
       },
     });
     if (response.data && response.data.account) {
-      setFavorites(response.data.account.favorites);
+      setFavorites(
+        response.data.account.favorites.map((el) => {
+          return {
+            id: el.id,
+          };
+        })
+      );
     }
   };
 

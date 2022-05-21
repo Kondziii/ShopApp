@@ -12,7 +12,6 @@ import { apolloClient } from '../graphql/graphqlClient';
 const sections = ['Order', 'Return', 'Product', 'Delivery'];
 
 const faqPage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  console.log(data);
 
   const sectionHeaderCaption = (val: String) => {
     switch (val) {
