@@ -10,7 +10,7 @@ import {
   GetInfoSectionsQuery,
 } from '../generated/graphql';
 import { apolloClient } from '../graphql/graphqlClient';
-import { InferGetStaticPaths } from './offer/products/[productId]';
+import { InferGetStaticPaths } from './offer/products/[slug]';
 
 const InfoPage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return <AppInfoStructure data={data} />;

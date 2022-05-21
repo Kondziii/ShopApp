@@ -127,17 +127,35 @@ query getAllCategories {
     type
   }
 }
-
-query getProductDetailsBySlug($slug: String) {
-  product(where: { slug: $slug }) {
+fragment FullProductItem on Product {
+  id
+  slug
+  name
+  price
+  description
+  rating
+  ratingCount
+  discount
+  sex
+  categories {
     id
-    slug
     name
-    price
-    description
-    images {
-      url
+  }
+  images {
+    url
+  }
+  productSizeVariants {
+    amount
+    size {
+      name
+      size
     }
+  }
+}
+
+query getProductDetailsBySlug($slug: String!) {
+  product(where: { slug: $slug }) {
+    ...FullProductItem
   }
 }
 
@@ -328,5 +346,11 @@ query getAccountFavoriteItemsByIdWithCategory(
     aggregate {
       count
     }
+  }
+}
+
+query GetProductSlugs {
+  products {
+    slug
   }
 }

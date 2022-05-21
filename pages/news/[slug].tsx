@@ -13,7 +13,7 @@ import {
   GetNewsSectionQueryVariables,
 } from '../../generated/graphql';
 import { apolloClient } from '../../graphql/graphqlClient';
-import { InferGetStaticPaths } from '../offer/products/[productId]';
+import { InferGetStaticPaths } from '../offer/products/[slug]';
 
 const NewsItemPage = ({
   data,
@@ -27,7 +27,7 @@ const NewsItemPage = ({
 
   return (
     <section className='container my-4 bg-white'>
-      <h1 className='text-xl sm:text-2xl font-bold text-center mb-4'>
+      <h1 className='mb-4 text-xl font-bold text-center sm:text-2xl'>
         {data.title}
       </h1>
       <hr />

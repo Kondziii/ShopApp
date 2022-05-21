@@ -7,20 +7,20 @@ import { ShoppingCartIcon, HeartIcon } from '@heroicons/react/outline';
 import { FavouriteBtn } from './FavouriteBtn';
 import { useSession } from 'next-auth/react';
 import { Rating } from 'react-simple-star-rating';
+import { Sex } from '../generated/graphql';
 
-type ProductListItem = Pick<
-  ProductDetails,
-  | 'id'
-  | 'title'
-  | 'thumbnailSrc'
-  | 'thumbnailAlt'
-  | 'price'
-  | 'slug'
-  | 'discount'
-  | 'sex'
-  | 'rating'
-  | 'ratingCount'
->;
+interface ProductListItem {
+  id: string;
+  title: string;
+  thumbnailSrc: string;
+  thumbnailAlt: string;
+  price: number;
+  slug: string;
+  discount: number;
+  sex: Sex;
+  rating: number;
+  ratingCount: number;
+}
 
 interface ProductListItemProps {
   data: ProductListItem;
@@ -87,7 +87,8 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
           </span>
         </p>
         <button
-          onClick={() =>
+          onClick={(e) => {
+            e.stopPropagation();
             cartState.addToCart({
               id: data.id,
               slug: data.slug,
@@ -96,8 +97,8 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
               thumbnailAlt: data.thumbnailAlt,
               price: data.price,
               count: 1,
-            })
-          }
+            });
+          }}
           className='flex items-center px-4 py-2 mt-4 space-x-2 text-sm transition duration-300 border rounded-full text-slate-700 border-slate-700 hover:bg-slate-700 hover:text-white focus:ring-1 ring-slate-500'
         >
           <ShoppingCartIcon className='h-4' />
