@@ -32,7 +32,7 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
 
   return (
     <Link href={`/offer/products/${data.slug}`} passHref>
-      <li className='relative z-20 p-6 pt-10 text-base transition-all duration-300 bg-white rounded shadow cursor-pointer sm:text-sm group sm:text-base hover:shadow-lg'>
+      <li className='relative z-20 p-6 py-10 text-base transition-all duration-300 bg-white rounded shadow cursor-pointer sm:text-sm group sm:text-base hover:shadow-lg'>
         <span className='absolute px-2 py-1 text-white lowercase bg-green-600 rounded-full top-5 left-5 text-xxs'>
           {sexCaption(data.sex)}
         </span>
@@ -86,7 +86,7 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
             zł
           </span>
         </p>
-        <button
+        {/* <button
           onClick={(e) => {
             e.stopPropagation();
             cartState.addToCart({
@@ -103,7 +103,7 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
         >
           <ShoppingCartIcon className='h-4' />
           <span>Dodaj do koszyka</span>
-        </button>
+        </button> */}
       </li>
     </Link>
   );

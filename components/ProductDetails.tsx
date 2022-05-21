@@ -10,33 +10,20 @@ import { formatPrice, sexCaption } from './utils/functions';
 import { Rating } from 'react-simple-star-rating';
 import { AppRadio } from './AppRadio';
 import { useForm } from 'react-hook-form';
-import yup from '../yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { ChangeEventHandler, useState } from 'react';
+import { ProductDetailsForm } from './ProductDetailsForm';
 
-interface ProductFullInfoType extends FullProductItemFragment {
+export interface ProductFullInfoType extends FullProductItemFragment {
   longDescription: MDXRemoteSerializeResult<Record<string, unknown>>;
 }
 export interface ProductDetailsProps {
   product: ProductFullInfoType;
 }
 
-const sizeFormSchema = yup
-  .object({
-    size: yup.string().required(),
-  })
-  .required();
-
-type sizeFormType = yup.InferType<typeof sizeFormSchema>;
-
 export const ProductDetails = ({ product }: ProductDetailsProps) => {
   const router = useRouter();
   const v = router.query.v || 'Description';
-  const {
-    register,
-    formState: { errors, isSubmitSuccessful },
-  } = useForm<sizeFormType>({
-    resolver: yupResolver(sizeFormSchema),
-  });
+  const [currSize, setCurrSize] = useState('');
 
   return (
     <div className='container content-center h-full max-w-5xl p-6 mx-auto '>
@@ -112,19 +99,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
               </span>
             </p>
             <hr />
-            <form>
-              {product.productSizeVariants.map((size) => {
-                return (
-                  <AppRadio
-                    id={size.size?.name}
-                    key={size.size?.name}
-                    label={size.size?.name}
-                    invisible
-                    {...register('size')}
-                  />
-                );
-              })}
-            </form>
+            <ProductDetailsForm product={product} setSize={setCurrSize} />
           </section>
         </div>
       </section>
