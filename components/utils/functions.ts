@@ -16,3 +16,7 @@ export const sexCaption = (val: String) => {
       return '';
   }
 };
+
+export const mod = (number1: number, number2: number) => {
+  return ((number1 % number2) + number2) % number2;
+};

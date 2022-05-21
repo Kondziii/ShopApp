@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { ChangeEventHandler, useState } from 'react';
 import { ProductDetailsForm } from './ProductDetailsForm';
 import { ProductDetailsAmount } from './ProductDetailsAmount';
+import { ProductDetailsImage } from './ProductDetailsImage';
 
 export interface ProductFullInfoType extends FullProductItemFragment {
   longDescription: MDXRemoteSerializeResult<Record<string, unknown>>;
@@ -29,16 +30,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
   return (
     <div className='container content-center h-full max-w-5xl p-6 mx-auto '>
       <section className='row-start-1 gap-8 sm:grid sm:grid-cols-2 '>
-        <div className='p-4 bg-white rounded-md shadow-md'>
-          <Image
-            layout='responsive'
-            width={4}
-            height={3}
-            className='object-contain text-center aspect-video'
-            src={product.images[0].url}
-            alt={product.name}
-          />
-        </div>
+        <ProductDetailsImage product={product} />
         <div className='self-start mt-4 sm:mt-0'>
           <section className='space-x-2 mb-3'>
             <span className='px-2 py-1 text-sm bg-green-600 text-white rounded-full shadow'>

@@ -8,20 +8,18 @@ interface AppCarouselProps {
   items: Array<CarouselItemFragment>;
 }
 
-function SampleNextArrow(props: any) {
-  const { className, style, onClick } = props;
+function SampleNextArrow({ onClick }: any) {
   return (
     <button
-      className='absolute z-20 top-1/2 right-2 bg-white rounded-full h-8 w-8'
       onClick={onClick}
+      className='absolute z-20 top-1/2 right-2 bg-white rounded-full h-8 w-8'
     >
       &gt;
     </button>
   );
 }
 
-function SamplePrevArrow(props: any) {
-  const { onClick } = props;
+function SamplePrevArrow({ onClick }: any) {
   return (
     <button
       className='absolute z-20 top-1/2 left-2 bg-white rounded-full h-8 w-8 '
@@ -40,7 +38,7 @@ export const AppCarousel = ({ items }: AppCarouselProps) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    nextArrow: <SampleNextArrow className />,
+    nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };
 
