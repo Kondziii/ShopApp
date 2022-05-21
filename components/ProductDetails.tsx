@@ -12,6 +12,7 @@ import { AppRadio } from './AppRadio';
 import { useForm } from 'react-hook-form';
 import { ChangeEventHandler, useState } from 'react';
 import { ProductDetailsForm } from './ProductDetailsForm';
+import { ProductDetailsAmount } from './ProductDetailsAmount';
 
 export interface ProductFullInfoType extends FullProductItemFragment {
   longDescription: MDXRemoteSerializeResult<Record<string, unknown>>;
@@ -58,13 +59,8 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
           <h1 className='mt-2  text-xl font-medium sm:mt-0 md:text-2xl '>
             {product.name}
           </h1>
-          <p className='text-xs  text-gray-500'>
-            Dostępna ilość:{' '}
-            {product.productSizeVariants.reduce((prev, curr) => {
-              const current = curr.amount;
-              return prev + current;
-            }, 0)}
-          </p>
+
+          <ProductDetailsAmount product={product} currSize={currSize} />
 
           <section className='mt-4'>
             <div className='my-4'>

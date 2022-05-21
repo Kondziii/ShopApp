@@ -55,15 +55,19 @@ export const ProductDetailsForm = ({
       <h2 className='mb-2'>Rozmiary</h2>
       {product.productSizeVariants.map((size) => {
         return (
-          <AppRadio
-            id={size.size?.name}
-            key={size.size?.name}
-            label={size.size?.name}
-            value={size.size?.name}
-            inVisible
-            {...register('size')}
-            onChange={handleChangeSize}
-          />
+          <>
+            {size.amount > 0 && (
+              <AppRadio
+                id={size.size?.name}
+                key={size.size?.name}
+                label={size.size?.name}
+                value={size.size?.name}
+                inVisible
+                {...register('size')}
+                onChange={handleChangeSize}
+              />
+            )}
+          </>
         );
       })}
       <small className='text-red-500 block'>{errors.size?.message}</small>
