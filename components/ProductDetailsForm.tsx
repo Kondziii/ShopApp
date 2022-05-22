@@ -53,28 +53,27 @@ export const ProductDetailsForm = ({
   return (
     <form onSubmit={onSubmit} className='my-4 mb-12 space-x-2'>
       <h2 className='mb-2'>Rozmiary</h2>
-      {product.productSizeVariants.map((size) => {
+      {product.productSizeVariants.map((size, index) => {
         return (
-          <>
-            {size.amount > 0 && (
+          <div key={`${size.size?.name}_${index.toString()}`}>
+            {size.amount > 0 && size.size?.name && (
               <AppRadio
-                id={size.size?.name}
-                key={size.size?.name}
-                label={size.size?.name}
-                value={size.size?.name}
-                inVisible
+                id={`${size.size.name}_${index.toString()}`}
+                label={size.size.name}
+                value={size.size.name}
+                is_btn_visible={true}
                 {...register('size')}
                 onChange={handleChangeSize}
               />
             )}
-          </>
+          </div>
         );
       })}
-      <small className='text-red-500 block'>{errors.size?.message}</small>
+      <small className='block text-red-500'>{errors.size?.message}</small>
       <div className='mt-6'>
         <button
           type='submit'
-          className='flex px-8 justify-center items-center  py-2  space-x-2 text-base transition duration-300 border rounded-full text-slate-700 border-slate-700 hover:bg-slate-700 hover:text-white focus:ring-1 ring-slate-500'
+          className='flex items-center justify-center px-8 py-2 space-x-2 text-base transition duration-300 border rounded-full text-slate-700 border-slate-700 hover:bg-slate-700 hover:text-white focus:ring-1 ring-slate-500'
         >
           <ShoppingCartIcon className='h-4' />
           <span>Dodaj do koszyka</span>
