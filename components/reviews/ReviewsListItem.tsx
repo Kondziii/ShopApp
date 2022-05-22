@@ -21,11 +21,12 @@ export const ReviewsListItem = ({ review }: ReviewsListItemProps) => {
         />
       </div>
       <p className='mt-1 font-light text-gray-600 text-md'>{review.content}</p>
-      <footer className='absolute bottom-0 left-4 '>
-        <p className='text-sm text-gray-500 '>
+      <footer className='absolute bottom-0 flex items-center justify-between w-full pr-4 text-sm text-gray-500 left-4'>
+        <p>
           Recenzja opublikowana przez:{' '}
           <span className='text-black'>{review.email}</span>
         </p>
+        <p>{new Date(review.createdAt).toLocaleString()}</p>
       </footer>
     </li>
   );

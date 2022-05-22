@@ -16079,7 +16079,7 @@ export const GetProductReviewsDocument = gql`
     id
     slug
     name
-    reviews(first: $first, skip: $skip) {
+    reviews(first: $first, skip: $skip, orderBy: createdAt_DESC) {
       ...reviewContent
     }
   }

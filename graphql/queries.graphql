@@ -168,23 +168,12 @@ fragment reviewContent on Review {
   createdAt
 }
 
-# query getProductReviews($slug: String!) {
-#   product(where: { slug: $slug }) {
-#     id
-#     slug
-#     name
-#     reviews {
-#       ...reviewContent
-#     }
-#   }
-# }
-
 query getProductReviews($slug: String!, $first: Int = 10, $skip: Int = 0) {
   product(where: { slug: $slug }) {
     id
     slug
     name
-    reviews(first: $first, skip: $skip) {
+    reviews(first: $first, skip: $skip, orderBy: createdAt_DESC) {
       ...reviewContent
     }
   }

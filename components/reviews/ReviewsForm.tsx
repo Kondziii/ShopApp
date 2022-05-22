@@ -52,15 +52,14 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
   const [ratingValue, setRatingValue] = useState(0);
 
   const [createReview, { data, loading, error }] = useCreateReviewMutation({
-    // refetchQueries: [
-    //   {
-    //     query: GetProductReviewsDocument,
-    //     variables: {
-    //       slug,
-    //     },
-    //   },
-    // ],
     refetchQueries: [
+      {
+        query: GetProductReviewsDocument,
+        variables: {
+          slug: product.slug,
+          skip: 0,
+        },
+      },
       {
         query: GetProductDetailsBySlugDocument,
         variables: {
@@ -68,6 +67,7 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
         },
       },
     ],
+
     update(cache, result) {
       const originalData = cache.readQuery<GetProductReviewsQuery>({
         query: GetProductReviewsDocument,
@@ -84,7 +84,7 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
         ...originalData,
         product: {
           ...originalData.product,
-          reviews: [...originalData.product.reviews, result.data.review],
+          reviews: [result.data.review, ...originalData.product.reviews],
         },
       };
 
@@ -114,9 +114,6 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
       return;
     }
 
-    console.log(response);
-    console.log(values);
-
     await createReview({
       variables: {
         review: {
@@ -143,6 +140,7 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
           headline: values.headline,
           content: values.content,
           rating: formRating(values.rating),
+          createdAt: Date.now(),
         },
         updateProduct: {
           __typename: 'Product',
