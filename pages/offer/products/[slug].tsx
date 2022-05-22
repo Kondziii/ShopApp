@@ -112,5 +112,6 @@ export const getStaticProps = async ({
         longDescription: await serialize(data.data.product.description),
       },
     },
+    revalidate: 2,
   };
 };

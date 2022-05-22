@@ -41,6 +41,8 @@ const ProductListPage = ({
   const [pageNumber, setPageNumber] = useState(router.query.pageNumber || 1);
   const filterState = useFilterState();
 
+  console.log(products);
+
   useEffect(() => {
     return () => {
       filterState.resetFilters();

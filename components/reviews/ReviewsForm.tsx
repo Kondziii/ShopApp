@@ -6,6 +6,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { TextArea } from '../TextArea';
 import { apolloClient } from '../../graphql/graphqlClient';
 import {
+  GetLastProductInfoDocument,
+  GetLastProductInfoQuery,
+  GetLastProductInfoQueryVariables,
+  GetProductDetailsBySlugDocument,
   GetProductReviewsDocument,
   GetProductReviewsQuery,
   useCreateReviewMutation,
@@ -56,6 +60,14 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
     //     },
     //   },
     // ],
+    refetchQueries: [
+      {
+        query: GetProductDetailsBySlugDocument,
+        variables: {
+          slug: product.slug,
+        },
+      },
+    ],
     update(cache, result) {
       const originalData = cache.readQuery<GetProductReviewsQuery>({
         query: GetProductReviewsDocument,
@@ -87,6 +99,24 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
   });
 
   const onSubmit = handleSubmit(async (values) => {
+    const response = await apolloClient.query<
+      GetLastProductInfoQuery,
+      GetLastProductInfoQueryVariables
+    >({
+      query: GetLastProductInfoDocument,
+      variables: {
+        productId: product.id,
+      },
+      fetchPolicy: 'network-only',
+    });
+
+    if (!response.data.product) {
+      return;
+    }
+
+    console.log(response);
+    console.log(values);
+
     await createReview({
       variables: {
         review: {
@@ -101,8 +131,8 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
           },
         },
         id: product.id,
-        rating: (product.rating + formRating(values.rating)) / 2,
-        ratingCount: +product.ratingCount + 1,
+        rating: (response.data.product.rating + formRating(values.rating)) / 2,
+        ratingCount: response.data.reviews.aggregate.count + 1,
       },
       optimisticResponse: {
         __typename: 'Mutation',
@@ -118,6 +148,14 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
           __typename: 'Product',
           id: product.id,
         },
+        publishManyReviewsConnection: {
+          __typename: 'ReviewConnection',
+          edges: [],
+        },
+        publishProduct: {
+          __typename: 'Product',
+          id: product.id,
+        },
       },
     });
   });
@@ -130,6 +168,7 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
       });
       setValue('rating', 0);
       setRatingValue(0);
+      setIsFormVisible(false);
     }
   }, [isSubmitSuccessful, reset, setValue]);
 

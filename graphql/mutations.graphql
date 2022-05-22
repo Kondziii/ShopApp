@@ -7,6 +7,20 @@ mutation CreateReview(
   review: createReview(data: $review) {
     ...reviewContent
   }
+  publishManyReviewsConnection(
+    to: PUBLISHED
+    from: DRAFT
+    where: { product: { id: $id } }
+  ) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+  publishProduct(where: { id: $id }, to: PUBLISHED) {
+    id
+  }
   updateProduct(
     where: { id: $id }
     data: { rating: $rating, ratingCount: $ratingCount }

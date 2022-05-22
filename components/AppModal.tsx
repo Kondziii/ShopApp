@@ -8,7 +8,7 @@ interface AppModalProps {
   title?: string;
   children: React.ReactNode;
   panelClassName?: string;
-  customBtn: React.ReactNode;
+  customBtn?: React.ReactNode;
 }
 
 export default function AppModal({

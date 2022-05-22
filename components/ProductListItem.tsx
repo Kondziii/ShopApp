@@ -16,7 +16,7 @@ interface ProductListItem {
   thumbnailAlt: string;
   price: number;
   slug: string;
-  discount: number;
+  discount?: number | null;
   sex: Sex;
   rating: number;
   ratingCount: number;

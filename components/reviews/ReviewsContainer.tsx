@@ -10,7 +10,7 @@ export const ReviewsContainer = ({ product }: ReviewsContainerProps) => {
   return (
     <div>
       <ReviewsForm product={product} />
-      <ReviewsList slug={product.slug} />
+      <ReviewsList product={product} />
     </div>
   );
 };

@@ -76,7 +76,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
               </span>{' '}
               {product.discount && (
                 <span className='text-green-600'>
-                  {formatPrice(product.discount)}
+                  {formatPrice(product.price - product.discount)}
                 </span>
               )}{' '}
               <span

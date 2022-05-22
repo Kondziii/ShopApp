@@ -15298,7 +15298,7 @@ export type CreateReviewMutationVariables = Exact<{
 }>;
 
 
-export type CreateReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number } | null, updateProduct?: { __typename?: 'Product', id: string } | null };
+export type CreateReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number, createdAt: any } | null, publishManyReviewsConnection: { __typename?: 'ReviewConnection', edges: Array<{ __typename?: 'ReviewEdge', node: { __typename?: 'Review', id: string } }> }, publishProduct?: { __typename?: 'Product', id: string } | null, updateProduct?: { __typename?: 'Product', id: string } | null };
 
 export type CreateAccountMutationVariables = Exact<{
   email: Scalars['String'];
@@ -15380,14 +15380,14 @@ export type GetProductDetailsBySlugQueryVariables = Exact<{
 
 export type GetProductDetailsBySlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, rating: number, ratingCount: number, discount?: number | null, sex: Sex, categories: Array<{ __typename?: 'Category', id: string, name: string }>, images: Array<{ __typename?: 'Asset', url: string }>, productSizeVariants: Array<{ __typename?: 'ProductSizeVariant', amount: number, size?: { __typename?: 'Size', name: string, size: Sizes } | null }> } | null };
 
-export type ReviewContentFragment = { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number };
+export type ReviewContentFragment = { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number, createdAt: any };
 
 export type GetProductReviewsQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetProductReviewsQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, reviews: Array<{ __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number }> } | null };
+export type GetProductReviewsQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, reviews: Array<{ __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number, createdAt: any }> } | null };
 
 export type GetProductBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -15481,6 +15481,13 @@ export type GetProductSlugsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetProductSlugsQuery = { __typename?: 'Query', products: Array<{ __typename?: 'Product', slug: string }> };
 
+export type GetLastProductInfoQueryVariables = Exact<{
+  productId: Scalars['ID'];
+}>;
+
+
+export type GetLastProductInfoQuery = { __typename?: 'Query', product?: { __typename?: 'Product', rating: number } | null, reviews: { __typename?: 'ReviewConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+
 export const FullProductItemFragmentDoc = gql`
     fragment FullProductItem on Product {
   id
@@ -15515,6 +15522,7 @@ export const ReviewContentFragmentDoc = gql`
   content
   email
   rating
+  createdAt
 }
     `;
 export const CarouselItemFragmentDoc = gql`
@@ -15579,6 +15587,20 @@ export const CreateReviewDocument = gql`
     mutation CreateReview($review: ReviewCreateInput!, $id: ID!, $rating: Float!, $ratingCount: Int!) {
   review: createReview(data: $review) {
     ...reviewContent
+  }
+  publishManyReviewsConnection(
+    to: PUBLISHED
+    from: DRAFT
+    where: {product: {id: $id}}
+  ) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+  publishProduct(where: {id: $id}, to: PUBLISHED) {
+    id
   }
   updateProduct(
     where: {id: $id}
@@ -16578,3 +16600,43 @@ export function useGetProductSlugsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetProductSlugsQueryHookResult = ReturnType<typeof useGetProductSlugsQuery>;
 export type GetProductSlugsLazyQueryHookResult = ReturnType<typeof useGetProductSlugsLazyQuery>;
 export type GetProductSlugsQueryResult = Apollo.QueryResult<GetProductSlugsQuery, GetProductSlugsQueryVariables>;
+export const GetLastProductInfoDocument = gql`
+    query getLastProductInfo($productId: ID!) {
+  product(where: {id: $productId}) {
+    rating
+  }
+  reviews: reviewsConnection(where: {product: {id: $productId}}, stage: DRAFT) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetLastProductInfoQuery__
+ *
+ * To run a query within a React component, call `useGetLastProductInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLastProductInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLastProductInfoQuery({
+ *   variables: {
+ *      productId: // value for 'productId'
+ *   },
+ * });
+ */
+export function useGetLastProductInfoQuery(baseOptions: Apollo.QueryHookOptions<GetLastProductInfoQuery, GetLastProductInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLastProductInfoQuery, GetLastProductInfoQueryVariables>(GetLastProductInfoDocument, options);
+      }
+export function useGetLastProductInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLastProductInfoQuery, GetLastProductInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLastProductInfoQuery, GetLastProductInfoQueryVariables>(GetLastProductInfoDocument, options);
+        }
+export type GetLastProductInfoQueryHookResult = ReturnType<typeof useGetLastProductInfoQuery>;
+export type GetLastProductInfoLazyQueryHookResult = ReturnType<typeof useGetLastProductInfoLazyQuery>;
+export type GetLastProductInfoQueryResult = Apollo.QueryResult<GetLastProductInfoQuery, GetLastProductInfoQueryVariables>;

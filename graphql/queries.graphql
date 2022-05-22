@@ -165,6 +165,7 @@ fragment reviewContent on Review {
   content
   email
   rating
+  createdAt
 }
 
 query getProductReviews($slug: String!) {
@@ -351,5 +352,18 @@ query getAccountFavoriteItemsByIdWithCategory(
 query GetProductSlugs {
   products {
     slug
+  }
+}
+query getLastProductInfo($productId: ID!) {
+  product(where: { id: $productId }) {
+    rating
+  }
+  reviews: reviewsConnection(
+    where: { product: { id: $productId } }
+    stage: DRAFT
+  ) {
+    aggregate {
+      count
+    }
   }
 }

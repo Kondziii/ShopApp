@@ -29,7 +29,7 @@ export const ProductDetailsNav = ({ slug }: ProductDetailsNavProps) => {
           >
             <a
               className={`px-4 py-2 transition duration-300 rounded-full ${
-                isActive('Description')
+                isActive('Description') || !router.query.v
                   ? 'bg-slate-700 text-white'
                   : 'bg-gray-200 hover:bg-gray-300'
               }  `}
