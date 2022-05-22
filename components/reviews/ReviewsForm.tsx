@@ -44,6 +44,7 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
   });
   const session = useSession();
   const router = useRouter();
+  const [isFormVisible, setIsFormVisible] = useState(false);
 
   const [createReview, { data, loading, error }] = useCreateReviewMutation({
     // refetchQueries: [
@@ -154,50 +155,66 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
 
   return (
     <section className='mt-4'>
-      <form
-        onSubmit={onSubmit}
-        className='grid grid-cols-1 p-8 bg-white rounded-md shadow-md sm:grid-cols-12 gap-x-4 gap-y-2'
-      >
-        <div className='w-[200px]'>
-          <label className='w-full mb-1 '>Twoja ocena</label>
-          <Rating
-            ratingValue={0}
-            initialValue={0}
-            size={30}
-            allowHalfIcon
-            onClick={(e) => handleChangeRating(e)}
-            {...register('rating')}
-          />
-          <small className='block text-red-500'>{errors.rating?.message}</small>
-        </div>
-        <Input
-          {...register('headline')}
-          container_classes='sm:col-span-12'
-          id='headline'
-          type='text'
-          label='Nagłówek'
-          placeholder='Nagłówek...'
-          error={errors.headline}
-        ></Input>
+      {isFormVisible && (
+        <form
+          onSubmit={onSubmit}
+          className='grid grid-cols-1 p-8 bg-white rounded-md shadow-md sm:grid-cols-12 gap-x-4 gap-y-2'
+        >
+          <div className='w-[200px]'>
+            <label className='w-full mb-1 '>Twoja ocena</label>
+            <Rating
+              ratingValue={0}
+              initialValue={0}
+              size={30}
+              allowHalfIcon
+              onClick={(e) => handleChangeRating(e)}
+              {...register('rating')}
+            />
+            <small className='block text-red-500'>
+              {errors.rating?.message}
+            </small>
+          </div>
+          <Input
+            {...register('headline')}
+            container_classes='sm:col-span-12'
+            id='headline'
+            type='text'
+            label='Nagłówek'
+            placeholder='Nagłówek...'
+            error={errors.headline}
+          ></Input>
 
-        <TextArea
-          {...register('content')}
-          container_classes='col-span-full'
-          id='content'
-          rows={4}
-          label='Opinia'
-          placeholder='Opinia...'
-          error={errors.content}
-        ></TextArea>
-        <div className='flex justify-end mt-2 col-span-full'>
+          <TextArea
+            {...register('content')}
+            container_classes='col-span-full'
+            id='content'
+            rows={4}
+            label='Opinia'
+            placeholder='Opinia...'
+            error={errors.content}
+          ></TextArea>
+          <div className='flex justify-end mt-2 col-span-full'>
+            <button
+              type='submit'
+              className='px-8 py-2 transition-all duration-300 border-2 rounded-full text-slate-700 border-slate-700 hover:text-white hover:bg-slate-700'
+            >
+              Opublikuj recenzję
+            </button>
+          </div>
+        </form>
+      )}
+      {!isFormVisible && (
+        <div className='flex items-center justify-between p-8 bg-white rounded shadow'>
+          <p>Wyraź swoją opinię na temat tego produktu.</p>
+
           <button
-            type='submit'
-            className='px-8 py-2 transition-all duration-300 border-2 rounded-full text-slate-700 border-slate-700 hover:text-white hover:bg-slate-700'
+            onClick={() => setIsFormVisible(true)}
+            className='px-4 py-2 transition duration-300 border rounded-full border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white'
           >
-            Opublikuj recenzję
+            Wyraź opinię
           </button>
         </div>
-      </form>
+      )}
     </section>
   );
 };
