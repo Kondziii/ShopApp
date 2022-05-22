@@ -2,11 +2,13 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 
 interface AppModalProps {
-  btnCaption: string;
-  leftIcon: React.ReactNode;
-  isVisible: boolean;
-  title: string;
+  btnCaption?: string;
+  leftIcon?: React.ReactNode;
+  isVisible?: boolean;
+  title?: string;
   children: React.ReactNode;
+  panelClassName?: string;
+  customBtn: React.ReactNode;
 }
 
 export default function AppModal({
@@ -15,6 +17,8 @@ export default function AppModal({
   isVisible = false,
   title,
   children,
+  panelClassName,
+  customBtn,
 }: AppModalProps) {
   let [isOpen, setIsOpen] = useState(isVisible);
 
@@ -28,14 +32,21 @@ export default function AppModal({
 
   return (
     <>
-      <button
-        type='button'
-        onClick={openModal}
-        className='px-4 py-2 transition duration-300 rounded-full hover:bg-yellow-100'
-      >
-        {leftIcon && leftIcon}
-        {btnCaption}
-      </button>
+      {!customBtn && (
+        <button
+          type='button'
+          onClick={openModal}
+          className='px-4 py-2 transition duration-300 rounded-full hover:bg-yellow-100'
+        >
+          {leftIcon && leftIcon}
+          {btnCaption}
+        </button>
+      )}
+      {customBtn && (
+        <div className='cursor-pointer' onClick={openModal}>
+          {customBtn}
+        </div>
+      )}
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as='div' className='relative z-[99999999]' onClose={closeModal}>
@@ -48,11 +59,11 @@ export default function AppModal({
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <div className='fixed inset-0 bg-black bg-opacity-25' />
+            <div className='fixed inset-0 bg-black bg-opacity-50' />
           </Transition.Child>
 
           <div className='fixed inset-0 overflow-y-auto'>
-            <div className='flex min-h-full items-center justify-center p-4 text-center'>
+            <div className='flex items-center justify-center min-h-full p-4 text-center'>
               <Transition.Child
                 as={Fragment}
                 enter='ease-out duration-300'
@@ -62,19 +73,27 @@ export default function AppModal({
                 leaveFrom='opacity-100 scale-100'
                 leaveTo='opacity-0 scale-95'
               >
-                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
-                  <Dialog.Title
-                    as='h3'
-                    className='text-lg font-medium leading-6 text-gray-900'
-                  >
-                    {title}
-                  </Dialog.Title>
+                <Dialog.Panel
+                  className={`${
+                    panelClassName
+                      ? panelClassName
+                      : 'w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl'
+                  }`}
+                >
+                  {title && (
+                    <Dialog.Title
+                      as='h3'
+                      className='text-lg font-medium leading-6 text-gray-900'
+                    >
+                      {title}
+                    </Dialog.Title>
+                  )}
                   {children}
 
                   <div className='mt-4 text-right'>
                     <button
                       type='button'
-                      className=' rounded-md border border-transparent bg-yellow-100 px-4 py-2 text-sm font-medium text-yellow-900 hover:bg-yellow-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2 transition duration-300'
+                      className='px-4 py-2 text-sm font-medium text-yellow-900 transition duration-300 bg-yellow-100 border border-transparent rounded-md hover:bg-yellow-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2'
                       onClick={closeModal}
                     >
                       Zamknij

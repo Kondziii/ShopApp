@@ -55,7 +55,7 @@ export const ProductDetailsForm = ({
       <h2 className='mb-2'>Rozmiary</h2>
       {product.productSizeVariants.map((size, index) => {
         return (
-          <div key={`${size.size?.name}_${index.toString()}`}>
+          <span key={`${size.size?.name}_${index.toString()}`}>
             {size.amount > 0 && size.size?.name && (
               <AppRadio
                 id={`${size.size.name}_${index.toString()}`}
@@ -66,7 +66,7 @@ export const ProductDetailsForm = ({
                 onChange={handleChangeSize}
               />
             )}
-          </div>
+          </span>
         );
       })}
       <small className='block text-red-500'>{errors.size?.message}</small>

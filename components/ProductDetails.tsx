@@ -32,15 +32,15 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
       <section className='row-start-1 gap-8 sm:grid sm:grid-cols-2 '>
         <ProductDetailsImage product={product} />
         <div className='self-start mt-4 sm:mt-0'>
-          <section className='space-x-2 mb-3'>
-            <span className='px-2 py-1 text-sm bg-green-600 text-white rounded-full shadow'>
+          <section className='mb-3 space-x-2'>
+            <span className='px-2 py-1 text-sm text-white bg-green-600 rounded-full shadow'>
               {sexCaption(product.sex)}
             </span>
             {product.categories.map((category) => {
               return (
                 <span
                   key={category.name}
-                  className='px-2 py-1 text-sm bg-yellow-500 text-white rounded-full shadow'
+                  className='px-2 py-1 text-sm text-white bg-yellow-500 rounded-full shadow'
                 >
                   {category.name}
                 </span>
@@ -48,7 +48,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
             })}
           </section>
 
-          <h1 className='mt-2  text-xl font-medium sm:mt-0 md:text-2xl '>
+          <h1 className='mt-2 text-xl font-medium sm:mt-0 md:text-2xl '>
             {product.name}
           </h1>
 
