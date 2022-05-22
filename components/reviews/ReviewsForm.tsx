@@ -42,6 +42,7 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
     reset,
     setValue,
     setError,
+    clearErrors,
     formState: { errors, isSubmitSuccessful },
   } = useForm<ReviewForm>({
     resolver: yupResolver(reviewSchema),
@@ -173,7 +174,8 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
   const handleChangeRating = (e: number) => {
     setValue('rating', e);
     if (e !== 0) {
-      setError('rating', false);
+      // setError('rating');
+      clearErrors('rating');
     }
   };
 
