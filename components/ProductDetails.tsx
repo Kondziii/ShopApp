@@ -14,6 +14,7 @@ import { ChangeEventHandler, useState } from 'react';
 import { ProductDetailsForm } from './ProductDetailsForm';
 import { ProductDetailsAmount } from './ProductDetailsAmount';
 import { ProductDetailsImage } from './ProductDetailsImage';
+import { ProductDetailsNav } from './ProductDetailsNav';
 
 export interface ProductFullInfoType extends FullProductItemFragment {
   longDescription: MDXRemoteSerializeResult<Record<string, unknown>>;
@@ -92,40 +93,10 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
         </div>
       </section>
       <hr className='my-6 border-slate-300' />
-      <nav className='mb-3'>
-        <ul className='flex gap-3'>
-          <li>
-            <Link
-              href={{
-                pathname: `/offer/products/${product.slug}`,
-                query: { v: 'Description' },
-              }}
-              shallow
-              scroll={false}
-            >
-              <a className='py-1 transition-all duration-300 border-b-4 border-b-transparent hover:border-b-yellow-500'>
-                Description
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link
-              href={{
-                pathname: `/offer/products/${product.slug}`,
-                query: { v: 'Reviews' },
-              }}
-              shallow
-              scroll={false}
-            >
-              <a className='py-1 transition-all duration-300 border-b-4 border-b-transparent hover:border-b-yellow-500'>
-                Reviews
-              </a>
-            </Link>
-          </li>
-        </ul>
-      </nav>
+      <ProductDetailsNav slug={product.slug} />
+
       {v === 'Description' && (
-        <article className='row-start-2 prose lg:prose-xl'>
+        <article className='row-start-2 prose lg:prose-lg'>
           <CustomMarkdown>{product.longDescription}</CustomMarkdown>
         </article>
       )}
