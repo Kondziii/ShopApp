@@ -12751,7 +12751,7 @@ export type Review = Node & {
   publishedAt?: Maybe<Scalars['DateTime']>;
   /** User that last published this document */
   publishedBy?: Maybe<User>;
-  rating?: Maybe<Scalars['Int']>;
+  rating: Scalars['Float'];
   scheduledIn: Array<ScheduledOperation>;
   /** System stage field */
   stage: Stage;
@@ -12829,7 +12829,7 @@ export type ReviewCreateInput = {
   email: Scalars['String'];
   headline: Scalars['String'];
   product?: InputMaybe<ProductCreateOneInlineInput>;
-  rating?: InputMaybe<Scalars['Int']>;
+  rating: Scalars['Float'];
   updatedAt?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -12975,21 +12975,21 @@ export type ReviewManyWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
   publishedBy?: InputMaybe<UserWhereInput>;
-  rating?: InputMaybe<Scalars['Int']>;
+  rating?: InputMaybe<Scalars['Float']>;
   /** All values greater than the given value. */
-  rating_gt?: InputMaybe<Scalars['Int']>;
+  rating_gt?: InputMaybe<Scalars['Float']>;
   /** All values greater than or equal the given value. */
-  rating_gte?: InputMaybe<Scalars['Int']>;
+  rating_gte?: InputMaybe<Scalars['Float']>;
   /** All values that are contained in given list. */
-  rating_in?: InputMaybe<Array<Scalars['Int']>>;
+  rating_in?: InputMaybe<Array<Scalars['Float']>>;
   /** All values less than the given value. */
-  rating_lt?: InputMaybe<Scalars['Int']>;
+  rating_lt?: InputMaybe<Scalars['Float']>;
   /** All values less than or equal the given value. */
-  rating_lte?: InputMaybe<Scalars['Int']>;
+  rating_lte?: InputMaybe<Scalars['Float']>;
   /** All values that are not equal to given value. */
-  rating_not?: InputMaybe<Scalars['Int']>;
+  rating_not?: InputMaybe<Scalars['Float']>;
   /** All values that are not contained in given list. */
-  rating_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  rating_not_in?: InputMaybe<Array<Scalars['Float']>>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
@@ -13035,7 +13035,7 @@ export type ReviewUpdateInput = {
   email?: InputMaybe<Scalars['String']>;
   headline?: InputMaybe<Scalars['String']>;
   product?: InputMaybe<ProductUpdateOneInlineInput>;
-  rating?: InputMaybe<Scalars['Int']>;
+  rating?: InputMaybe<Scalars['Float']>;
 };
 
 export type ReviewUpdateManyInlineInput = {
@@ -13059,7 +13059,7 @@ export type ReviewUpdateManyInput = {
   content?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   headline?: InputMaybe<Scalars['String']>;
-  rating?: InputMaybe<Scalars['Int']>;
+  rating?: InputMaybe<Scalars['Float']>;
 };
 
 export type ReviewUpdateManyWithNestedWhereInput = {
@@ -13224,21 +13224,21 @@ export type ReviewWhereInput = {
   /** All values that are not contained in given list. */
   publishedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
   publishedBy?: InputMaybe<UserWhereInput>;
-  rating?: InputMaybe<Scalars['Int']>;
+  rating?: InputMaybe<Scalars['Float']>;
   /** All values greater than the given value. */
-  rating_gt?: InputMaybe<Scalars['Int']>;
+  rating_gt?: InputMaybe<Scalars['Float']>;
   /** All values greater than or equal the given value. */
-  rating_gte?: InputMaybe<Scalars['Int']>;
+  rating_gte?: InputMaybe<Scalars['Float']>;
   /** All values that are contained in given list. */
-  rating_in?: InputMaybe<Array<Scalars['Int']>>;
+  rating_in?: InputMaybe<Array<Scalars['Float']>>;
   /** All values less than the given value. */
-  rating_lt?: InputMaybe<Scalars['Int']>;
+  rating_lt?: InputMaybe<Scalars['Float']>;
   /** All values less than or equal the given value. */
-  rating_lte?: InputMaybe<Scalars['Int']>;
+  rating_lte?: InputMaybe<Scalars['Float']>;
   /** All values that are not equal to given value. */
-  rating_not?: InputMaybe<Scalars['Int']>;
+  rating_not?: InputMaybe<Scalars['Float']>;
   /** All values that are not contained in given list. */
-  rating_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  rating_not_in?: InputMaybe<Array<Scalars['Float']>>;
   scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
   scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
@@ -15292,10 +15292,13 @@ export enum __TypeKind {
 
 export type CreateReviewMutationVariables = Exact<{
   review: ReviewCreateInput;
+  id: Scalars['ID'];
+  rating: Scalars['Float'];
+  ratingCount: Scalars['Int'];
 }>;
 
 
-export type CreateReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating?: number | null } | null };
+export type CreateReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number } | null, updateProduct?: { __typename?: 'Product', id: string } | null };
 
 export type CreateAccountMutationVariables = Exact<{
   email: Scalars['String'];
@@ -15377,14 +15380,14 @@ export type GetProductDetailsBySlugQueryVariables = Exact<{
 
 export type GetProductDetailsBySlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, rating: number, ratingCount: number, discount?: number | null, sex: Sex, categories: Array<{ __typename?: 'Category', id: string, name: string }>, images: Array<{ __typename?: 'Asset', url: string }>, productSizeVariants: Array<{ __typename?: 'ProductSizeVariant', amount: number, size?: { __typename?: 'Size', name: string, size: Sizes } | null }> } | null };
 
-export type ReviewContentFragment = { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating?: number | null };
+export type ReviewContentFragment = { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number };
 
 export type GetProductReviewsQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetProductReviewsQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, reviews: Array<{ __typename?: 'Review', id: string, headline: string, content: string, email: string, rating?: number | null }> } | null };
+export type GetProductReviewsQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, reviews: Array<{ __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number }> } | null };
 
 export type GetProductBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -15573,9 +15576,15 @@ export const ProductItemFragmentDoc = gql`
 }
     `;
 export const CreateReviewDocument = gql`
-    mutation CreateReview($review: ReviewCreateInput!) {
+    mutation CreateReview($review: ReviewCreateInput!, $id: ID!, $rating: Float!, $ratingCount: Int!) {
   review: createReview(data: $review) {
     ...reviewContent
+  }
+  updateProduct(
+    where: {id: $id}
+    data: {rating: $rating, ratingCount: $ratingCount}
+  ) {
+    id
   }
 }
     ${ReviewContentFragmentDoc}`;
@@ -15595,6 +15604,9 @@ export type CreateReviewMutationFn = Apollo.MutationFunction<CreateReviewMutatio
  * const [createReviewMutation, { data, loading, error }] = useCreateReviewMutation({
  *   variables: {
  *      review: // value for 'review'
+ *      id: // value for 'id'
+ *      rating: // value for 'rating'
+ *      ratingCount: // value for 'ratingCount'
  *   },
  * });
  */

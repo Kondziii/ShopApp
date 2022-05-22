@@ -15,6 +15,7 @@ import { useSession } from 'next-auth/react';
 import { formRating } from '../utils/functions';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { ProductFullInfoType } from '../ProductDetails';
 
 const reviewSchema = yup
   .object({
@@ -27,11 +28,10 @@ const reviewSchema = yup
 type ReviewForm = yup.InferType<typeof reviewSchema>;
 
 interface ProductReviewsProps {
-  productId: string;
-  slug: string;
+  product: ProductFullInfoType;
 }
 
-export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
+export const ReviewsForm = ({ product }: ProductReviewsProps) => {
   const {
     register,
     handleSubmit,
@@ -45,6 +45,7 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
   const session = useSession();
   const router = useRouter();
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [ratingValue, setRatingValue] = useState(0);
 
   const [createReview, { data, loading, error }] = useCreateReviewMutation({
     // refetchQueries: [
@@ -59,7 +60,7 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
       const originalData = cache.readQuery<GetProductReviewsQuery>({
         query: GetProductReviewsDocument,
         variables: {
-          slug,
+          slug: product.slug,
         },
       });
 
@@ -78,7 +79,7 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
       cache.writeQuery({
         query: GetProductReviewsDocument,
         variables: {
-          slug,
+          slug: product.slug,
         },
         data: updatedData,
       });
@@ -95,10 +96,13 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
           rating: formRating(values.rating),
           product: {
             connect: {
-              id: productId,
+              id: product.id,
             },
           },
         },
+        id: product.id,
+        rating: (product.rating + formRating(values.rating)) / 2,
+        ratingCount: +product.ratingCount + 1,
       },
       optimisticResponse: {
         __typename: 'Mutation',
@@ -109,6 +113,10 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
           headline: values.headline,
           content: values.content,
           rating: formRating(values.rating),
+        },
+        updateProduct: {
+          __typename: 'Product',
+          id: product.id,
         },
       },
     });
@@ -121,6 +129,7 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
         content: '',
       });
       setValue('rating', 0);
+      setRatingValue(0);
     }
   }, [isSubmitSuccessful, reset, setValue]);
 
@@ -163,11 +172,14 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
           <div className='w-[200px]'>
             <label className='w-full mb-1 '>Twoja ocena</label>
             <Rating
-              ratingValue={0}
+              ratingValue={ratingValue}
               initialValue={0}
               size={30}
               allowHalfIcon
-              onClick={(e) => handleChangeRating(e)}
+              onClick={(e) => {
+                handleChangeRating(e);
+                setRatingValue(e);
+              }}
               {...register('rating')}
             />
             <small className='block text-red-500'>

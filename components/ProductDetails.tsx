@@ -100,9 +100,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
           <CustomMarkdown>{product.longDescription}</CustomMarkdown>
         </article>
       )}
-      {v === 'Reviews' && (
-        <ReviewsContainer id={product.id} slug={product.slug} />
-      )}
+      {v === 'Reviews' && <ReviewsContainer product={product} />}
     </div>
   );
 };

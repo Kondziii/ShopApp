@@ -1,9 +1,19 @@
-mutation CreateReview($review: ReviewCreateInput!) {
+mutation CreateReview(
+  $review: ReviewCreateInput!
+  $id: ID!
+  $rating: Float!
+  $ratingCount: Int!
+) {
   review: createReview(data: $review) {
     ...reviewContent
   }
+  updateProduct(
+    where: { id: $id }
+    data: { rating: $rating, ratingCount: $ratingCount }
+  ) {
+    id
+  }
 }
-
 mutation createAccount($email: String!, $password: String!) {
   createAccount(data: { email: $email, password: $password }) {
     id
