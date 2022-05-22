@@ -15384,10 +15384,12 @@ export type ReviewContentFragment = { __typename?: 'Review', id: string, headlin
 
 export type GetProductReviewsQueryVariables = Exact<{
   slug: Scalars['String'];
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetProductReviewsQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, reviews: Array<{ __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number, createdAt: any }> } | null };
+export type GetProductReviewsQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, reviews: Array<{ __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number, createdAt: any }> } | null, reviewsConnection: { __typename?: 'ReviewConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
 
 export type GetProductBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -16072,13 +16074,18 @@ export type GetProductDetailsBySlugQueryHookResult = ReturnType<typeof useGetPro
 export type GetProductDetailsBySlugLazyQueryHookResult = ReturnType<typeof useGetProductDetailsBySlugLazyQuery>;
 export type GetProductDetailsBySlugQueryResult = Apollo.QueryResult<GetProductDetailsBySlugQuery, GetProductDetailsBySlugQueryVariables>;
 export const GetProductReviewsDocument = gql`
-    query getProductReviews($slug: String!) {
+    query getProductReviews($slug: String!, $first: Int = 10, $skip: Int = 0) {
   product(where: {slug: $slug}) {
     id
     slug
     name
-    reviews {
+    reviews(first: $first, skip: $skip) {
       ...reviewContent
+    }
+  }
+  reviewsConnection(where: {product: {slug: $slug}}) {
+    aggregate {
+      count
     }
   }
 }
@@ -16097,6 +16104,8 @@ export const GetProductReviewsDocument = gql`
  * const { data, loading, error } = useGetProductReviewsQuery({
  *   variables: {
  *      slug: // value for 'slug'
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
  *   },
  * });
  */

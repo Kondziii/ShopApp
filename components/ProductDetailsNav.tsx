@@ -9,8 +9,6 @@ interface ProductDetailsNavProps {
 export const ProductDetailsNav = ({ slug }: ProductDetailsNavProps) => {
   const router = useRouter();
 
-  console.log(router);
-
   const isActive = (v: string) => {
     return router.query.v === v;
   };
