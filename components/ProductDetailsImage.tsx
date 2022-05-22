@@ -16,7 +16,7 @@ export const ProductDetailsImage = ({ product }: ProductDetailsImageProps) => {
   return (
     <div className=''>
       <AppModal
-        panelClassName='bg-transparent mx-2 w-full sm:w-10/12 md:w-2/5'
+        panelClassName='bg-transparent mx-2 w-full sm:w-10/12 md:w-1/2 lg:w-2/5'
         customBtn={
           <div className='p-4 mb-4 bg-white rounded-md shadow'>
             <Image

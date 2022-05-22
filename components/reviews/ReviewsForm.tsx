@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '../Input';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -10,14 +10,17 @@ import {
   GetProductReviewsQuery,
   useCreateReviewMutation,
 } from '../../generated/graphql';
+import { Rating } from 'react-simple-star-rating';
+import { useSession } from 'next-auth/react';
+import { formRating } from '../utils/functions';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const reviewSchema = yup
   .object({
     headline: yup.string().required(),
-    name: yup.string().required(),
-    email: yup.string().email().required(),
     content: yup.string().required(),
-    rating: yup.string().required(),
+    rating: yup.number().positive('To pole jest wymagane').required(),
   })
   .required();
 
@@ -33,10 +36,14 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
     register,
     handleSubmit,
     reset,
+    setValue,
+    setError,
     formState: { errors, isSubmitSuccessful },
   } = useForm<ReviewForm>({
     resolver: yupResolver(reviewSchema),
   });
+  const session = useSession();
+  const router = useRouter();
 
   const [createReview, { data, loading, error }] = useCreateReviewMutation({
     // refetchQueries: [
@@ -66,7 +73,6 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
           reviews: [...originalData.product.reviews, result.data.review],
         },
       };
-      console.log(updatedData);
 
       cache.writeQuery({
         query: GetProductReviewsDocument,
@@ -83,10 +89,9 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
       variables: {
         review: {
           headline: values.headline,
-          name: values.name,
-          email: values.email,
+          email: session.data!.user.email,
           content: values.content,
-          rating: +values.rating,
+          rating: formRating(values.rating),
           product: {
             connect: {
               id: productId,
@@ -99,27 +104,53 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
         review: {
           __typename: 'Review',
           id: (-Math.random()).toString(),
+          email: session.data!.user.email,
           headline: values.headline,
-          name: values.name,
-          email: values.email,
           content: values.content,
-          rating: +values.rating,
+          rating: formRating(values.rating),
         },
       },
     });
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
         headline: '',
-        name: '',
-        email: '',
         content: '',
-        rating: '',
       });
+      setValue('rating', 0);
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [isSubmitSuccessful, reset, setValue]);
+
+  const handleChangeRating = (e: number) => {
+    setValue('rating', e);
+    if (e !== 0) {
+      setError('rating', false);
+    }
+  };
+
+  if (session.status === 'unauthenticated') {
+    return (
+      <section className='flex items-center justify-between p-8 bg-white rounded shadow'>
+        <p>Wyraź swoją opinię na temat tego produktu.</p>
+        <Link
+          href={{
+            pathname: '/signin',
+            query: { callbackUrl: router.asPath },
+          }}
+        >
+          <a className='px-4 py-2 transition duration-300 border rounded-full border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white'>
+            Zaloguj się
+          </a>
+        </Link>
+      </section>
+    );
+  }
+
+  if (session.status === 'loading') {
+    return null;
+  }
 
   return (
     <section className='mt-4'>
@@ -127,45 +158,26 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
         onSubmit={onSubmit}
         className='grid grid-cols-1 p-8 bg-white rounded-md shadow-md sm:grid-cols-12 gap-x-4 gap-y-2'
       >
-        <Input
-          {...register('name')}
-          container_classes='sm:col-span-6'
-          id='name'
-          type='text'
-          label='Your name'
-          placeholder='Name...'
-          autoComplete='name'
-          error={errors.name}
-        ></Input>
-        <Input
-          {...register('email')}
-          container_classes='sm:col-span-6'
-          id='email'
-          type='email'
-          label='Email'
-          placeholder='Email...'
-          autoComplete='email'
-          error={errors.email}
-        ></Input>
+        <div className='w-[200px]'>
+          <label className='w-full mb-1 '>Twoja ocena</label>
+          <Rating
+            ratingValue={0}
+            initialValue={0}
+            size={30}
+            allowHalfIcon
+            onClick={(e) => handleChangeRating(e)}
+            {...register('rating')}
+          />
+          <small className='block text-red-500'>{errors.rating?.message}</small>
+        </div>
         <Input
           {...register('headline')}
-          container_classes='sm:col-span-10'
+          container_classes='sm:col-span-12'
           id='headline'
           type='text'
-          label='Headline'
-          placeholder='Headline...'
+          label='Nagłówek'
+          placeholder='Nagłówek...'
           error={errors.headline}
-        ></Input>
-        <Input
-          {...register('rating')}
-          container_classes='sm:col-span-2'
-          id='rating'
-          type='number'
-          label='Rating'
-          placeholder='Rating...'
-          min={0}
-          max={5}
-          error={errors.rating}
         ></Input>
 
         <TextArea
@@ -173,21 +185,19 @@ export const ReviewsForm = ({ productId, slug }: ProductReviewsProps) => {
           container_classes='col-span-full'
           id='content'
           rows={4}
-          label='Content'
-          placeholder='Content...'
+          label='Opinia'
+          placeholder='Opinia...'
           error={errors.content}
         ></TextArea>
-        <div className='mt-2 col-span-full'>
+        <div className='flex justify-end mt-2 col-span-full'>
           <button
             type='submit'
             className='px-8 py-2 transition-all duration-300 border-2 rounded-full text-slate-700 border-slate-700 hover:text-white hover:bg-slate-700'
           >
-            Publish
+            Opublikuj recenzję
           </button>
         </div>
       </form>
-      {loading && <div className='animate-bounce'>Publishing...</div>}
-      {error && <pre>{JSON.stringify(error, null, 2)}</pre>}
     </section>
   );
 };

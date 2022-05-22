@@ -12746,7 +12746,6 @@ export type Review = Node & {
   history: Array<Version>;
   /** The unique identifier */
   id: Scalars['ID'];
-  name: Scalars['String'];
   product?: Maybe<Product>;
   /** The time the document was published. Null on documents in draft stage. */
   publishedAt?: Maybe<Scalars['DateTime']>;
@@ -12829,7 +12828,6 @@ export type ReviewCreateInput = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   email: Scalars['String'];
   headline: Scalars['String'];
-  name: Scalars['String'];
   product?: InputMaybe<ProductCreateOneInlineInput>;
   rating?: InputMaybe<Scalars['Int']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
@@ -12960,25 +12958,6 @@ export type ReviewManyWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
-  name?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  name_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  name_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  name_in?: InputMaybe<Array<Scalars['String']>>;
-  /** All values that are not equal to given value. */
-  name_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  name_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  name_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  name_not_in?: InputMaybe<Array<Scalars['String']>>;
-  /** All values not starting with the given string. */
-  name_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  name_starts_with?: InputMaybe<Scalars['String']>;
   product?: InputMaybe<ProductWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
@@ -13043,8 +13022,6 @@ export enum ReviewOrderByInput {
   HeadlineDesc = 'headline_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
-  NameAsc = 'name_ASC',
-  NameDesc = 'name_DESC',
   PublishedAtAsc = 'publishedAt_ASC',
   PublishedAtDesc = 'publishedAt_DESC',
   RatingAsc = 'rating_ASC',
@@ -13057,7 +13034,6 @@ export type ReviewUpdateInput = {
   content?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   headline?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
   product?: InputMaybe<ProductUpdateOneInlineInput>;
   rating?: InputMaybe<Scalars['Int']>;
 };
@@ -13083,7 +13059,6 @@ export type ReviewUpdateManyInput = {
   content?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   headline?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
   rating?: InputMaybe<Scalars['Int']>;
 };
 
@@ -13232,25 +13207,6 @@ export type ReviewWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
-  name?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  name_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  name_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  name_in?: InputMaybe<Array<Scalars['String']>>;
-  /** All values that are not equal to given value. */
-  name_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  name_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  name_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  name_not_in?: InputMaybe<Array<Scalars['String']>>;
-  /** All values not starting with the given string. */
-  name_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  name_starts_with?: InputMaybe<Scalars['String']>;
   product?: InputMaybe<ProductWhereInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
@@ -15339,7 +15295,7 @@ export type CreateReviewMutationVariables = Exact<{
 }>;
 
 
-export type CreateReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, content: string, name: string, email: string, rating?: number | null } | null };
+export type CreateReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating?: number | null } | null };
 
 export type CreateAccountMutationVariables = Exact<{
   email: Scalars['String'];
@@ -15421,14 +15377,14 @@ export type GetProductDetailsBySlugQueryVariables = Exact<{
 
 export type GetProductDetailsBySlugQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, description: string, rating: number, ratingCount: number, discount?: number | null, sex: Sex, categories: Array<{ __typename?: 'Category', id: string, name: string }>, images: Array<{ __typename?: 'Asset', url: string }>, productSizeVariants: Array<{ __typename?: 'ProductSizeVariant', amount: number, size?: { __typename?: 'Size', name: string, size: Sizes } | null }> } | null };
 
-export type ReviewContentFragment = { __typename?: 'Review', id: string, headline: string, content: string, name: string, email: string, rating?: number | null };
+export type ReviewContentFragment = { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating?: number | null };
 
 export type GetProductReviewsQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetProductReviewsQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, reviews: Array<{ __typename?: 'Review', id: string, headline: string, content: string, name: string, email: string, rating?: number | null }> } | null };
+export type GetProductReviewsQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, reviews: Array<{ __typename?: 'Review', id: string, headline: string, content: string, email: string, rating?: number | null }> } | null };
 
 export type GetProductBySlugQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -15554,7 +15510,6 @@ export const ReviewContentFragmentDoc = gql`
   id
   headline
   content
-  name
   email
   rating
 }

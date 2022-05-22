@@ -163,7 +163,6 @@ fragment reviewContent on Review {
   id
   headline
   content
-  name
   email
   rating
 }

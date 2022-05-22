@@ -31,8 +31,8 @@ export const ProductDetailsNav = ({ slug }: ProductDetailsNavProps) => {
               className={`px-4 py-2 transition duration-300 rounded-full ${
                 isActive('Description')
                   ? 'bg-slate-700 text-white'
-                  : 'bg-gray-200'
-              } hover:bg-gray-300 `}
+                  : 'bg-gray-200 hover:bg-gray-300'
+              }  `}
             >
               Opis produktu
             </a>
@@ -49,8 +49,10 @@ export const ProductDetailsNav = ({ slug }: ProductDetailsNavProps) => {
           >
             <a
               className={`px-4 py-2 transition duration-300 rounded-full ${
-                isActive('Reviews') ? 'bg-slate-700 text-white' : 'bg-gray-200'
-              } hover:bg-gray-300 `}
+                isActive('Reviews')
+                  ? 'bg-slate-700 text-white'
+                  : 'bg-gray-200 hover:bg-gray-300'
+              }  `}
             >
               Opinie klientów
             </a>

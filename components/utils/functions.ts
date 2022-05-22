@@ -20,3 +20,7 @@ export const sexCaption = (val: String) => {
 export const mod = (number1: number, number2: number) => {
   return ((number1 % number2) + number2) % number2;
 };
+
+export const formRating = (number: number) => {
+  return (number * 5) / 100;
+};

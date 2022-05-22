@@ -3,28 +3,6 @@ import Slider from 'react-slick';
 import Image from 'next/image';
 import { mod } from './utils/functions';
 
-function SampleNextArrow({ onClick }: any) {
-  return (
-    <button
-      onClick={onClick}
-      className='absolute z-20 flex items-center justify-center w-6 h-6 text-white -translate-y-1/2 rounded-full top-1/2 -right-7 bg-slate-700'
-    >
-      &gt;
-    </button>
-  );
-}
-
-function SamplePrevArrow({ onClick }: any) {
-  return (
-    <button
-      className='absolute z-20 flex items-center justify-center w-6 h-6 text-white -translate-y-1/2 rounded-full top-1/2 -left-7 bg-slate-700 '
-      onClick={onClick}
-    >
-      &lt;
-    </button>
-  );
-}
-
 interface ImageSliderProps {
   images: Array<{
     url: string;
@@ -35,6 +13,34 @@ interface ImageSliderProps {
 
 export const ImageSlider = ({ images, alt, setImage }: ImageSliderProps) => {
   const [currIndex, setCurrIndex] = useState(0);
+
+  function SamplePrevArrow({ onClick }: any) {
+    return (
+      <button
+        className='absolute z-20 flex items-center justify-center w-6 h-6 text-white -translate-y-1/2 rounded-full top-1/2 -left-7 bg-slate-700 '
+        onClick={() => {
+          onClick();
+          setCurrIndex((prev) => mod(prev - 1, images.length));
+        }}
+      >
+        &lt;
+      </button>
+    );
+  }
+
+  function SampleNextArrow({ onClick }: any) {
+    return (
+      <button
+        className='absolute z-20 flex items-center justify-center w-6 h-6 text-white -translate-y-1/2 rounded-full top-1/2 -right-7 bg-slate-700'
+        onClick={() => {
+          onClick();
+          setCurrIndex((prev) => mod(prev + 1, images.length));
+        }}
+      >
+        &gt;
+      </button>
+    );
+  }
 
   const slider = useRef<any>();
   const settings = {
@@ -59,7 +65,7 @@ export const ImageSlider = ({ images, alt, setImage }: ImageSliderProps) => {
       {
         breakpoint: 800,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
           slidesToScroll: 1,
           initialSlide: 1,
         },
@@ -67,7 +73,7 @@ export const ImageSlider = ({ images, alt, setImage }: ImageSliderProps) => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
         },
       },
