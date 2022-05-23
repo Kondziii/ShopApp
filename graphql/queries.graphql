@@ -1,31 +1,161 @@
-query getAllProductsList {
-  products {
+query getAllProducts(
+  $first: Int!
+  $skip: Int!
+  $s: String! = ""
+  $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX]
+  $min: Int
+  $max: Int
+  $sort: ProductOrderByInput!
+) {
+  products(
+    first: $first
+    skip: $skip
+    where: { name_contains: $s, sex_in: $sex, price_lte: $max, price_gte: $min }
+    orderBy: $sort
+  ) {
     id
     name
     price
+    sex
     slug
+    discount
+    rating
+    ratingCount
     images(first: 1) {
       url
     }
+    categories(first: 1) {
+      id
+      name
+    }
+  }
+  totalCount: productsConnection(
+    first: $first
+    skip: $skip
+    where: { name_contains: $s, sex_in: $sex, price_lte: $max, price_gte: $min }
+  ) {
+    aggregate {
+      count
+    }
   }
 }
 
-query getProductSlugs {
-  products {
-    slug
-  }
-}
-
-query getProductDetailsBySlug($slug: String) {
-  product(where: { slug: $slug }) {
+query getAllProductsWithCategory(
+  $first: Int!
+  $skip: Int!
+  $s: String! = ""
+  $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX]
+  $category: [String!]
+  $min: Int
+  $max: Int
+  $sort: ProductOrderByInput!
+) {
+  products(
+    first: $first
+    skip: $skip
+    where: {
+      name_contains: $s
+      sex_in: $sex
+      categories_every: { name_in: $category }
+      price_lte: $max
+      price_gte: $min
+    }
+    orderBy: $sort
+  ) {
     id
-    slug
     name
     price
-    description
-    images {
+    sex
+    slug
+    discount
+    rating
+    ratingCount
+    images(first: 1) {
       url
     }
+    categories(first: 1) {
+      id
+      name
+      type
+    }
+  }
+  totalCount: productsConnection(
+    first: $first
+    skip: $skip
+    where: {
+      name_contains: $s
+      sex_in: $sex
+      categories_every: { name_in: $category }
+      price_lte: $max
+      price_gte: $min
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getSexFilters {
+  sexOptions: __type(name: "Sex") {
+    enumValues {
+      name
+    }
+  }
+}
+
+query getCategoryFilters {
+  __type(name: "ProductCategory") {
+    enumValues {
+      name
+    }
+  }
+}
+
+query getPriceFilters {
+  max: products(where: {}, orderBy: price_DESC, first: 1) {
+    price
+  }
+  min: products(where: {}, orderBy: price_ASC, first: 1) {
+    price
+  }
+}
+
+query getAllCategories {
+  categories {
+    name
+    type
+  }
+}
+fragment FullProductItem on Product {
+  id
+  slug
+  name
+  price
+  description
+  rating
+  ratingCount
+  discount
+  sex
+  categories {
+    id
+    name
+  }
+  images {
+    url
+  }
+  productSizeVariants {
+    amount
+    size {
+      name
+      size
+    }
+  }
+}
+
+query getProductDetailsBySlug($slug: String!) {
+  product(where: { slug: $slug }) {
+    ...FullProductItem
   }
 }
 
@@ -33,18 +163,23 @@ fragment reviewContent on Review {
   id
   headline
   content
-  name
   email
   rating
+  createdAt
 }
 
-query getProductReviews($slug: String!) {
+query getProductReviews($slug: String!, $first: Int = 10, $skip: Int = 0) {
   product(where: { slug: $slug }) {
     id
     slug
     name
-    reviews {
+    reviews(first: $first, skip: $skip, orderBy: createdAt_DESC) {
       ...reviewContent
+    }
+  }
+  reviewsConnection(where: { product: { slug: $slug } }) {
+    aggregate {
+      count
     }
   }
 }
@@ -66,5 +201,174 @@ query getAccountByEmail($email: String!) {
     id
     email
     password
+    favorites {
+      id
+    }
+  }
+}
+
+fragment carouselItem on Carousel {
+  id
+  title
+  description
+  image {
+    id
+    url
+  }
+}
+
+query getCarouselData {
+  carousels {
+    ...carouselItem
+  }
+}
+
+fragment socksSection on HomeSection {
+  id
+  title
+  image {
+    url
+  }
+  category {
+    displayName
+    slug
+    name
+    type
+  }
+}
+
+query getSocksSection {
+  sections: homeSections {
+    ...socksSection
+  }
+}
+
+query getNewsSection {
+  newsSections {
+    ...newsSectionFragment
+  }
+}
+
+fragment newsSectionFragment on NewsSection {
+  id
+  title
+  shortDescription
+  longDescription
+  slug
+  image {
+    url
+  }
+}
+
+query getNewsSectionBySlug($slug: String!) {
+  newsSection(where: { slug: $slug }) {
+    ...newsSectionFragment
+  }
+}
+
+query getFaqData {
+  faqs {
+    id
+    question
+    answer
+    section
+  }
+}
+
+query getInfoSectionBySlug($slug: String!) {
+  link(where: { slug: $slug }) {
+    id
+    slug
+    title
+    description
+  }
+}
+
+query getInfoSections {
+  links {
+    slug
+  }
+}
+
+query getAccountFavoriteItemsByEmail($email: String!) {
+  account(where: { email: $email }, stage: DRAFT) {
+    favorites {
+      ...ProductItem
+    }
+  }
+}
+
+fragment ProductItem on Product {
+  id
+  name
+  slug
+  price
+  sex
+  discount
+  rating
+  ratingCount
+  images(first: 1) {
+    url
+  }
+  categories(first: 1) {
+    id
+    name
+    type
+  }
+}
+
+query getAccountFavoriteItemsById(
+  $favorite: [ID!]!
+  $first: Int = 5
+  $skip: Int = 0
+) {
+  products(where: { id_in: $favorite }, first: $first, skip: $skip) {
+    ...ProductItem
+  }
+  pagination: productsConnection(where: { id_in: $favorite }) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getAccountFavoriteItemsByIdWithCategory(
+  $favorite: [ID!]!
+  $first: Int = 5
+  $skip: Int = 0
+  $category: [String!]
+) {
+  products(
+    where: { id_in: $favorite, categories_every: { name_in: $category } }
+    first: $first
+    skip: $skip
+  ) {
+    ...ProductItem
+  }
+  pagination: productsConnection(
+    where: { id_in: $favorite, categories_every: { name_in: $category } }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query GetProductSlugs {
+  products {
+    slug
+  }
+}
+query getLastProductInfo($productId: ID!) {
+  product(where: { id: $productId }) {
+    rating
+  }
+  reviews: reviewsConnection(
+    where: { product: { id: $productId } }
+    stage: DRAFT
+  ) {
+    aggregate {
+      count
+    }
   }
 }

@@ -7,6 +7,7 @@ import { apolloClient } from '../../../graphql/graphqlClient';
 import {
   GetProductDetailsBySlugDocument,
   GetProductDetailsBySlugQuery,
+  GetProductDetailsBySlugQueryVariables,
   GetProductSlugsDocument,
   GetProductSlugsQuery,
 } from '../../../generated/graphql';
@@ -42,19 +43,7 @@ const ProductDetailsPage = ({
           site_name: 'ShopApp',
         }}
       ></NextSeo>
-      <ProductDetails
-        data={{
-          id: data.id,
-          slug: data.slug,
-          title: data.name,
-          price: data.price,
-          description: data.description,
-          thumbnailSrc: data.images[0].url,
-          thumbnailAlt: data.name,
-          rating: 5,
-          longDescription: data.longDescription,
-        }}
-      ></ProductDetails>
+      <ProductDetails product={data}></ProductDetails>
     </div>
   );
 };
@@ -78,7 +67,7 @@ export const getStaticPaths = async () => {
     paths: data.data.products.map((product) => {
       return {
         params: {
-          productId: product.slug.toString(),
+          slug: product.slug,
         },
       };
     }),
@@ -89,7 +78,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({
   params,
 }: InferGetStaticPaths<typeof getStaticPaths>) => {
-  if (!params?.productId) {
+  if (!params?.slug) {
     return {
       props: {},
       notFound: true,
@@ -99,12 +88,14 @@ export const getStaticProps = async ({
   //   `https://naszsklep-api.vercel.app/api/products/${params.productId}`
   // );
   // const data: ApiProducts = await response.json();
-
-  const data = await apolloClient.query<GetProductDetailsBySlugQuery>({
-    variables: {
-      slug: params?.productId,
-    },
+  const data = await apolloClient.query<
+    GetProductDetailsBySlugQuery,
+    GetProductDetailsBySlugQueryVariables
+  >({
     query: GetProductDetailsBySlugDocument,
+    variables: {
+      slug: params.slug,
+    },
   });
 
   if (!data || !data.data || !data.data.product) {
@@ -121,5 +112,6 @@ export const getStaticProps = async ({
         longDescription: await serialize(data.data.product.description),
       },
     },
+    revalidate: 2,
   };
 };

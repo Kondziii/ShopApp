@@ -4,7 +4,7 @@ import {
   GetAccountByEmailDocument,
 } from './../../../generated/graphql';
 import { apolloClient } from './../../../graphql/graphqlClient';
-import NextAuth from 'next-auth';
+import NextAuth, { User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import * as bcrypt from 'bcrypt';
 
@@ -54,5 +54,20 @@ export default NextAuth({
   ],
   pages: {
     signIn: '/signin',
+  },
+  callbacks: {
+    async jwt({ token, account, user }) {
+      // Persist the OAuth access_token to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token;
+        token.user = user;
+      }
+      return token;
+    },
+    session: async ({ session, token, user }) => {
+      session.accessToken = token.accessToken;
+      session.user = token.user as User;
+      return session;
+    },
   },
 });

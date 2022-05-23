@@ -1,3 +1,4 @@
+import { Rating } from 'react-simple-star-rating';
 import { ReviewContentFragment } from '../../generated/graphql';
 
 interface ReviewsListItemProps {
@@ -9,20 +10,23 @@ export const ReviewsListItem = ({ review }: ReviewsListItemProps) => {
 
   return (
     <li className={`relative block p-4 pb-8 ${isOptimistic && 'opacity-50'}`}>
-      <div className='flex items-center justify-between'>
+      <div className='items-center justify-between block sm:flex'>
         <h3 className='text-2xl font-bolder'>{review.headline}</h3>
-        {review.rating && (
-          <span className='text-2xl'>
-            <b className='mr-1 underline underline-offset-2'>{review.rating}</b>
-            /5
-          </span>
-        )}
+        <Rating
+          ratingValue={review.rating * 20}
+          readonly
+          size={20}
+          allowHalfIcon
+          className='transform '
+        />
       </div>
       <p className='mt-1 font-light text-gray-600 text-md'>{review.content}</p>
-      <footer className='absolute bottom-0 left-4 '>
-        <p className='text-sm text-gray-500 '>
-          Review added by <span>{review.name}</span>
+      <footer className='absolute bottom-0 flex items-center justify-between w-full pr-4 text-sm text-gray-500 left-4'>
+        <p>
+          Recenzja opublikowana przez:{' '}
+          <span className='text-black'>{review.email}</span>
         </p>
+        <p>{new Date(review.createdAt).toLocaleString()}</p>
       </footer>
     </li>
   );

@@ -1,7 +1,7 @@
 import { CartContent } from '../components/cart/CartContent';
 import { CartSummary } from '../components/cart/CartSummary';
 import { useCartState } from '../components/cart/CartContext';
-import { EmptyCart } from '../components/cart/EmptyCart';
+import { EmptyList } from '../components/cart/EmptyList';
 
 const CartPage = () => {
   const cartState = useCartState();
@@ -18,7 +18,12 @@ const CartPage = () => {
         </div>
       ) : (
         <div className='flex items-center h-[65vh]'>
-          <EmptyCart></EmptyCart>
+          <EmptyList
+            title='Twój koszyk jest pusty'
+            description='Zapoznaj się z naszą ofertą i dodaj wybrane produkty do koszyka.'
+            to='/offer'
+            linkCaption='Przejdź do oferty'
+          />
         </div>
       )}
     </>

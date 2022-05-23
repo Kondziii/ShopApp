@@ -61,31 +61,31 @@ const SignUpPage = () => {
         onSubmit={onSubmit}
         className='w-full max-w-md p-10 mx-auto bg-white rounded shadow-md'
       >
-        <h1 className='mb-4 text-2xl font-semibold'>Register account</h1>
+        <h1 className='mb-4 text-2xl font-semibold'>Zarejestruj konto</h1>
         <fieldset className='space-y-4'>
           <Input
             id='email'
             label='Email'
             type='text'
-            placeholder='Type email here...'
+            placeholder='Podaj email...'
             autoComplete='email'
             {...register('email')}
             error={errors.email}
           />
           <Input
             id='password'
-            label='Password'
+            label='Hasło'
             type='password'
-            placeholder='Type password here...'
+            placeholder='Podaj hasło...'
             autoComplete='password'
             {...register('password')}
             error={errors.password}
           />
           <Input
             id='confirmPassword'
-            label='Confirm password'
+            label='Potwierdź hasło'
             type='password'
-            placeholder='Confirm password here...'
+            placeholder='Podaj hasło ponownie...'
             autoComplete='password'
             {...register('confirmPassword')}
             error={errors.confirmPassword}
@@ -95,10 +95,10 @@ const SignUpPage = () => {
           type='submit'
           className='block w-full px-4 py-2 mx-auto mt-8 text-white transition duration-300 border rounded-full bg-slate-700 border-slate-700 hover:bg-slate-800'
         >
-          Sign up
+          Zarejestruj
         </button>
         <small className='block mt-1 text-center'>
-          Already have an account?{' '}
+          Masz już konto?{' '}
           <button
             onClick={() =>
               router.push({
@@ -108,7 +108,7 @@ const SignUpPage = () => {
             type='button'
             className='text-yellow-500 transition-colors duration-300 hover:text-yellow-600'
           >
-            Sign in
+            Zaloguj się
           </button>
         </small>
       </form>

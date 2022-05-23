@@ -1,11 +1,58 @@
-mutation CreateReview($review: ReviewCreateInput!) {
+mutation CreateReview(
+  $review: ReviewCreateInput!
+  $id: ID!
+  $rating: Float!
+  $ratingCount: Int!
+) {
   review: createReview(data: $review) {
     ...reviewContent
   }
+  publishManyReviewsConnection(
+    to: PUBLISHED
+    from: DRAFT
+    where: { product: { id: $id } }
+  ) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+  publishProduct(where: { id: $id }, to: PUBLISHED) {
+    id
+  }
+  updateProduct(
+    where: { id: $id }
+    data: { rating: $rating, ratingCount: $ratingCount }
+  ) {
+    id
+  }
 }
-
 mutation createAccount($email: String!, $password: String!) {
   createAccount(data: { email: $email, password: $password }) {
     id
+  }
+}
+
+mutation addToFavorite($user: String!, $item: ID!) {
+  updateAccount(
+    where: { email: $user }
+    data: { favorites: { connect: { where: { id: $item } } } }
+  ) {
+    favorites {
+      id
+    }
+  }
+}
+
+mutation deleteFromFavorite($user: String!, $item: ID!) {
+  updateAccount(
+    data: { favorites: { disconnect: { id: $item } } }
+    where: { email: $user }
+  ) {
+    id
+    favorites {
+      id
+    }
   }
 }
