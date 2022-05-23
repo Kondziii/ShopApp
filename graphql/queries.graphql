@@ -363,10 +363,7 @@ query getLastProductInfo($productId: ID!) {
   product(where: { id: $productId }) {
     rating
   }
-  reviews: reviewsConnection(
-    where: { product: { id: $productId } }
-    stage: DRAFT
-  ) {
+  reviews: reviewsConnection(where: { product: { id: $productId } }) {
     aggregate {
       count
     }

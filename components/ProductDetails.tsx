@@ -4,7 +4,11 @@ import CustomMarkdown from './CustomMarkdown';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ReviewsContainer } from './reviews/ReviewsContainer';
-import { FullProductItemFragment, Sex } from '../generated/graphql';
+import {
+  FullProductItemFragment,
+  Sex,
+  useGetLastProductInfoQuery,
+} from '../generated/graphql';
 import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { formatPrice, sexCaption } from './utils/functions';
 import { Rating } from 'react-simple-star-rating';
@@ -27,11 +31,22 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
   const router = useRouter();
   const v = router.query.v || 'Description';
   const [currSize, setCurrSize] = useState('');
+  const { data } = useGetLastProductInfoQuery({
+    variables: {
+      productId: product.id,
+    },
+  });
 
   return (
     <div className='container content-center h-full max-w-5xl p-6 mx-auto '>
       <section className='row-start-1 gap-8 sm:grid sm:grid-cols-2 '>
-        <ProductDetailsImage product={product} />
+        <ProductDetailsImage
+          product={{
+            ...product,
+            ratingCount: data?.reviews.aggregate.count || product.ratingCount,
+            rating: data?.product?.rating || product.rating,
+          }}
+        />
         <div className='self-start mt-4 sm:mt-0'>
           <section className='mb-3 space-x-2'>
             <span className='px-2 py-1 text-sm text-white bg-green-600 rounded-full shadow'>
@@ -58,14 +73,18 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
           <section className='mt-4'>
             <div className='my-4'>
               <Rating
-                ratingValue={product.rating * 20}
+                ratingValue={(data?.product?.rating || product.rating) * 20}
                 readonly
                 size={30}
                 allowHalfIcon
                 onClick={(e) => console.log(e)}
               />
               <span className='ml-1 text-sm font-medium'>
-                ({product.ratingCount})
+                (
+                {data?.reviews.aggregate.count ||
+                  product.ratingCount ||
+                  product.ratingCount}
+                )
               </span>
             </div>
             <p
@@ -100,7 +119,15 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
           <CustomMarkdown>{product.longDescription}</CustomMarkdown>
         </article>
       )}
-      {v === 'Reviews' && <ReviewsContainer product={product} />}
+      {v === 'Reviews' && (
+        <ReviewsContainer
+          product={{
+            ...product,
+            ratingCount: data?.reviews.aggregate.count || product.ratingCount,
+            rating: data?.product?.rating || product.rating,
+          }}
+        />
+      )}
     </div>
   );
 };

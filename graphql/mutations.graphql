@@ -18,13 +18,15 @@ mutation CreateReview(
       }
     }
   }
-  publishProduct(where: { id: $id }, to: PUBLISHED) {
-    id
-  }
+
   updateProduct(
     where: { id: $id }
     data: { rating: $rating, ratingCount: $ratingCount }
   ) {
+    id
+  }
+
+  publishProduct(where: { id: $id }, to: PUBLISHED) {
     id
   }
 }
