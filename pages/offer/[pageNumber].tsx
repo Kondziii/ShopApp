@@ -215,6 +215,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         max: maxThreshold,
         sort: sortFilter as ProductOrderByInput,
       },
+      fetchPolicy: 'network-only',
     });
   } else {
     response = await apolloClient.query<

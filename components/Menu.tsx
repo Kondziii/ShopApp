@@ -13,7 +13,12 @@ export const Menu = ({ as, children, ...props }: MenuProps) => {
 
   return (
     <div {...props} onMouseLeave={() => setOpen(false)}>
-      <div ref={ref} className='btn' onMouseOver={() => setOpen(true)}>
+      <div
+        ref={ref}
+        className='btn'
+        onClick={() => setOpen(true)}
+        onMouseOver={() => setOpen(true)}
+      >
         {as}
       </div>
 

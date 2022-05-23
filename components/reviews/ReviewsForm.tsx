@@ -67,6 +67,12 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
           slug: product.slug,
         },
       },
+      {
+        query: GetLastProductInfoDocument,
+        variables: {
+          productId: product.id
+        }
+      }
     ],
 
     update(cache, result) {

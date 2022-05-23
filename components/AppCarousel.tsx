@@ -48,7 +48,7 @@ export const AppCarousel = ({ items }: AppCarouselProps) => {
         {items.map((item) => {
           return (
             <div key={item.id} className='relative'>
-              <div className='absolute left-16 top-1/3 z-20 h-100 w-50 '>
+              <div className='absolute left-10 sm:left-16 top-1/4 sm:top-1/3 z-20 h-100 w-50 '>
                 <h3 className='text-xl sm:text-2xl md:text-3xl font-bold tracking-wide mb-2 md:mb-4'>
                   {item.title}
                 </h3>
@@ -63,7 +63,7 @@ export const AppCarousel = ({ items }: AppCarouselProps) => {
                   );
                 })}
                 <Link href='/offer'>
-                  <a className='inline-block text-sm sm:text-base md:mt-4 mt-1 border border-slate-700 px-4 py-2 rounded-full hover:bg-slate-700 hover:text-white transition duration-300'>
+                  <a className='inline-block text-xs sm:text-sm md:text-md md:mt-4 mt-1 border border-slate-700 px-2 py-1 sm:py-2 sm:px-4 rounded-full hover:bg-slate-700 hover:text-white transition duration-300'>
                     Zobacz ofertę
                   </a>
                 </Link>

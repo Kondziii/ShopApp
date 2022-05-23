@@ -15298,7 +15298,7 @@ export type CreateReviewMutationVariables = Exact<{
 }>;
 
 
-export type CreateReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number, createdAt: any } | null, publishManyReviewsConnection: { __typename?: 'ReviewConnection', edges: Array<{ __typename?: 'ReviewEdge', node: { __typename?: 'Review', id: string } }> }, publishProduct?: { __typename?: 'Product', id: string } | null, updateProduct?: { __typename?: 'Product', id: string } | null };
+export type CreateReviewMutation = { __typename?: 'Mutation', review?: { __typename?: 'Review', id: string, headline: string, content: string, email: string, rating: number, createdAt: any } | null, publishManyReviewsConnection: { __typename?: 'ReviewConnection', edges: Array<{ __typename?: 'ReviewEdge', node: { __typename?: 'Review', id: string } }> }, updateProduct?: { __typename?: 'Product', id: string } | null, publishProduct?: { __typename?: 'Product', id: string } | null };
 
 export type CreateAccountMutationVariables = Exact<{
   email: Scalars['String'];
@@ -15601,13 +15601,13 @@ export const CreateReviewDocument = gql`
       }
     }
   }
-  publishProduct(where: {id: $id}, to: PUBLISHED) {
-    id
-  }
   updateProduct(
     where: {id: $id}
     data: {rating: $rating, ratingCount: $ratingCount}
   ) {
+    id
+  }
+  publishProduct(where: {id: $id}, to: PUBLISHED) {
     id
   }
 }
@@ -16614,7 +16614,7 @@ export const GetLastProductInfoDocument = gql`
   product(where: {id: $productId}) {
     rating
   }
-  reviews: reviewsConnection(where: {product: {id: $productId}}, stage: DRAFT) {
+  reviews: reviewsConnection(where: {product: {id: $productId}}) {
     aggregate {
       count
     }
