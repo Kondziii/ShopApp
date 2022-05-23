@@ -49,18 +49,12 @@ const ProductListPage = ({
     ) {
       filterState.resetFilters();
     }
-    console.log(url);
-    console.log(
-      !url.includes('offer') &&
-        !url.includes('cart') &&
-        !url.includes('favorite')
-    );
   };
 
   useEffect(() => {
-    router.events.on('routeChangeStart', handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChange);
 
-    return () => router.events.off('routeChangeStart', handleRouteChange);
+    return () => router.events.off('routeChangeComplete', handleRouteChange);
   }, []);
 
   useEffect(() => {
