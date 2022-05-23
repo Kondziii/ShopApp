@@ -23,6 +23,7 @@ export const ProductDetailsNav = ({ slug }: ProductDetailsNavProps) => {
               query: { v: 'Description' },
             }}
             shallow
+            replace
             scroll={false}
           >
             <a
@@ -43,6 +44,7 @@ export const ProductDetailsNav = ({ slug }: ProductDetailsNavProps) => {
               query: { v: 'Reviews' },
             }}
             shallow
+            replace
             scroll={false}
           >
             <a

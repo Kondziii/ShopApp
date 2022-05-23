@@ -107,7 +107,11 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
               </span>
             </p>
             <hr />
-            <ProductDetailsForm product={product} setSize={setCurrSize} />
+            <ProductDetailsForm
+              product={product}
+              setSize={setCurrSize}
+              currSize={currSize}
+            />
           </section>
         </div>
       </section>
