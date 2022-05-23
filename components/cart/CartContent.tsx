@@ -3,6 +3,7 @@ import { useCartState } from './CartContext';
 import { TrashIcon } from '@heroicons/react/solid';
 import { formatPrice } from '../utils/functions';
 import Link from 'next/link';
+import { AppTooltip } from '../AppTooltip';
 
 export const CartContent = () => {
   const cartState = useCartState();
@@ -78,7 +79,9 @@ export const CartContent = () => {
                 onClick={() => cartState.removeFromCart(item.id)}
                 className='text-center'
               >
-                <TrashIcon className='w-6 h-6 text-red-500 ' />
+                <AppTooltip message='Usuń produkt'>
+                  <TrashIcon className='w-6 h-6 text-red-500 ' />
+                </AppTooltip>
               </button>
             </td>
           </tr>

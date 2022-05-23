@@ -11,6 +11,7 @@ import { MenuItem } from '@szhsin/react-menu';
 import { Menu } from './Menu';
 import { UserBar } from './UserBar';
 import { FavoriteBar } from './FavoriteBar';
+import { AppTooltip } from './AppTooltip';
 
 export const Header = () => {
   const session = useSession();
@@ -70,7 +71,9 @@ export const Header = () => {
               )}
             </Menu>
             {session.status === 'authenticated' && <FavoriteBar />}
-            <CartBar />
+            <AppTooltip message='Koszyk'>
+              <CartBar />
+            </AppTooltip>
           </div>
 
           <Navigation ref={nav}></Navigation>
