@@ -70,9 +70,9 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
       {
         query: GetLastProductInfoDocument,
         variables: {
-          productId: product.id
-        }
-      }
+          productId: product.id,
+        },
+      },
     ],
 
     update(cache, result) {
@@ -187,7 +187,7 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
 
   if (session.status === 'unauthenticated') {
     return (
-      <section className='flex items-center justify-between p-8 bg-white rounded shadow'>
+      <section className='block sm:flex items-center justify-between p-8 bg-white rounded shadow'>
         <p>Wyraź swoją opinię na temat tego produktu.</p>
         <Link
           href={{
@@ -195,7 +195,7 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
             query: { callbackUrl: router.asPath },
           }}
         >
-          <a className='px-4 py-2 transition duration-300 border rounded-full border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white'>
+          <a className='px-4 py-2 mt-2 sm:mt-0 transition duration-300 border rounded-full border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white'>
             Zaloguj się
           </a>
         </Link>
@@ -261,12 +261,12 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
         </form>
       )}
       {!isFormVisible && (
-        <div className='flex items-center justify-between p-8 bg-white rounded shadow'>
+        <div className='md:flex md:items-center md:justify-between p-8 bg-white rounded shadow'>
           <p>Wyraź swoją opinię na temat tego produktu.</p>
 
           <button
             onClick={() => setIsFormVisible(true)}
-            className='px-4 py-2 transition duration-300 border rounded-full border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white'
+            className='block mt-2 sm:mt-0 px-4 py-2 transition duration-300 border rounded-full border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white'
           >
             Wyraź opinię
           </button>

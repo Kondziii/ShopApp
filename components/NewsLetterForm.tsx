@@ -52,9 +52,9 @@ export const NewsLetterForm = () => {
         backgroundImage: 'url(/bg.webp)',
         backgroundBlendMode: 'screen',
       }}
-      className='p-12 my-4 bg-yellow-500 sm:p-16 md:p-20'
+      className='p-6 my-4 bg-yellow-500 sm:p-12 md:p-20'
     >
-      <div className='relative w-full p-10 mx-auto bg-white rounded-md shadow-sm sm:w-3/4 lg:w-1/2 sm:p-14 shadow-yellow-500'>
+      <div className='relative w-full p-10 mx-auto bg-white rounded-md shadow-sm sm:w-10/12 md:w-3/4 lg:w-1/2 sm:p-14 shadow-yellow-500'>
         <header>
           <h1 className='block mb-6 text-2xl font-bold tracking-wide text-center'>
             Zapisz się do newslettera!
