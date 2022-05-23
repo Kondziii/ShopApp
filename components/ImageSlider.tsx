@@ -126,31 +126,33 @@ export const ImageSlider = ({ images, alt, setImage }: ImageSliderProps) => {
   }, []);
 
   return (
-    <Slider ref={slider} {...settings}>
-      {images.map((image, index) => {
-        return (
-          <div
-            key={image.url}
-            onClick={() => handleImageChange(index)}
-            onKeyDown={(e) => {
-              console.log('hej');
-              if (e.key == 'Enter') {
-                console.log('elo');
-              }
-            }}
-            className='p-4 mx-2 transition duration-300 bg-white rounded-md shadow-sm cursor-pointer hover:opacity-90'
-          >
-            <Image
-              layout='responsive'
-              width={4}
-              height={3}
-              objectFit='contain'
-              src={image.url}
-              alt={alt}
-            />
-          </div>
-        );
-      })}
-    </Slider>
+    <div>
+      <Slider ref={slider} {...settings}>
+        {images.map((image, index) => {
+          return (
+            <div
+              key={image.url}
+              onClick={() => handleImageChange(index)}
+              onKeyDown={(e) => {
+                console.log('hej');
+                if (e.key == 'Enter') {
+                  console.log('elo');
+                }
+              }}
+              className='p-4 mx-2 transition duration-300 bg-white rounded-md shadow-sm cursor-pointer hover:opacity-90'
+            >
+              <Image
+                layout='responsive'
+                width={4}
+                height={3}
+                objectFit='contain'
+                src={image.url}
+                alt={alt}
+              />
+            </div>
+          );
+        })}
+      </Slider>
+    </div>
   );
 };
