@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { LockClosedIcon } from '@heroicons/react/solid';
 import { loadStripe } from '@stripe/stripe-js';
 import Stripe from 'stripe';
+import { formatPrice } from '../utils/functions';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -42,16 +43,16 @@ export const CartSummary = () => {
   return (
     <div className='w-full h-full p-12 text-center bg-yellow-200 '>
       <h1 className='w-9/12 mx-auto text-2xl font-bold tracking-wide text-left'>
-        Your cart
+        Twój koszyk
       </h1>
       <hr className='w-9/12 h-1 mx-auto mt-4 bg-black border-0' />
       <div className='flex items-center justify-center h-28'>
         <p>
           <span className='mx-4 text-xs font-bold tracking-widest uppercase text-stone-500'>
-            Cart total
+            Suma
           </span>
           <span className='text-lg font-bold'>
-            {cartState.getTotalPrice()}$
+            {formatPrice(cartState.getTotalPrice())} zł
           </span>
         </p>
       </div>
@@ -64,7 +65,7 @@ export const CartSummary = () => {
         onClick={pay}
         className='flex items-center justify-center gap-2 px-4 py-2 mx-auto transition-all duration-300 border rounded-full border-slate-700 text-slate-700 w-fit hover:bg-slate-700 hover:text-white'
       >
-        Checkout <LockClosedIcon className='inline w-4 h-4' />
+        Przejdź do płatności <LockClosedIcon className='inline w-4 h-4' />
       </button>
     </div>
   );

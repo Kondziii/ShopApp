@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { useCartState } from './CartContext';
 import { TrashIcon } from '@heroicons/react/solid';
+import { formatPrice } from '../utils/functions';
+import Link from 'next/link';
 
 export const CartContent = () => {
   const cartState = useCartState();
@@ -14,19 +16,19 @@ export const CartContent = () => {
       <thead className='table-header-group border-b border-b-slate-300'>
         <tr>
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
-            Product
+            Produkt
           </th>
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 '>
-            Price
+            Cena
           </th>
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
-            Quantity
+            Ilość
           </th>
           <th
             className='py-6 text-xs uppercase text-stone-500 w-50'
             scope='col'
           >
-            <span className='sr-only'>Delete</span>
+            <span className='sr-only'>Usuń</span>
           </th>
         </tr>
       </thead>
@@ -37,22 +39,24 @@ export const CartContent = () => {
             className='text-center transition-all duration-200 '
           >
             <td>
-              <div className='w-7/12 mx-auto'>
-                <Image
-                  layout='responsive'
-                  objectFit='contain'
-                  width={3}
-                  height={4}
-                  src={item.thumbnailSrc}
-                  alt={item.thumbnailAlt}
-                />
-              </div>
+              <Link href={`/offer/products/${item.slug}`} passHref>
+                <div className='w-7/12 mx-auto cursor-pointer'>
+                  <Image
+                    layout='responsive'
+                    objectFit='contain'
+                    width={3}
+                    height={4}
+                    src={item.thumbnailSrc}
+                    alt={item.thumbnailAlt}
+                  />
+                </div>
+              </Link>
             </td>
             <td>
-              <span className='block'>{item.price}$</span>
+              <span className='block'>{formatPrice(item.price)} zł</span>
               {item.count > 1 && (
                 <span className='block text-gray-500'>
-                  {totalAmount(item.price, item.count)}$
+                  {formatPrice(totalAmount(item.price, item.count))} zł
                 </span>
               )}
             </td>
