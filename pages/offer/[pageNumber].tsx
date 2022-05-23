@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { ProductListItem } from '../../components/ProductListItem';
-import { useRouter } from 'next/router';
+import { RouterEvent, useRouter } from 'next/router';
 import { ChangeEventHandler, useCallback, useEffect, useState } from 'react';
 import { Pagination } from '../../components/Pagination';
 import { apolloClient } from '../../graphql/graphqlClient';
@@ -41,10 +41,20 @@ const ProductListPage = ({
   const [pageNumber, setPageNumber] = useState(router.query.pageNumber || 1);
   const filterState = useFilterState();
 
-  useEffect(() => {
-    return () => {
+  const handleRouteChange = (url: any) => {
+    if (
+      !url.includes('offer') &&
+      !url.includes('cart') &&
+      !url.includes('favorite')
+    ) {
       filterState.resetFilters();
-    };
+    }
+  };
+
+  useEffect(() => {
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => router.events.off('routeChangeComplete', handleRouteChange);
   }, []);
 
   useEffect(() => {

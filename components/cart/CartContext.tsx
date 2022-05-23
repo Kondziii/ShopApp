@@ -14,6 +14,7 @@ interface CartItem {
   readonly thumbnailSrc: string;
   readonly thumbnailAlt: string;
   readonly count: number;
+  readonly size: string;
 }
 
 interface CartState {
@@ -54,7 +55,7 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
         if (_item.id === item.id)
           return {
             ..._item,
-            count: _item.count + 1,
+            count: _item.count + existingItem.count,
           };
         return _item;
       });

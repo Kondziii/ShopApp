@@ -9,6 +9,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { toast } from 'react-toastify';
 import {
   GetAccountByEmailDocument,
   GetAccountByEmailQuery,
@@ -79,6 +80,32 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
       action: FavoriteAction.ADD,
     });
   };
+
+  useEffect(() => {
+    if (favoriteMutation.isSuccess) {
+      if (favoriteMutation.variables?.action === FavoriteAction.ADD) {
+        toast('Produkt został dodany do ulubionych', {
+          position: 'bottom-right',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: 0,
+        });
+      } else {
+        toast('Produkt został usunięty z ulubionych', {
+          position: 'bottom-right',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: 0,
+        });
+      }
+    }
+  }, [favoriteMutation.isSuccess]);
 
   useEffect(() => {
     if (favoriteMutation.data) {

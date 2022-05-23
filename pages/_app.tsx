@@ -13,6 +13,8 @@ import { SessionProvider } from 'next-auth/react';
 import { FilterContextProvider } from '../components/FilterContext';
 import NextNProgress from 'nextjs-progressbar';
 import { UserContextProvider } from '../components/UserContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const client = new QueryClient();
 
@@ -31,6 +33,17 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                   />
                   <Component {...pageProps} />
                   {/* <ReactQueryDevtools /> */}
+                  <ToastContainer
+                    position='bottom-right'
+                    autoClose={3000}
+                    hideProgressBar
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                  />
                 </Layout>
               </CartContextProvider>
             </FilterContextProvider>

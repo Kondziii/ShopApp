@@ -100,7 +100,7 @@ export const ProductFilterSection = () => {
             range
             min={priceRange[0]}
             max={priceRange[1]}
-            defaultValue={priceRange}
+            defaultValue={priceFilters}
             trackStyle={{ background: '#334155', height: '5px' }}
             activeDotStyle={{ boxShadow: '0 0 0 5px #334155' }}
             handleStyle={{
