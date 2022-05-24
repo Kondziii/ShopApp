@@ -22,6 +22,9 @@ export const CartContent = () => {
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 '>
             Cena
           </th>
+          <th className='py-6 text-xs tracking-widest uppercase text-stone-500 '>
+            Rozmiar
+          </th>
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
             Ilość
           </th>
@@ -61,6 +64,7 @@ export const CartContent = () => {
                 </span>
               )}
             </td>
+            <td>{item.size}</td>
             <td>
               <input
                 className='w-16 mx-auto bg-transparent border-0'

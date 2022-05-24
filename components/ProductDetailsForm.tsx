@@ -55,7 +55,7 @@ export const ProductDetailsForm = ({
   const onSubmit = handleSubmit((values) => {
     console.log(values);
     cartState.addToCart({
-      id: product.id,
+      id: `${product.id}__${values.size}`,
       count: values.amount,
       price: product.price,
       size: values.size,
