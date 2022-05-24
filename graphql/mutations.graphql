@@ -58,3 +58,67 @@ mutation deleteFromFavorite($user: String!, $item: ID!) {
     }
   }
 }
+
+mutation createInitialOrder {
+  createOrder(data: { total: 0, orderStage: Oczekuje }) {
+    id
+  }
+}
+
+mutation createCartItem(
+  $amount: Int!
+  $size: String!
+  $product: ID!
+  $order: ID!
+  $price: Int!
+) {
+  createCartItem(
+    data: {
+      amount: $amount
+      size: $size
+      price: $price
+      product: { connect: { id: $product } }
+      order: { connect: { id: $order } }
+    }
+  ) {
+    id
+    size
+    amount
+    price
+  }
+  publishManyCartItemsConnection(from: DRAFT, to: PUBLISHED) {
+    aggregate {
+      count
+    }
+  }
+}
+
+mutation updateTotalOrder($total: Int!, $id: ID!) {
+  updateOrder(where: { id: $id }, data: { total: $total }) {
+    id
+  }
+}
+
+mutation updateOrderStripe($orderId: ID!, $stripeId: String!) {
+  updateOrder(where: { id: $orderId }, data: { stripeCheckoutId: $stripeId }) {
+    id
+    createdAt
+    stage
+    cartItems {
+      id
+      price
+      amount
+      size
+      product {
+        slug
+        name
+        images(first: 1) {
+          url
+        }
+      }
+    }
+  }
+  publishOrder(where: { id: $orderId }, to: PUBLISHED) {
+    id
+  }
+}

@@ -196,6 +196,23 @@ query getProductBySlug($slug: String!) {
   }
 }
 
+query getProductBySlugSize($slug: String!, $size: [String!]) {
+  product(where: { slug: $slug }) {
+    id
+    slug
+    name
+    price
+    images {
+      url
+    }
+    productSizeVariants(where: { size: { name_in: $size } }) {
+      size {
+        name
+      }
+    }
+  }
+}
+
 query getAccountByEmail($email: String!) {
   account(where: { email: $email }, stage: DRAFT) {
     id

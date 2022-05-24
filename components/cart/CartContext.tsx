@@ -1,12 +1,14 @@
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
 } from 'react';
 
-interface CartItem {
+export interface CartItem {
   readonly id: string;
   readonly slug: string;
   readonly title: string;
@@ -24,12 +26,31 @@ interface CartState {
   changeAmount: (id: string, count: number) => void;
   getTotalPrice: () => number;
   getTotalAmount: () => number;
+  orderId: string;
+  saveOrderId: (id: string) => void;
+  removeCart: () => void;
 }
 
 const CartContext = createContext<CartState | null>(null);
 
 export const CartContextProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [orderId, setOrderId] = useState('');
+
+  const saveOrderId = (id: string) => {
+    sessionStorage.setItem('order', id);
+  };
+
+  const getStorageOrderId = () => {
+    const id = sessionStorage.getItem('order');
+    if (id) {
+      setOrderId(id);
+    }
+  };
+
+  useEffect(() => {
+    getStorageOrderId();
+  }, []);
 
   const getTotalPrice = () => {
     return cartItems.reduce((prev, curr) => {
@@ -93,6 +114,11 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const removeCart = () => {
+    localStorage.removeItem('SHOPPING_CART');
+    setCartItems([]);
+  };
+
   const storeCartItems = (items: CartItem[]) => {
     localStorage.setItem('SHOPPING_CART', JSON.stringify(items));
   };
@@ -127,6 +153,9 @@ export const CartContextProvider = ({ children }: { children: ReactNode }) => {
         getTotalPrice,
         changeAmount,
         getTotalAmount,
+        orderId,
+        saveOrderId,
+        removeCart,
       }}
     >
       {children}

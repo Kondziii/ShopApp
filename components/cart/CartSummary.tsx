@@ -60,8 +60,11 @@ export const CartSummary = () => {
       ),
     });
 
+    const json = await response.json();
+
     const { session }: { session: Stripe.Response<Stripe.Checkout.Session> } =
-      await response.json();
+      json;
+    cartState.saveOrderId(json.orderId);
 
     stripe.redirectToCheckout({ sessionId: session.id });
   };
