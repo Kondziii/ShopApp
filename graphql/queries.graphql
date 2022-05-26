@@ -432,6 +432,7 @@ query getOrderCartItemsById($id: ID!, $first: Int! = 10, $skip: Int! = 0) {
       product {
         id
         slug
+        name
         images(first: 1) {
           url
         }

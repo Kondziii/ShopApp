@@ -15986,7 +15986,16 @@ export type UpdateProductAfterOrderMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProductAfterOrderMutation = { __typename?: 'Mutation', updateProduct?: { __typename?: 'Product', id: string } | null, publishProduct?: { __typename?: 'Product', id: string } | null };
+export type UpdateProductAfterOrderMutation = { __typename?: 'Mutation', updateProduct?: { __typename?: 'Product', id: string } | null, publishManyProductSizeVariantsConnection: { __typename?: 'ProductSizeVariantConnection', edges: Array<{ __typename?: 'ProductSizeVariantEdge', node: { __typename?: 'ProductSizeVariant', id: string } }> }, publishProduct?: { __typename?: 'Product', id: string } | null };
+
+export type UpdateOrderStageMutationVariables = Exact<{
+  orderId: Scalars['ID'];
+  email: Scalars['String'];
+  stage: OrderStage;
+}>;
+
+
+export type UpdateOrderStageMutation = { __typename?: 'Mutation', updateOrder?: { __typename?: 'Order', id: string } | null, publishOrder?: { __typename?: 'Order', id: string } | null };
 
 export type GetAllProductsQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -16184,7 +16193,7 @@ export type GetOrderCartItemsByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetOrderCartItemsByIdQuery = { __typename?: 'Query', order?: { __typename?: 'Order', cartItems: Array<{ __typename?: 'CartItem', id: string, size: string, amount: number, createdAt: any, price: number, product?: { __typename?: 'Product', id: string, slug: string, images: Array<{ __typename?: 'Asset', url: string }>, productSizeVariants: Array<{ __typename?: 'ProductSizeVariant', id: string, amount: number, size?: { __typename?: 'Size', name: string } | null }> } | null }> } | null, ordersConnection: { __typename?: 'OrderConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+export type GetOrderCartItemsByIdQuery = { __typename?: 'Query', order?: { __typename?: 'Order', cartItems: Array<{ __typename?: 'CartItem', id: string, size: string, amount: number, createdAt: any, price: number, product?: { __typename?: 'Product', id: string, slug: string, name: string, images: Array<{ __typename?: 'Asset', url: string }>, productSizeVariants: Array<{ __typename?: 'ProductSizeVariant', id: string, amount: number, size?: { __typename?: 'Size', name: string } | null }> } | null }> } | null, ordersConnection: { __typename?: 'OrderConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
 
 export const FullProductItemFragmentDoc = gql`
     fragment FullProductItem on Product {
@@ -16627,6 +16636,13 @@ export const UpdateProductAfterOrderDocument = gql`
   ) {
     id
   }
+  publishManyProductSizeVariantsConnection(to: PUBLISHED) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
   publishProduct(where: {id: $product}, to: PUBLISHED) {
     id
   }
@@ -16660,6 +16676,44 @@ export function useUpdateProductAfterOrderMutation(baseOptions?: Apollo.Mutation
 export type UpdateProductAfterOrderMutationHookResult = ReturnType<typeof useUpdateProductAfterOrderMutation>;
 export type UpdateProductAfterOrderMutationResult = Apollo.MutationResult<UpdateProductAfterOrderMutation>;
 export type UpdateProductAfterOrderMutationOptions = Apollo.BaseMutationOptions<UpdateProductAfterOrderMutation, UpdateProductAfterOrderMutationVariables>;
+export const UpdateOrderStageDocument = gql`
+    mutation updateOrderStage($orderId: ID!, $email: String!, $stage: OrderStage!) {
+  updateOrder(where: {id: $orderId}, data: {orderStage: $stage, email: $email}) {
+    id
+  }
+  publishOrder(where: {id: $orderId}, to: PUBLISHED) {
+    id
+  }
+}
+    `;
+export type UpdateOrderStageMutationFn = Apollo.MutationFunction<UpdateOrderStageMutation, UpdateOrderStageMutationVariables>;
+
+/**
+ * __useUpdateOrderStageMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrderStageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrderStageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrderStageMutation, { data, loading, error }] = useUpdateOrderStageMutation({
+ *   variables: {
+ *      orderId: // value for 'orderId'
+ *      email: // value for 'email'
+ *      stage: // value for 'stage'
+ *   },
+ * });
+ */
+export function useUpdateOrderStageMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrderStageMutation, UpdateOrderStageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOrderStageMutation, UpdateOrderStageMutationVariables>(UpdateOrderStageDocument, options);
+      }
+export type UpdateOrderStageMutationHookResult = ReturnType<typeof useUpdateOrderStageMutation>;
+export type UpdateOrderStageMutationResult = Apollo.MutationResult<UpdateOrderStageMutation>;
+export type UpdateOrderStageMutationOptions = Apollo.BaseMutationOptions<UpdateOrderStageMutation, UpdateOrderStageMutationVariables>;
 export const GetAllProductsDocument = gql`
     query getAllProducts($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $min: Int, $max: Int, $sort: ProductOrderByInput!) {
   products(
@@ -17703,6 +17757,7 @@ export const GetOrderCartItemsByIdDocument = gql`
       product {
         id
         slug
+        name
         images(first: 1) {
           url
         }

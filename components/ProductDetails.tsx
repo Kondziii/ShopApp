@@ -107,11 +107,22 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
               </span>
             </p>
             <hr />
-            <ProductDetailsForm
-              product={product}
-              setSize={setCurrSize}
-              currSize={currSize}
-            />
+            {product.productSizeVariants.reduce((prev, curr) => {
+              const current = curr.amount;
+              return prev + current;
+            }, 0) > 0 ? (
+              <ProductDetailsForm
+                product={product}
+                setSize={setCurrSize}
+                currSize={currSize}
+              />
+            ) : (
+              <div className='my-6 '>
+                <p className='px-4 py-2 bg-gray-200 rounded-full w-fit'>
+                  Niestety produkt jest chwilowo niedostępny.
+                </p>
+              </div>
+            )}
           </section>
         </div>
       </section>

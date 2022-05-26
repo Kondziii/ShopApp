@@ -84,7 +84,53 @@ export const CartSummary = () => {
         Twój koszyk
       </h1>
       <hr className='w-9/12 h-1 mx-auto mt-4 bg-black border-0' />
-      <div className='flex items-center justify-center h-28'>
+      <table className='mx-auto my-10'>
+        <tbody>
+          <tr>
+            <td>
+              <span className='mx-4 text-xs font-bold tracking-widest uppercase text-stone-500 '>
+                Koszyk
+              </span>
+            </td>
+            <td>
+              <span className='text-lg font-bold'>
+                {formatPrice(cartState.getTotalPrice())} zł
+              </span>
+            </td>
+          </tr>
+          <tr className='py-2 border-b-2 border-black'>
+            <td>
+              <span className='mx-4 text-xs font-bold tracking-widest uppercase text-stone-500'>
+                Dostawa
+              </span>
+            </td>
+            <td>
+              <span className='text-lg font-bold'>
+                {cartState.getTotalPrice() < 10000 ? '25.00 zł' : '0.00 zł'}
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td className='py-2'>
+              <span className='mx-4 text-xs font-bold tracking-widest uppercase text-stone-500'>
+                Suma
+              </span>
+            </td>
+            <td>
+              <span className='text-lg font-bold'>
+                {formatPrice(
+                  cartState.getTotalPrice() < 10000
+                    ? cartState.getTotalPrice() + 2500
+                    : cartState.getTotalPrice()
+                )}{' '}
+                zł
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* <div className='flex items-center justify-center mt-12 mb-2'>
         <p>
           <span className='mx-4 text-xs font-bold tracking-widest uppercase text-stone-500'>
             Suma
@@ -94,6 +140,16 @@ export const CartSummary = () => {
           </span>
         </p>
       </div>
+      <div className='flex items-center justify-center mb-12'>
+        <p>
+          <span className='mx-4 text-xs font-bold tracking-widest uppercase text-stone-500'>
+            Dostawa
+          </span>
+          <span className='text-lg font-bold'>
+            {cartState.getTotalPrice() > 10000 ? '25.00 zł' : '0.00 zł'}
+          </span>
+        </p>
+      </div> */}
       {/* <Link href={'/checkout'}>
         <a className='flex items-center justify-center gap-2 px-4 py-2 mx-auto transition-all duration-300 border rounded-full border-slate-700 text-slate-700 w-fit hover:bg-slate-700 hover:text-white'>
           Checkout <LockClosedIcon className='inline w-4 h-4' />

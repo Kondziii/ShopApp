@@ -142,15 +142,27 @@ mutation updateProductAfterOrder(
     id
   }
 
-  # publishManyProductSizeVariantsConnection(to: PUBLISHED) {
-  #   edges {
-  #     node {
-  #       id
-  #     }
-  #   }
-  # }
+  publishManyProductSizeVariantsConnection(to: PUBLISHED) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
 
   publishProduct(where: { id: $product }, to: PUBLISHED) {
+    id
+  }
+}
+
+mutation updateOrderStage($orderId: ID!, $email: String!, $stage: OrderStage!) {
+  updateOrder(
+    where: { id: $orderId }
+    data: { orderStage: $stage, email: $email }
+  ) {
+    id
+  }
+  publishOrder(where: { id: $orderId }, to: PUBLISHED) {
     id
   }
 }
