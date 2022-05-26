@@ -10,6 +10,7 @@ import {
   useState,
 } from 'react';
 import { toast } from 'react-toastify';
+import { boolean } from 'yup';
 import {
   GetAccountByEmailDocument,
   GetAccountByEmailQuery,
@@ -30,6 +31,8 @@ interface UserContextState {
   setFavorites: Dispatch<SetStateAction<{ id: string }[]>>;
   addToFavorite: (item: string) => void;
   deleteFromFavorite: (item: string) => void;
+  cookieAgreement: boolean;
+  saveCookieAgreement: () => void;
 }
 
 const UserContext = createContext<UserContextState | null>(null);
@@ -38,6 +41,21 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [favorites, setFavorites] = useState<{ id: string }[]>([]);
   const session = useSession();
   const favoriteMutation = useFavoriteMutation();
+  const [cookieAgreement, setCookieAgreement] = useState(false);
+
+  const saveCookieAgreement = () => {
+    localStorage.setItem('COOKIE_AGREEMENT', 'true');
+    setCookieAgreement(true);
+  };
+
+  const getCookieAgreement = () => {
+    const agreement = localStorage.getItem('COOKIE_AGREEMENT');
+    setCookieAgreement(Boolean(agreement));
+  };
+
+  useEffect(() => {
+    getCookieAgreement();
+  }, []);
 
   const fetchUserData = async () => {
     const response = await apolloClient.query<
@@ -126,7 +144,14 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <UserContext.Provider
-      value={{ favorites, addToFavorite, deleteFromFavorite, setFavorites }}
+      value={{
+        favorites,
+        addToFavorite,
+        deleteFromFavorite,
+        setFavorites,
+        cookieAgreement,
+        saveCookieAgreement,
+      }}
     >
       {children}
     </UserContext.Provider>
