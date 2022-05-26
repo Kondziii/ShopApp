@@ -2,14 +2,27 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import SEO from '../next-seo.config';
 import { DefaultSeo } from 'next-seo';
+import { useUserState } from './UserContext';
+import { CookiePopUp } from './CookiePopUp';
+import { useEffect, useState } from 'react';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export const Layout = ({ children }: LayoutProps) => {
+  const userState = useUserState();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className='flex flex-col items-stretch min-h-screen '>
+    <div className='relative flex flex-col items-stretch min-h-screen '>
       <DefaultSeo
         {...SEO}
         additionalLinkTags={[
@@ -24,6 +37,7 @@ export const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
       <Footer />
+      {isVisible && <CookiePopUp />}
     </div>
   );
 };

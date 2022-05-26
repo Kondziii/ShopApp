@@ -8,11 +8,11 @@ const CartPage = () => {
   return (
     <>
       {cartState.items.length !== 0 ? (
-        <div className='flex-grow grid-cols-3 sm:grid'>
-          <section className='h-full col-span-2'>
+        <div className='flex-grow grid-cols-3 lg:grid'>
+          <section className='h-full col-span-full lg:col-span-2'>
             <CartContent />
           </section>
-          <section className='h-full'>
+          <section className='h-full col-span-full lg:col-span-1'>
             <CartSummary />
           </section>
         </div>

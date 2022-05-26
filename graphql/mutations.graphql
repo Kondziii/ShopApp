@@ -58,3 +58,126 @@ mutation deleteFromFavorite($user: String!, $item: ID!) {
     }
   }
 }
+
+mutation createInitialOrder {
+  createOrder(data: { total: 0, orderStage: Oczekuje }) {
+    id
+  }
+}
+
+mutation createCartItem(
+  $amount: Int!
+  $size: String!
+  $product: ID!
+  $order: ID!
+  $price: Int!
+) {
+  createCartItem(
+    data: {
+      amount: $amount
+      size: $size
+      price: $price
+      product: { connect: { id: $product } }
+      order: { connect: { id: $order } }
+    }
+  ) {
+    id
+    size
+    amount
+    price
+  }
+  publishManyCartItemsConnection(from: DRAFT, to: PUBLISHED) {
+    aggregate {
+      count
+    }
+  }
+}
+
+mutation updateTotalOrder($total: Int!, $id: ID!) {
+  updateOrder(where: { id: $id }, data: { total: $total }) {
+    id
+  }
+}
+
+mutation updateOrderStripe($orderId: ID!, $stripeId: String!, $email: String!) {
+  updateOrder(
+    where: { id: $orderId }
+    data: { stripeCheckoutId: $stripeId, email: $email }
+  ) {
+    id
+    createdAt
+    stage
+    cartItems {
+      id
+      price
+      amount
+      size
+      product {
+        slug
+        name
+        images(first: 1) {
+          url
+        }
+      }
+    }
+  }
+  publishOrder(where: { id: $orderId }, to: PUBLISHED) {
+    id
+  }
+}
+
+mutation updateProductAfterOrder(
+  $product: ID!
+  $totalAmount: Int!
+  $sizeId: ID!
+) {
+  updateProduct(
+    where: { id: $product }
+    data: {
+      productSizeVariants: {
+        update: { where: { id: $sizeId }, data: { amount: $totalAmount } }
+      }
+    }
+  ) {
+    id
+  }
+
+  publishManyProductSizeVariantsConnection(to: PUBLISHED) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+
+  publishProduct(where: { id: $product }, to: PUBLISHED) {
+    id
+  }
+}
+
+mutation updateOrderStage($orderId: ID!, $email: String!, $stage: OrderStage!) {
+  updateOrder(
+    where: { id: $orderId }
+    data: { orderStage: $stage, email: $email }
+  ) {
+    id
+  }
+  publishOrder(where: { id: $orderId }, to: PUBLISHED) {
+    id
+  }
+}
+
+mutation updateOrderByStripeId($stripeId: String!, $stage: OrderStage) {
+  updateOrder(
+    where: { stripeCheckoutId: $stripeId }
+    data: { orderStage: $stage }
+  ) {
+    id
+    stripeCheckoutId
+    orderStage
+  }
+
+  publishOrder(to: PUBLISHED, where: { stripeCheckoutId: $stripeId }) {
+    id
+  }
+}

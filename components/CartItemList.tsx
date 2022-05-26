@@ -1,19 +1,29 @@
-import Image from 'next/image';
-import { useCartState } from './CartContext';
-import { TrashIcon } from '@heroicons/react/solid';
-import { formatPrice } from '../utils/functions';
 import Link from 'next/link';
-import { AppTooltip } from '../AppTooltip';
+import React from 'react';
+import Image from 'next/image';
+import { formatPrice } from './utils/functions';
 
-interface CartContentProps {
-  noDelete?: boolean;
+interface CartItemList {
+  product: {
+    id: string;
+    price: number;
+    amount: number;
+    size: string;
+    slug: string;
+    image: string;
+    name: string;
+  }[];
 }
 
-export const CartContent = ({ noDelete = false }: CartContentProps) => {
-  const cartState = useCartState();
-
+export const CartItemList = ({ product }: CartItemList) => {
   const totalAmount = (price: number, quantity: number) => {
     return price * quantity;
+  };
+
+  const totalPrice = () => {
+    return product.reduce((curr, val) => {
+      return (curr += val.price * val.amount);
+    }, 0);
   };
 
   return (
@@ -23,6 +33,7 @@ export const CartContent = ({ noDelete = false }: CartContentProps) => {
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
             Produkt
           </th>
+
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 '>
             Cena
           </th>
@@ -32,41 +43,36 @@ export const CartContent = ({ noDelete = false }: CartContentProps) => {
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
             Ilość
           </th>
-          {!noDelete && (
-            <th
-              className='py-6 text-xs uppercase text-stone-500 w-50'
-              scope='col'
-            >
-              <span className='sr-only'>Usuń</span>
-            </th>
-          )}
         </tr>
       </thead>
       <tbody className='divide-y'>
-        {cartState.items.map((item) => (
+        {product.map((item) => (
           <tr
             key={item.id}
             className='text-center transition-all duration-200 '
           >
             <td>
               <Link href={`/offer/products/${item.slug}`} passHref>
-                <div className='w-7/12 mx-auto cursor-pointer'>
+                <div className='relative w-5/12 mx-auto cursor-pointer'>
                   <Image
                     layout='responsive'
                     objectFit='contain'
                     width={3}
                     height={4}
-                    src={item.thumbnailSrc}
-                    alt={item.thumbnailAlt}
+                    src={item.image}
+                    alt={item.name}
                   />
                 </div>
               </Link>
+              <figcaption className='w-full text-gray-500'>
+                {item.name}
+              </figcaption>
             </td>
             <td>
               <span className='block'>{formatPrice(item.price)} zł</span>
-              {item.count > 1 && (
+              {item.amount > 1 && (
                 <span className='block text-gray-500'>
-                  {formatPrice(totalAmount(item.price, item.count))} zł
+                  {formatPrice(totalAmount(item.price, item.amount))} zł
                 </span>
               )}
             </td>
@@ -76,28 +82,20 @@ export const CartContent = ({ noDelete = false }: CartContentProps) => {
                 className='w-16 mx-auto bg-transparent border-0'
                 type='number'
                 step={1}
-                value={item.count}
-                onChange={(event) => {
-                  cartState.changeAmount(item.id, +event.target.value);
-                }}
-                min={1}
-                max={99}
+                value={item.amount}
+                readOnly
               />
             </td>
-            {!noDelete && (
-              <td>
-                <button
-                  onClick={() => cartState.removeFromCart(item.id)}
-                  className='text-center'
-                >
-                  <AppTooltip message='Usuń produkt'>
-                    <TrashIcon className='w-6 h-6 text-red-500 ' />
-                  </AppTooltip>
-                </button>
-              </td>
-            )}
           </tr>
         ))}
+        <tr>
+          <td className='p-2 text-center'>Zapłacono:</td>
+          <td className='p-2 text-center text-yellow-500'>
+            {formatPrice(totalPrice())} zł {totalPrice() < 10000 && '+ 25'} zł
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
       </tbody>
     </table>
   );

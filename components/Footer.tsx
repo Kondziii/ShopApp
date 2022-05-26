@@ -1,7 +1,17 @@
 import Link from 'next/link';
 import { PhoneIcon, MailIcon } from '@heroicons/react/outline';
+import { useSession } from 'next-auth/react';
 
-const footerLinks = [
+interface FooterLinkProps {
+  title: string;
+  links: {
+    title: string;
+    href: string;
+    auth?: boolean;
+  }[];
+}
+
+const footerLinks: FooterLinkProps[] = [
   {
     title: 'Informacje',
     links: [
@@ -50,20 +60,25 @@ const footerLinks = [
       {
         title: 'Twoje zamówienia',
         href: '/orders',
+        auth: true,
       },
       {
         title: 'Logowanie',
         href: '/signin',
+        auth: false,
       },
       {
         title: 'Rejestracja',
         href: '/signup',
+        auth: false,
       },
     ],
   },
 ];
 
 export const Footer = () => {
+  const session = useSession();
+
   return (
     <footer className='px-8 py-6 pt-12 shadow-md bg-slate-700 shadow-slate-700'>
       <div className='container grid grid-cols-1 mx-auto text-sm text-center sm:text-left sm:grid-cols-2 md:grid-cols-4 max-w-7xl'>
@@ -79,13 +94,20 @@ export const Footer = () => {
               <ul className='my-4'>
                 {section.links.map((item) => {
                   return (
-                    <Link href={item.href} key={item.title} passHref>
-                      <li className='leading-7 cursor-pointer'>
-                        <a className='py-1 transition duration-300 border-b border-b-transparent hover:border-b-yellow-500'>
-                          {item.title}
-                        </a>
-                      </li>
-                    </Link>
+                    <span key={item.title}>
+                      {((session.data?.user &&
+                        (item.auth === true || item.auth === undefined)) ||
+                        (!session.data?.user && item.auth === false) ||
+                        item.auth === undefined) && (
+                        <Link href={item.href} passHref>
+                          <li className='leading-7 cursor-pointer'>
+                            <a className='py-1 transition duration-300 border-b border-b-transparent hover:border-b-yellow-500'>
+                              {item.title}
+                            </a>
+                          </li>
+                        </Link>
+                      )}
+                    </span>
                   );
                 })}
               </ul>
