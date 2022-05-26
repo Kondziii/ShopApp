@@ -166,3 +166,18 @@ mutation updateOrderStage($orderId: ID!, $email: String!, $stage: OrderStage!) {
     id
   }
 }
+
+mutation updateOrderByStripeId($stripeId: String!, $stage: OrderStage) {
+  updateOrder(
+    where: { stripeCheckoutId: $stripeId }
+    data: { orderStage: $stage }
+  ) {
+    id
+    stripeCheckoutId
+    orderStage
+  }
+
+  publishOrder(to: PUBLISHED, where: { stripeCheckoutId: $stripeId }) {
+    id
+  }
+}

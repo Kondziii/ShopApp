@@ -9727,7 +9727,6 @@ export type OrderUpdateManyInlineInput = {
 export type OrderUpdateManyInput = {
   email?: InputMaybe<Scalars['String']>;
   orderStage?: InputMaybe<OrderStage>;
-  stripeCheckoutId?: InputMaybe<Scalars['String']>;
   total?: InputMaybe<Scalars['Int']>;
 };
 
@@ -9922,6 +9921,7 @@ export type OrderWhereInput = {
 /** References Order record uniquely */
 export type OrderWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
+  stripeCheckoutId?: InputMaybe<Scalars['String']>;
 };
 
 /** Information about pagination in a connection. */
@@ -15997,6 +15997,14 @@ export type UpdateOrderStageMutationVariables = Exact<{
 
 export type UpdateOrderStageMutation = { __typename?: 'Mutation', updateOrder?: { __typename?: 'Order', id: string } | null, publishOrder?: { __typename?: 'Order', id: string } | null };
 
+export type UpdateOrderByStripeIdMutationVariables = Exact<{
+  stripeId: Scalars['String'];
+  stage?: InputMaybe<OrderStage>;
+}>;
+
+
+export type UpdateOrderByStripeIdMutation = { __typename?: 'Mutation', updateOrder?: { __typename?: 'Order', id: string, stripeCheckoutId?: string | null, orderStage: OrderStage } | null, publishOrder?: { __typename?: 'Order', id: string } | null };
+
 export type GetAllProductsQueryVariables = Exact<{
   first: Scalars['Int'];
   skip: Scalars['Int'];
@@ -16714,6 +16722,45 @@ export function useUpdateOrderStageMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpdateOrderStageMutationHookResult = ReturnType<typeof useUpdateOrderStageMutation>;
 export type UpdateOrderStageMutationResult = Apollo.MutationResult<UpdateOrderStageMutation>;
 export type UpdateOrderStageMutationOptions = Apollo.BaseMutationOptions<UpdateOrderStageMutation, UpdateOrderStageMutationVariables>;
+export const UpdateOrderByStripeIdDocument = gql`
+    mutation updateOrderByStripeId($stripeId: String!, $stage: OrderStage) {
+  updateOrder(where: {stripeCheckoutId: $stripeId}, data: {orderStage: $stage}) {
+    id
+    stripeCheckoutId
+    orderStage
+  }
+  publishOrder(to: PUBLISHED, where: {stripeCheckoutId: $stripeId}) {
+    id
+  }
+}
+    `;
+export type UpdateOrderByStripeIdMutationFn = Apollo.MutationFunction<UpdateOrderByStripeIdMutation, UpdateOrderByStripeIdMutationVariables>;
+
+/**
+ * __useUpdateOrderByStripeIdMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrderByStripeIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrderByStripeIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrderByStripeIdMutation, { data, loading, error }] = useUpdateOrderByStripeIdMutation({
+ *   variables: {
+ *      stripeId: // value for 'stripeId'
+ *      stage: // value for 'stage'
+ *   },
+ * });
+ */
+export function useUpdateOrderByStripeIdMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrderByStripeIdMutation, UpdateOrderByStripeIdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOrderByStripeIdMutation, UpdateOrderByStripeIdMutationVariables>(UpdateOrderByStripeIdDocument, options);
+      }
+export type UpdateOrderByStripeIdMutationHookResult = ReturnType<typeof useUpdateOrderByStripeIdMutation>;
+export type UpdateOrderByStripeIdMutationResult = Apollo.MutationResult<UpdateOrderByStripeIdMutation>;
+export type UpdateOrderByStripeIdMutationOptions = Apollo.BaseMutationOptions<UpdateOrderByStripeIdMutation, UpdateOrderByStripeIdMutationVariables>;
 export const GetAllProductsDocument = gql`
     query getAllProducts($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $min: Int, $max: Int, $sort: ProductOrderByInput!) {
   products(

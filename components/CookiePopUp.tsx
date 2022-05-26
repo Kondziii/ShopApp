@@ -23,7 +23,7 @@ export const CookiePopUp = () => {
           <p className='py-6 '>
             Nasza strona internetowa wykorzystuje pliki cookies (tzw.
             ciasteczka). Zapoznaj się z{' '}
-            <Link href='/cookie-policy'>
+            <Link href='/policy'>
               <a className='text-yellow-400 transition duration-300 hover:text-yellow-500'>
                 naszą polityką prywatności
               </a>
