@@ -6,8 +6,14 @@ import React, {
 } from 'react';
 import { AppCheckbox } from './AppCheckbox';
 
+export interface CheckboxItem {
+  title: string;
+  value: string;
+  checked: boolean;
+}
+
 interface AppCheckboxGroupProps {
-  items: { title: string; value: string; checked: boolean }[];
+  items: CheckboxItem[];
   setItems: React.Dispatch<
     React.SetStateAction<
       {

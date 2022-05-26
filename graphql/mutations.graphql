@@ -99,8 +99,11 @@ mutation updateTotalOrder($total: Int!, $id: ID!) {
   }
 }
 
-mutation updateOrderStripe($orderId: ID!, $stripeId: String!) {
-  updateOrder(where: { id: $orderId }, data: { stripeCheckoutId: $stripeId }) {
+mutation updateOrderStripe($orderId: ID!, $stripeId: String!, $email: String!) {
+  updateOrder(
+    where: { id: $orderId }
+    data: { stripeCheckoutId: $stripeId, email: $email }
+  ) {
     id
     createdAt
     stage
@@ -119,6 +122,35 @@ mutation updateOrderStripe($orderId: ID!, $stripeId: String!) {
     }
   }
   publishOrder(where: { id: $orderId }, to: PUBLISHED) {
+    id
+  }
+}
+
+mutation updateProductAfterOrder(
+  $product: ID!
+  $totalAmount: Int!
+  $sizeId: ID!
+) {
+  updateProduct(
+    where: { id: $product }
+    data: {
+      productSizeVariants: {
+        update: { where: { id: $sizeId }, data: { amount: $totalAmount } }
+      }
+    }
+  ) {
+    id
+  }
+
+  # publishManyProductSizeVariantsConnection(to: PUBLISHED) {
+  #   edges {
+  #     node {
+  #       id
+  #     }
+  #   }
+  # }
+
+  publishProduct(where: { id: $product }, to: PUBLISHED) {
     id
   }
 }

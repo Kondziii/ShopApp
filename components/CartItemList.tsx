@@ -33,6 +33,7 @@ export const CartItemList = ({ product }: CartItemList) => {
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 w-50'>
             Produkt
           </th>
+
           <th className='py-6 text-xs tracking-widest uppercase text-stone-500 '>
             Cena
           </th>
@@ -52,7 +53,7 @@ export const CartItemList = ({ product }: CartItemList) => {
           >
             <td>
               <Link href={`/offer/products/${item.slug}`} passHref>
-                <div className='w-7/12 mx-auto cursor-pointer'>
+                <div className='relative w-5/12 mx-auto cursor-pointer'>
                   <Image
                     layout='responsive'
                     objectFit='contain'
@@ -63,6 +64,9 @@ export const CartItemList = ({ product }: CartItemList) => {
                   />
                 </div>
               </Link>
+              <figcaption className='w-full text-gray-500'>
+                {item.name}
+              </figcaption>
             </td>
             <td>
               <span className='block'>{formatPrice(item.price)} zł</span>

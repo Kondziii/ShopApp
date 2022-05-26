@@ -187,6 +187,7 @@ const handler: NextApiHandler = async (req, res) => {
           product: product.data.product!.id,
           order: orderId.data!.createOrder!.id,
           price: product.data.product!.price,
+
         },
       });
 

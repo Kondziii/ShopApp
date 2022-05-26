@@ -206,6 +206,8 @@ query getProductBySlugSize($slug: String!, $size: [String!]) {
       url
     }
     productSizeVariants(where: { size: { name_in: $size } }) {
+      id
+      amount
       size {
         name
       }
@@ -381,6 +383,69 @@ query getLastProductInfo($productId: ID!) {
     rating
   }
   reviews: reviewsConnection(where: { product: { id: $productId } }) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getAccountOrders(
+  $email: String!
+  $first: Int! = 10
+  $skip: Int! = 0
+  $stage: [OrderStage!]!
+) {
+  orders(
+    where: { email: $email, orderStage_in: $stage }
+    first: $first
+    skip: $skip
+    orderBy: createdAt_DESC
+  ) {
+    id
+    orderStage
+    total
+    createdAt
+  }
+  ordersConnection(where: { email: $email }) {
+    aggregate {
+      count
+    }
+  }
+}
+
+query getOrderStages {
+  __type(name: "OrderStage") {
+    enumValues {
+      name
+    }
+  }
+}
+
+query getOrderCartItemsById($id: ID!, $first: Int! = 10, $skip: Int! = 0) {
+  order(where: { id: $id }) {
+    cartItems(first: $first, skip: $skip) {
+      id
+      size
+      amount
+      createdAt
+      price
+      product {
+        id
+        slug
+        images(first: 1) {
+          url
+        }
+        productSizeVariants {
+          id
+          size {
+            name
+          }
+          amount
+        }
+      }
+    }
+  }
+  ordersConnection(where: { id: $id }) {
     aggregate {
       count
     }

@@ -9,6 +9,7 @@ import { UpdateOrderStripeMutation } from '../../generated/graphql';
 import Image from 'next/image';
 import { formatPrice } from '../../components/utils/functions';
 import { AfterPaymentInfo } from '../../components/AfterPaymentInfo';
+import { useSession } from 'next-auth/react';
 
 const CheckoutSuccessPage = () => {
   const router = useRouter();
@@ -17,6 +18,7 @@ const CheckoutSuccessPage = () => {
     data: UpdateOrderStripeMutation | null | undefined;
   } | null>(null);
   const [loading, setLoading] = useState(true);
+  const session = useSession();
 
   const getData = async () => {
     const res = await fetch('/api/paymentSuccess', {
@@ -27,6 +29,7 @@ const CheckoutSuccessPage = () => {
       body: JSON.stringify({
         orderId: cartState.orderId,
         stripeId: router.query.session_id,
+        email: session.data!.user.email,
       }),
     });
     const json = await res.json();
@@ -38,10 +41,10 @@ const CheckoutSuccessPage = () => {
     if (cartState.items) {
       cartState.removeCart();
     }
-    if (cartState.orderId && router.query.session_id) {
+    if (cartState.orderId && router.query.session_id && session.data?.user) {
       getData();
     }
-  }, [cartState.orderId, router.query.session_id]);
+  }, [cartState.orderId, router.query.session_id, session.data]);
 
   return (
     <div className='w-full max-w-2xl mx-auto'>
@@ -81,9 +84,9 @@ const CheckoutSuccessPage = () => {
         </p>
 
         <div className='my-3 text-center'>
-          <Link href={'/offer'}>
+          <Link href={'/orders'}>
             <a className='mb-2 text-lg text-yellow-500 transition duration-300 hover:text-yellow-600'>
-              Przejrzyj ofertę
+              Twoje zamówienia
             </a>
           </Link>
         </div>

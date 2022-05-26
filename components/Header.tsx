@@ -33,7 +33,7 @@ export const Header = () => {
   return (
     <header className='sticky top-0 z-[999]'>
       <TopBar />
-      <div className='px-8 py-5 text-sm font-semibold text-gray-500 uppercase bg-white shadow-md  md:flex '>
+      <div className='px-8 py-5 text-sm font-semibold text-gray-500 uppercase bg-white shadow-md md:flex '>
         <div className='container flex flex-wrap items-center justify-between mx-auto md:flex-nowrap max-w-7xl'>
           <MenuButton onClick={handleToggleMenu} />
           <Logo></Logo>
@@ -62,7 +62,9 @@ export const Header = () => {
               {session.status === 'authenticated' && (
                 <>
                   <MenuItem className='text-gray-700 transition duration-300 hover:bg-yellow-100'>
-                    <button>Twoje zamówienia</button>
+                    <button onClick={() => router.push('/orders')}>
+                      Twoje zamówienia
+                    </button>
                   </MenuItem>
                   <MenuItem className='text-gray-700 transition duration-300 hover:bg-yellow-100'>
                     <button onClick={() => signOut()}>Wyloguj</button>

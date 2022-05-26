@@ -15157,7 +15157,6 @@ export type SizeUpdateManyInlineInput = {
 };
 
 export type SizeUpdateManyInput = {
-  name?: InputMaybe<Scalars['String']>;
   size?: InputMaybe<Sizes>;
 };
 
@@ -15315,6 +15314,7 @@ export type SizeWhereInput = {
 /** References Size record uniquely */
 export type SizeWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export enum Sizes {
@@ -15973,10 +15973,20 @@ export type UpdateTotalOrderMutation = { __typename?: 'Mutation', updateOrder?: 
 export type UpdateOrderStripeMutationVariables = Exact<{
   orderId: Scalars['ID'];
   stripeId: Scalars['String'];
+  email: Scalars['String'];
 }>;
 
 
-export type UpdateOrderStripeMutation = { __typename?: 'Mutation', updateOrder?: { __typename?: 'Order', id: string, createdAt: any, stage: Stage, cartItems: Array<{ __typename?: 'CartItem', id: string, price: number, amount: number, size: string, product?: { __typename?: 'Product', slug: string, name: string, images: Array<{ __typename?: 'Asset', url: string }> } | null }> } | null };
+export type UpdateOrderStripeMutation = { __typename?: 'Mutation', updateOrder?: { __typename?: 'Order', id: string, createdAt: any, stage: Stage, cartItems: Array<{ __typename?: 'CartItem', id: string, price: number, amount: number, size: string, product?: { __typename?: 'Product', slug: string, name: string, images: Array<{ __typename?: 'Asset', url: string }> } | null }> } | null, publishOrder?: { __typename?: 'Order', id: string } | null };
+
+export type UpdateProductAfterOrderMutationVariables = Exact<{
+  product: Scalars['ID'];
+  totalAmount: Scalars['Int'];
+  sizeId: Scalars['ID'];
+}>;
+
+
+export type UpdateProductAfterOrderMutation = { __typename?: 'Mutation', updateProduct?: { __typename?: 'Product', id: string } | null, publishProduct?: { __typename?: 'Product', id: string } | null };
 
 export type GetAllProductsQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -16058,7 +16068,7 @@ export type GetProductBySlugSizeQueryVariables = Exact<{
 }>;
 
 
-export type GetProductBySlugSizeQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, images: Array<{ __typename?: 'Asset', url: string }>, productSizeVariants: Array<{ __typename?: 'ProductSizeVariant', size?: { __typename?: 'Size', name: string } | null }> } | null };
+export type GetProductBySlugSizeQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, slug: string, name: string, price: number, images: Array<{ __typename?: 'Asset', url: string }>, productSizeVariants: Array<{ __typename?: 'ProductSizeVariant', id: string, amount: number, size?: { __typename?: 'Size', name: string } | null }> } | null };
 
 export type GetAccountByEmailQueryVariables = Exact<{
   email: Scalars['String'];
@@ -16151,6 +16161,30 @@ export type GetLastProductInfoQueryVariables = Exact<{
 
 
 export type GetLastProductInfoQuery = { __typename?: 'Query', product?: { __typename?: 'Product', rating: number } | null, reviews: { __typename?: 'ReviewConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+
+export type GetAccountOrdersQueryVariables = Exact<{
+  email: Scalars['String'];
+  first?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  stage: Array<OrderStage> | OrderStage;
+}>;
+
+
+export type GetAccountOrdersQuery = { __typename?: 'Query', orders: Array<{ __typename?: 'Order', id: string, orderStage: OrderStage, total: number, createdAt: any }>, ordersConnection: { __typename?: 'OrderConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
+
+export type GetOrderStagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetOrderStagesQuery = { __typename?: 'Query', __type?: { __typename?: '__Type', enumValues?: Array<{ __typename?: '__EnumValue', name: string }> | null } | null };
+
+export type GetOrderCartItemsByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
+  first?: Scalars['Int'];
+  skip?: Scalars['Int'];
+}>;
+
+
+export type GetOrderCartItemsByIdQuery = { __typename?: 'Query', order?: { __typename?: 'Order', cartItems: Array<{ __typename?: 'CartItem', id: string, size: string, amount: number, createdAt: any, price: number, product?: { __typename?: 'Product', id: string, slug: string, images: Array<{ __typename?: 'Asset', url: string }>, productSizeVariants: Array<{ __typename?: 'ProductSizeVariant', id: string, amount: number, size?: { __typename?: 'Size', name: string } | null }> } | null }> } | null, ordersConnection: { __typename?: 'OrderConnection', aggregate: { __typename?: 'Aggregate', count: number } } };
 
 export const FullProductItemFragmentDoc = gql`
     fragment FullProductItem on Product {
@@ -16530,8 +16564,11 @@ export type UpdateTotalOrderMutationHookResult = ReturnType<typeof useUpdateTota
 export type UpdateTotalOrderMutationResult = Apollo.MutationResult<UpdateTotalOrderMutation>;
 export type UpdateTotalOrderMutationOptions = Apollo.BaseMutationOptions<UpdateTotalOrderMutation, UpdateTotalOrderMutationVariables>;
 export const UpdateOrderStripeDocument = gql`
-    mutation updateOrderStripe($orderId: ID!, $stripeId: String!) {
-  updateOrder(where: {id: $orderId}, data: {stripeCheckoutId: $stripeId}) {
+    mutation updateOrderStripe($orderId: ID!, $stripeId: String!, $email: String!) {
+  updateOrder(
+    where: {id: $orderId}
+    data: {stripeCheckoutId: $stripeId, email: $email}
+  ) {
     id
     createdAt
     stage
@@ -16548,6 +16585,9 @@ export const UpdateOrderStripeDocument = gql`
         }
       }
     }
+  }
+  publishOrder(where: {id: $orderId}, to: PUBLISHED) {
+    id
   }
 }
     `;
@@ -16568,6 +16608,7 @@ export type UpdateOrderStripeMutationFn = Apollo.MutationFunction<UpdateOrderStr
  *   variables: {
  *      orderId: // value for 'orderId'
  *      stripeId: // value for 'stripeId'
+ *      email: // value for 'email'
  *   },
  * });
  */
@@ -16578,6 +16619,47 @@ export function useUpdateOrderStripeMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdateOrderStripeMutationHookResult = ReturnType<typeof useUpdateOrderStripeMutation>;
 export type UpdateOrderStripeMutationResult = Apollo.MutationResult<UpdateOrderStripeMutation>;
 export type UpdateOrderStripeMutationOptions = Apollo.BaseMutationOptions<UpdateOrderStripeMutation, UpdateOrderStripeMutationVariables>;
+export const UpdateProductAfterOrderDocument = gql`
+    mutation updateProductAfterOrder($product: ID!, $totalAmount: Int!, $sizeId: ID!) {
+  updateProduct(
+    where: {id: $product}
+    data: {productSizeVariants: {update: {where: {id: $sizeId}, data: {amount: $totalAmount}}}}
+  ) {
+    id
+  }
+  publishProduct(where: {id: $product}, to: PUBLISHED) {
+    id
+  }
+}
+    `;
+export type UpdateProductAfterOrderMutationFn = Apollo.MutationFunction<UpdateProductAfterOrderMutation, UpdateProductAfterOrderMutationVariables>;
+
+/**
+ * __useUpdateProductAfterOrderMutation__
+ *
+ * To run a mutation, you first call `useUpdateProductAfterOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProductAfterOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProductAfterOrderMutation, { data, loading, error }] = useUpdateProductAfterOrderMutation({
+ *   variables: {
+ *      product: // value for 'product'
+ *      totalAmount: // value for 'totalAmount'
+ *      sizeId: // value for 'sizeId'
+ *   },
+ * });
+ */
+export function useUpdateProductAfterOrderMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProductAfterOrderMutation, UpdateProductAfterOrderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProductAfterOrderMutation, UpdateProductAfterOrderMutationVariables>(UpdateProductAfterOrderDocument, options);
+      }
+export type UpdateProductAfterOrderMutationHookResult = ReturnType<typeof useUpdateProductAfterOrderMutation>;
+export type UpdateProductAfterOrderMutationResult = Apollo.MutationResult<UpdateProductAfterOrderMutation>;
+export type UpdateProductAfterOrderMutationOptions = Apollo.BaseMutationOptions<UpdateProductAfterOrderMutation, UpdateProductAfterOrderMutationVariables>;
 export const GetAllProductsDocument = gql`
     query getAllProducts($first: Int!, $skip: Int!, $s: String! = "", $sex: [Sex!] = [MAN, WOMAN, CHILD, UNISEX], $min: Int, $max: Int, $sort: ProductOrderByInput!) {
   products(
@@ -16996,6 +17078,8 @@ export const GetProductBySlugSizeDocument = gql`
       url
     }
     productSizeVariants(where: {size: {name_in: $size}}) {
+      id
+      amount
       size {
         name
       }
@@ -17520,3 +17604,152 @@ export function useGetLastProductInfoLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetLastProductInfoQueryHookResult = ReturnType<typeof useGetLastProductInfoQuery>;
 export type GetLastProductInfoLazyQueryHookResult = ReturnType<typeof useGetLastProductInfoLazyQuery>;
 export type GetLastProductInfoQueryResult = Apollo.QueryResult<GetLastProductInfoQuery, GetLastProductInfoQueryVariables>;
+export const GetAccountOrdersDocument = gql`
+    query getAccountOrders($email: String!, $first: Int! = 10, $skip: Int! = 0, $stage: [OrderStage!]!) {
+  orders(
+    where: {email: $email, orderStage_in: $stage}
+    first: $first
+    skip: $skip
+    orderBy: createdAt_DESC
+  ) {
+    id
+    orderStage
+    total
+    createdAt
+  }
+  ordersConnection(where: {email: $email}) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAccountOrdersQuery__
+ *
+ * To run a query within a React component, call `useGetAccountOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccountOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccountOrdersQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *      stage: // value for 'stage'
+ *   },
+ * });
+ */
+export function useGetAccountOrdersQuery(baseOptions: Apollo.QueryHookOptions<GetAccountOrdersQuery, GetAccountOrdersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAccountOrdersQuery, GetAccountOrdersQueryVariables>(GetAccountOrdersDocument, options);
+      }
+export function useGetAccountOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAccountOrdersQuery, GetAccountOrdersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAccountOrdersQuery, GetAccountOrdersQueryVariables>(GetAccountOrdersDocument, options);
+        }
+export type GetAccountOrdersQueryHookResult = ReturnType<typeof useGetAccountOrdersQuery>;
+export type GetAccountOrdersLazyQueryHookResult = ReturnType<typeof useGetAccountOrdersLazyQuery>;
+export type GetAccountOrdersQueryResult = Apollo.QueryResult<GetAccountOrdersQuery, GetAccountOrdersQueryVariables>;
+export const GetOrderStagesDocument = gql`
+    query getOrderStages {
+  __type(name: "OrderStage") {
+    enumValues {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOrderStagesQuery__
+ *
+ * To run a query within a React component, call `useGetOrderStagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrderStagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrderStagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetOrderStagesQuery(baseOptions?: Apollo.QueryHookOptions<GetOrderStagesQuery, GetOrderStagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrderStagesQuery, GetOrderStagesQueryVariables>(GetOrderStagesDocument, options);
+      }
+export function useGetOrderStagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrderStagesQuery, GetOrderStagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrderStagesQuery, GetOrderStagesQueryVariables>(GetOrderStagesDocument, options);
+        }
+export type GetOrderStagesQueryHookResult = ReturnType<typeof useGetOrderStagesQuery>;
+export type GetOrderStagesLazyQueryHookResult = ReturnType<typeof useGetOrderStagesLazyQuery>;
+export type GetOrderStagesQueryResult = Apollo.QueryResult<GetOrderStagesQuery, GetOrderStagesQueryVariables>;
+export const GetOrderCartItemsByIdDocument = gql`
+    query getOrderCartItemsById($id: ID!, $first: Int! = 10, $skip: Int! = 0) {
+  order(where: {id: $id}) {
+    cartItems(first: $first, skip: $skip) {
+      id
+      size
+      amount
+      createdAt
+      price
+      product {
+        id
+        slug
+        images(first: 1) {
+          url
+        }
+        productSizeVariants {
+          id
+          size {
+            name
+          }
+          amount
+        }
+      }
+    }
+  }
+  ordersConnection(where: {id: $id}) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOrderCartItemsByIdQuery__
+ *
+ * To run a query within a React component, call `useGetOrderCartItemsByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOrderCartItemsByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOrderCartItemsByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *   },
+ * });
+ */
+export function useGetOrderCartItemsByIdQuery(baseOptions: Apollo.QueryHookOptions<GetOrderCartItemsByIdQuery, GetOrderCartItemsByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOrderCartItemsByIdQuery, GetOrderCartItemsByIdQueryVariables>(GetOrderCartItemsByIdDocument, options);
+      }
+export function useGetOrderCartItemsByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOrderCartItemsByIdQuery, GetOrderCartItemsByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOrderCartItemsByIdQuery, GetOrderCartItemsByIdQueryVariables>(GetOrderCartItemsByIdDocument, options);
+        }
+export type GetOrderCartItemsByIdQueryHookResult = ReturnType<typeof useGetOrderCartItemsByIdQuery>;
+export type GetOrderCartItemsByIdLazyQueryHookResult = ReturnType<typeof useGetOrderCartItemsByIdLazyQuery>;
+export type GetOrderCartItemsByIdQueryResult = Apollo.QueryResult<GetOrderCartItemsByIdQuery, GetOrderCartItemsByIdQueryVariables>;
