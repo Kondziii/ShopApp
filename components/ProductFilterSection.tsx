@@ -66,6 +66,12 @@ export const ProductFilterSection = () => {
     }
   };
 
+  const handleChangeFilterPrices = () => {
+    if (priceFilters.join() !== prices.join()) {
+      setPriceFilters([...prices]);
+    }
+  };
+
   return (
     <aside className='col-span-3 p-4 bg-white rounded shadow sm:p-8 h-fit min-w-[150px] '>
       <h2 className='text-xl font-semibold md:text-2xl'>Filtry</h2>
@@ -92,7 +98,7 @@ export const ProductFilterSection = () => {
       {priceFilters && (
         <div
           className='my-2 ml-2'
-          onMouseLeave={() => setPriceFilters([...prices])}
+          onMouseLeave={() => handleChangeFilterPrices()}
           key={renderKey}
         >
           <h3 className='-ml-2 font-semibold text-md'>Cena:</h3>
