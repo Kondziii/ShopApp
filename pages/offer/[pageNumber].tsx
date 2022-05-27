@@ -95,7 +95,11 @@ const ProductListPage = ({
       filters.push(`sort=${filterState.sortFilter}`);
     }
 
-    router.replace(`/offer/${pageNumber}?${filters.join('&')}`);
+    router.replace(
+      `/offer/${pageNumber}?${filters.join('&')}`,
+      `/offer/${pageNumber}?${filters.join('&')}`,
+      { scroll: false }
+    );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
