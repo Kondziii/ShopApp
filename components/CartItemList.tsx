@@ -91,7 +91,7 @@ export const CartItemList = ({ product }: CartItemList) => {
         <tr>
           <td className='p-2 text-center'>Zapłacono:</td>
           <td className='p-2 text-center text-yellow-500'>
-            {formatPrice(totalPrice())} zł {totalPrice() < 10000 && '+ 25'} zł
+            {formatPrice(totalPrice())} zł {totalPrice() < 10000 && '+ 25 zł'}
           </td>
           <td></td>
           <td></td>

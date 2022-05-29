@@ -83,7 +83,7 @@ export const NewsLetterForm = () => {
 
           {feedback && (
             <p className='absolute bottom-0 left-0 w-full px-6 py-2 mt-4 text-center text-white bg-green-500 '>
-              Sing up successfully!
+              Zostałeś pomyślnie zapisany
             </p>
           )}
         </form>
