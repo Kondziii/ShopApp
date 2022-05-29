@@ -1,6 +1,8 @@
 import { InferGetStaticPropsType } from 'next';
+import { useEffect } from 'react';
 import { AppCarousel } from '../components/AppCarousel';
 import { AppMarquee } from '../components/AppMarquee';
+import { useFilterState } from '../components/FilterContext';
 import { HomeSection } from '../components/HomeSection';
 import { NewsLetterForm } from '../components/NewsLetterForm';
 import { NewsSection } from '../components/NewsSection';
@@ -23,6 +25,12 @@ const Home = ({
   sections,
   news,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const filterState = useFilterState();
+
+  useEffect(() => {
+    filterState.resetFilters();
+  }, []);
+
   const socksSection = sections.filter(
     (section) => section.category?.type === 'Skarpety'
   );
