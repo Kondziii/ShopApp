@@ -42,6 +42,7 @@ const ProductListPage = ({
   const filterState = useFilterState();
 
   const handleRouteChange = (url: any) => {
+    console.log('reset', url);
     if (
       !url.includes('offer') &&
       !url.includes('cart') &&
@@ -56,6 +57,17 @@ const ProductListPage = ({
 
     return () => router.events.off('routeChangeComplete', handleRouteChange);
   }, []);
+
+  useEffect(() => {
+    setPageNumber(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    filterState.searchValue,
+    filterState.sexFilterOptions,
+    filterState.priceFilters,
+    filterState.categoryFilterOptions,
+    filterState.sortFilter,
+  ]);
 
   useEffect(() => {
     const filters = [];
@@ -98,7 +110,7 @@ const ProductListPage = ({
     router.replace(
       `/offer/${pageNumber}?${filters.join('&')}`,
       `/offer/${pageNumber}?${filters.join('&')}`,
-      { scroll: false }
+      { scroll: +(router.query.pageNumber || '1') != pageNumber }
     );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,11 +123,6 @@ const ProductListPage = ({
     filterState.sortFilter,
   ]);
 
-  useEffect(() => {
-    setPageNumber(router.query.pageNumber || 1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterState.searchValue, filterState.sexFilterOptions]);
-
   const handleSelectedPage = (page: number) => setPageNumber(page);
 
   const handleSortList: ChangeEventHandler<HTMLSelectElement> = (e) => {
@@ -124,7 +131,6 @@ const ProductListPage = ({
 
   return (
     <div className='gap-4 p-6 sm:flex '>
-      {/* Filter bar according to device size */}
       <div className='hidden sm:block'>
         <ProductFilterSection />
       </div>
@@ -200,7 +206,7 @@ export default ProductListPage;
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { pageNumber, s, sex, category, min, max, sort } = ctx.query;
-  const first = 5;
+  const first = 12;
   const skip = pageNumber ? (+pageNumber - 1) * first : 0;
 
   let sexOptions = typeof sex === 'string' ? sex.split(',') : sex;

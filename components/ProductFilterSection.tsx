@@ -82,6 +82,7 @@ export const ProductFilterSection = () => {
           {...register('search')}
           placeholder='Wyszukaj...'
           error={errors.search}
+          defaultValue={filterState.searchValue.toString()}
           type='text'
         />
 

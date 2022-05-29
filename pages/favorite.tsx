@@ -34,11 +34,11 @@ const FavoritePage = () => {
       query: GetAccountFavoriteItemsByIdDocument,
       variables: {
         favorite: userState.favorites.map((el) => el.id),
-        first: 5,
-        skip: router.query.page ? (currentPage - 1) * 5 : 0,
+        first: 12,
+        skip: router.query.page ? (currentPage - 1) * 12 : 0,
       },
       onCompleted(data) {
-        setCount(Math.ceil(data.pagination.aggregate.count / 5));
+        setCount(Math.ceil(data.pagination.aggregate.count / 12));
         if (data.products.length === 0) {
           setIsEmpty(true);
         } else {
@@ -59,11 +59,11 @@ const FavoritePage = () => {
       category: filterState.categoryFilterOptions
         .filter((el) => el.checked)
         .map((el) => el.title),
-      first: 5,
-      skip: router.query.page ? (currentPage - 1) * 5 : 0,
+      first: 12,
+      skip: router.query.page ? (currentPage - 1) * 12 : 0,
     },
     onCompleted(data) {
-      setCountCategory(Math.ceil(data.pagination.aggregate.count / 5));
+      setCountCategory(Math.ceil(data.pagination.aggregate.count / 12));
       if (data.products.length === 0) {
         setIsEmptyCategory(true);
       } else {
@@ -82,15 +82,15 @@ const FavoritePage = () => {
     if (filterState.categoryFilterOptions.some((el) => el.checked)) {
       queryWithCategoryFetchMore({
         variables: {
-          first: 5,
-          skip: router.query.page ? (currentPage - 1) * 5 : 0,
+          first: 12,
+          skip: router.query.page ? (currentPage - 1) * 12 : 0,
         },
       });
     } else {
       fetchMore({
         variables: {
-          first: 5,
-          skip: router.query.page ? (currentPage - 1) * 5 : 0,
+          first: 12,
+          skip: router.query.page ? (currentPage - 1) * 12 : 0,
         },
       });
     }
