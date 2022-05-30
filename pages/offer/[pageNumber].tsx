@@ -42,7 +42,6 @@ const ProductListPage = ({
   const filterState = useFilterState();
 
   const handleRouteChange = (url: any) => {
-    console.log('reset', url);
     if (
       !url.includes('offer') &&
       !url.includes('cart') &&
@@ -59,8 +58,9 @@ const ProductListPage = ({
   }, []);
 
   useEffect(() => {
-    setPageNumber(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      setPageNumber(1);
+    };
   }, [
     filterState.searchValue,
     filterState.sexFilterOptions,
