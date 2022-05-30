@@ -18,16 +18,26 @@ const handler: NextApiHandler = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
-  const user = await authApolloClient.mutate<
-    CreateAccountMutation,
-    CreateAccountMutationVariables
-  >({
-    mutation: CreateAccountDocument,
-    variables: {
-      email,
-      password: hashedPassword,
-    },
-  });
+  let user;
+
+  try {
+    user = await authApolloClient.mutate<
+      CreateAccountMutation,
+      CreateAccountMutationVariables
+    >({
+      mutation: CreateAccountDocument,
+      variables: {
+        email,
+        password: hashedPassword,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
+  if (!user) {
+    return res.status(400).json({ error: 'user already exist' });
+  }
 
   res.status(201).json({ userId: user.data?.createAccount?.id });
 };

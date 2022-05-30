@@ -4,6 +4,9 @@ import { useForm } from 'react-hook-form';
 import { Input } from '../components/Input';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
+import { useState } from 'react';
+import { ClipLoader } from 'react-spinners';
+import { NextAuthAction } from 'next-auth/lib/types';
 
 const signInSchema = yup
   .object({
@@ -17,20 +20,33 @@ type SignInForm = yup.InferType<typeof signInSchema>;
 const SignInPage = () => {
   const session = useSession();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<SignInForm>({
     resolver: yupResolver(signInSchema),
   });
 
-  const onSubmit = handleSubmit((values) => {
-    signIn('credentials', {
+  const onSubmit = handleSubmit(async (values) => {
+    setLoading(true);
+    const res: any = await signIn('credentials', {
       email: values.email,
       password: values.password,
+      redirect: false,
       callbackUrl: router.query.callbackUrl?.toString() || '/',
     });
+
+    if (res && res?.status === 401) {
+      setError('email', { message: 'Błędne dane logowania' });
+      setError('password', { message: 'Błędne dane logowania' });
+      setLoading(false);
+      return;
+    }
+
+    router.replace(router.query.callbackUrl?.toString() || '/');
   });
 
   if (session.status === 'loading') {
@@ -71,9 +87,15 @@ const SignInPage = () => {
         </fieldset>
         <button
           type='submit'
-          className='block w-full px-4 py-2 mx-auto mt-6 text-white transition duration-300 border rounded-full bg-slate-700 border-slate-700 hover:bg-slate-800'
+          disabled={loading}
+          className='block relative w-full px-4 py-2 mx-auto mt-6 text-white transition duration-300 border rounded-full bg-slate-700 border-slate-700 hover:bg-slate-800'
         >
           Zaloguj się
+          {loading && (
+            <span className='absolute right-4 top-1/2 -translate-y-1/2'>
+              <ClipLoader color={'white'} loading={true} size={18} />
+            </span>
+          )}
         </button>
         <small className='block mt-1 text-center'>
           Nie masz jeszcze konta?{' '}
