@@ -23,6 +23,7 @@ const ProductDetailsPage = ({
     );
   }
 
+
   return (
     <div>
       <NextSeo

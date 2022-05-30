@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import Slider from 'react-slick';
 import Image from 'next/image';
 import { mod } from './utils/functions';
@@ -43,42 +43,45 @@ export const ImageSlider = ({ images, alt, setImage }: ImageSliderProps) => {
   }
 
   const slider = useRef<any>();
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    initialSlide: 0,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: false,
+  const settings = useMemo(
+    () => ({
+      dots: false,
+      infinite: true,
+      speed: 500,
+      slidesToShow: images.length < 4 ? images.length : 4,
+      slidesToScroll: 1,
+      initialSlide: 0,
+      nextArrow: <SampleNextArrow />,
+      prevArrow: <SamplePrevArrow />,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: images.length < 3 ? images.length : 3,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: false,
+          },
         },
-      },
-      {
-        breakpoint: 800,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          initialSlide: 1,
+        {
+          breakpoint: 800,
+          settings: {
+            slidesToShow: images.length < 3 ? images.length : 3,
+            slidesToScroll: 1,
+            initialSlide: 1,
+          },
         },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: images.length < 2 ? images.length : 2,
+            slidesToScroll: 1,
+          },
         },
-      },
-    ],
-  };
+      ],
+    }),
+    [images]
+  );
 
   const slideNext = () => {
     if (slider.current) {
@@ -133,18 +136,13 @@ export const ImageSlider = ({ images, alt, setImage }: ImageSliderProps) => {
             <div
               key={image.url}
               onClick={() => handleImageChange(index)}
-              onKeyDown={(e) => {
-                console.log('hej');
-                if (e.key == 'Enter') {
-                  console.log('elo');
-                }
-              }}
-              className='p-4 mx-2 transition duration-300 bg-white rounded-md shadow-sm cursor-pointer hover:opacity-90'
+              className='p-4 mx-2 transition duration-300 bg-white rounded-md shadow-sm cursor-pointer hover:opacity-90 '
             >
               <Image
+                className='w-auto'
                 layout='responsive'
-                width={4}
-                height={3}
+                width={16}
+                height={9}
                 objectFit='contain'
                 src={image.url}
                 alt={alt}

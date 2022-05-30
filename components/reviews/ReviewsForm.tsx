@@ -135,7 +135,10 @@ export const ReviewsForm = ({ product }: ProductReviewsProps) => {
           },
         },
         id: product.id,
-        rating: (response.data.product.rating + formRating(values.rating)) / 2,
+        rating:
+          response.data.product.rating > 0
+            ? (response.data.product.rating + formRating(values.rating)) / 2
+            : formRating(values.rating),
         ratingCount: response.data.reviews.aggregate.count + 1,
       },
       optimisticResponse: {
