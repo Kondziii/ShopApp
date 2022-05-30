@@ -55,7 +55,16 @@ export const Header = () => {
                     </button>
                   </MenuItem>
                   <MenuItem className='text-sm text-gray-700 capitalize transition duration-300 hover:bg-yellow-100'>
-                    <button onClick={register}>Rejestracja</button>
+                    <button
+                      onClick={() =>
+                        router.push({
+                          pathname: '/signup',
+                          query: { callbackUrl: router.asPath },
+                        })
+                      }
+                    >
+                      Rejestracja
+                    </button>
                   </MenuItem>
                 </>
               )}

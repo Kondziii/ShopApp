@@ -57,12 +57,13 @@ const ContactPage = () => {
       <hr />
       <div className='grid sm:grid-cols-2 sm:gap-8'>
         <dl className='my-2 mb-6'>
-          <dt className='my-2 font-semibold uppercase text-md'>
-            Dane kontaktowe:
-          </dt>
-          <dd className='pl-4'>ul. Stefana Żeromskiego 116, 90-924 Łódź</dd>
-          <dd className='pl-4'>+48 123 456 789</dd>
-          <dd className='pl-4'>stoopki@gmail.com</dd>
+          <dt className='my-2 font-semibold uppercase text-md'>Dane firmy:</dt>
+          <dd className='pl-4'>
+            Adres: ul. Stefana Żeromskiego 116, 90-924 Łódź
+          </dd>
+          <dd className='pl-4'>Telefon: +48 123 456 789</dd>
+          <dd className='pl-4'>Email: stoopki@gmail.com</dd>
+          <dd className='pl-4'>NIP: 5693400989</dd>
           <dt className='my-2 font-semibold uppercase text-md'>
             Godziny kontaktowe:
           </dt>
