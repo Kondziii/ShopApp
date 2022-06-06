@@ -21,9 +21,11 @@ interface PaymentSuccessHandlerType {
 const handler: NextApiHandler = async (req, res) => {
   const { orderId, stripeId, email } = req.body as PaymentSuccessHandlerType;
 
-  if (!orderId || !stripeId || !email) {
+  if (!orderId || !stripeId) {
     return res.status(400).json({});
   }
+
+  const emailData = email === '' ? 'anonim@test.pl' : email;
 
   const response = await authApolloClient.mutate<
     UpdateOrderStripeMutation,
@@ -33,7 +35,7 @@ const handler: NextApiHandler = async (req, res) => {
     variables: {
       orderId: orderId,
       stripeId: stripeId,
-      email: email,
+      email: emailData,
     },
   });
 

@@ -21,6 +21,8 @@ const CheckoutSuccessPage = () => {
   const session = useSession();
 
   const getData = async () => {
+    const email = session.data?.user.email || '';
+    console.log('siema');
     const res = await fetch('/api/paymentSuccess', {
       method: 'POST',
       headers: {
@@ -29,7 +31,7 @@ const CheckoutSuccessPage = () => {
       body: JSON.stringify({
         orderId: cartState.orderId,
         stripeId: router.query.session_id,
-        email: session.data!.user.email,
+        email: email,
       }),
     });
     const json = await res.json();
@@ -41,10 +43,15 @@ const CheckoutSuccessPage = () => {
     if (cartState.items) {
       cartState.removeCart();
     }
-    if (cartState.orderId && router.query.session_id && session.data?.user) {
+    if (
+      (cartState.orderId &&
+        router.query.session_id &&
+        session.status === 'authenticated') ||
+      session.status === 'unauthenticated'
+    ) {
       getData();
     }
-  }, [cartState.orderId, router.query.session_id, session.data]);
+  }, [cartState.orderId, router.query.session_id, session.status]);
 
   return (
     <div className='w-full max-w-2xl mx-auto'>
@@ -79,17 +86,20 @@ const CheckoutSuccessPage = () => {
         </h2>
         <p className='w-10/12 mx-auto text-sm text-justify text-gray-500 text center'>
           Zamówienie zostanie przez nas rozpatrzone i powinno do ciebie dotrzeć
-          w przeciągu kilku dni. Status zamówienia możesz podejrzeć w zakładce
-          twoje zamówienia, gdy jesteś zalogowany.
+          w przeciągu kilku dni.{' '}
+          {session.status === 'authenticated' &&
+            'Status zamówienia możesz podejrzeć w zakładce twoje zamówienia, gdy jesteś zalogowany.'}
         </p>
 
-        <div className='my-3 text-center'>
-          <Link href={'/orders'}>
-            <a className='mb-2 text-lg text-yellow-500 transition duration-300 hover:text-yellow-600'>
-              Twoje zamówienia
-            </a>
-          </Link>
-        </div>
+        {session.status === 'authenticated' && (
+          <div className='my-3 text-center'>
+            <Link href={'/orders'}>
+              <a className='mb-2 text-lg text-yellow-500 transition duration-300 hover:text-yellow-600'>
+                Twoje zamówienia
+              </a>
+            </Link>
+          </div>
+        )}
       </AfterPaymentInfo>
     </div>
   );
